@@ -1,0 +1,33 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="info.puzz.graphanything.activities.GraphListActivity">
+
+    <item
+        android:id="@+id/action_edit"
+        android:title="@string/action_edit"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:onClick="editGraph" />
+
+    <item
+        android:id="@+id/action_values"
+        android:title="@string/action_values"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="101"
+        android:onClick="showValues" />
+
+    <item
+        android:id="@+id/action_raw_data"
+        android:title="@string/action_raw_data"
+        android:orderInCategory="102"
+        android:onClick="onEditRawData" />
+
+    <item
+        android:id="@+id/action_delete"
+        android:title="@string/action_delete"
+        android:orderInCategory="103"
+        android:onClick="deleteGraph" />
+
+</menu>

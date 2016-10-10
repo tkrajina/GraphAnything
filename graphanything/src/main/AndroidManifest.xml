@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="info.puzz.graphanything">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        android:versionCode="3"
+        android:versionName="3.0">
+        <activity
+            android:name=".activities.GraphActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".activities.GraphListActivity"
+            android:parentActivityName=".activities.GraphListActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.GraphListActivity" />
+        </activity>
+        <activity
+            android:name=".activities.GraphPropertiesActivity"
+            android:label="@string/title_activity_graph_properties" />
+        <activity
+            android:name=".activities.GraphValuesActivity"
+            android:label="@string/title_activity_graph_values" />
+        <activity
+            android:name=".activities.GraphValuePropertiesActivity"
+            android:label="@string/title_activity_graph_value_properties" />
+        <activity
+            android:name=".activities.RawGraphDataActivity"
+            android:label="@string/title_activity_raw_graph_data" />
+        <activity android:name=".activities.AboutActivity"></activity>
+    </application>
+
+</manifest>

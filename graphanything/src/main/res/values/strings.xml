@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GraphAnything</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_new">New</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_values">Values</string>
+    <string name="title_graphanything">Graphanything</string>
+    <string name="title_activity_graph_properties">GraphPropertiesActivity</string>
+    <string name="title_activity_graph_values">GraphValuesActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_graph_value_properties">GraphValuePropertiesActivity</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_raw_data">Edit raw data</string>
+    <string name="graph_list">Graph list</string>
+    <string name="title_activity_raw_graph_data">RawGraphDataActivity</string>
+    <string name="update">Update</string>
+    <string name="action_save">Save</string>
+    <string name="raw_edit">Raw edit</string>
+    <string name="no_enough_data">No enough data (yet)</string>
+    <string name="start_timer">Start timer</string>
+    <string name="stop_timer">Stop timer</string>
+    <string name="action_info">App info</string>
+    <string name="app_info">App info</string>
+    <string name="estimate">Estimate</string>
+    <string name="goal">Goal</string>
+    <string name="data">Data</string>
+
+</resources>
