@@ -13,6 +13,7 @@ public final class Formatters {
     public static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     public static final int ROUND_DIGITS = 2;
+    public static final String NOT_AVAILABLE = "n/a";
 
     private Formatters() throws Exception {
         throw new Exception();
@@ -20,14 +21,21 @@ public final class Formatters {
 
     public static String formatNumber(Float f) {
         if (f == null) {
-            return "-";
+            return NOT_AVAILABLE;
         }
+        if (Float.isNaN(f) || Float.isInfinite(f)) {
+            return NOT_AVAILABLE;
+        }
+
         return String.format("%.2f", f.floatValue());
     }
 
     public static String formatDouble(Double d) {
         if (d == null) {
-            return "-";
+            return NOT_AVAILABLE;
+        }
+        if (Double.isNaN(d) || Double.isInfinite(d)) {
+            return NOT_AVAILABLE
         }
         return String.format("%.2f", d.floatValue());
     }
