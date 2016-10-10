@@ -97,6 +97,8 @@ public class GraphActivity extends BaseActivity {
 
         graph = getDAO().loadGraph(graphId);
 
+        findViewById(R.id.graph__goal_group).setVisibility(graph.calculateGoal ? View.VISIBLE : View.GONE);
+
         setTitle(graph.name);
 
         boolean isTimer = graph.unitType == GraphUnitType.TIMER.getType();
