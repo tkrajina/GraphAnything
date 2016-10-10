@@ -35,7 +35,7 @@ public final class Formatters {
             return NOT_AVAILABLE;
         }
         if (Double.isNaN(d) || Double.isInfinite(d)) {
-            return NOT_AVAILABLE
+            return NOT_AVAILABLE;
         }
         return String.format("%.2f", d.floatValue());
     }
