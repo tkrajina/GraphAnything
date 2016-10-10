@@ -135,7 +135,7 @@
 
             <TextView
                 android:id="@+id/graph__previous_preriod_avg_label"
-                android:text="Prev 7d: "
+                android:text="Previous 7d: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
@@ -188,7 +188,7 @@
 
             <TextView
                 android:id="@+id/graph__previous_preriod_sum_label"
-                android:text="Prev 7d: "
+                android:text="Previous 7d: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
