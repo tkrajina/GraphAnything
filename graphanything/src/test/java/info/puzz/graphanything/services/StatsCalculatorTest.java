@@ -20,8 +20,7 @@ public class StatsCalculatorTest {
     public void testGoal() {
         Graph graph = new Graph();
         graph.setStatsPeriod(7);
-        graph.calculateGoal = true;
-        graph.goal = 100;
+        graph.goal = 100D;
 
         List<GraphValue> values = new ArrayList<>();
         values.add(new GraphValue(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1), 1));

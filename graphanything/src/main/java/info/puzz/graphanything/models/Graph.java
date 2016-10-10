@@ -29,8 +29,7 @@ public class Graph {
      */
     public int statsPeriod = DEFAULT_STATS_SAMPLE_DAYS;
 
-    public boolean calculateGoal;
-    public double goal;
+    public Double goal;
     /**
      * Number of days to reach goal. It is calculated by comparing the average in the current
      * and previous interval ({@link #statsPeriod} days).
@@ -42,6 +41,10 @@ public class Graph {
     @Override
     public String toString() {
         return name;
+    }
+
+    public boolean calculateGoal() {
+        return goal != null;
     }
 
     public boolean isTimeActive() {

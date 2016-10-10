@@ -52,7 +52,7 @@ public class GraphPropertiesActivity extends BaseActivity {
 
         graphNameEditText.setText(graph.name == null ? "" : graph.name);
         unitOfMeasurementEditText.setText(graph.unit == null ? "" : graph.unit);
-        goalEditText.setText(graph.calculateGoal ? String.valueOf(graph.goal) : "");
+        goalEditText.setText(graph.calculateGoal() ? String.valueOf(graph.goal) : "");
 
         setupUnitTypeRadioButtons();
         setupGraphTypeRadioButtons();
@@ -140,9 +140,8 @@ public class GraphPropertiesActivity extends BaseActivity {
         graph.unit = unitOfMeasurementEditText.getText().toString();
 
         String goalStr = goalEditText.getText().toString();
-        graph.calculateGoal = false;
+        graph.goal = null;
         if (goalStr != null && goalStr.length() > 0) {
-            graph.calculateGoal = true;
             graph.goal = Double.parseDouble(goalStr);
         }
 

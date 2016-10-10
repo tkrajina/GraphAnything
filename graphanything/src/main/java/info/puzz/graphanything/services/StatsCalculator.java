@@ -69,7 +69,7 @@ public class StatsCalculator {
                 //Log.d(TAG, new Timestamp(value.created) + " older");
             }
 
-            if (graph.calculateGoal && (isThisWeek || isLastWeek)) {
+            if (graph.calculateGoal() && (isThisWeek || isLastWeek)) {
                 //System.out.println("data=" + value.created + "," + value.value);
                 regression.addData(value.created, value.value);
             }
@@ -84,7 +84,7 @@ public class StatsCalculator {
         res.setSumPreviousPeriod(sumLastWeek);
         res.setAvgPreviousPeriod(sumLastWeek / entriesLastWeek);
 
-        if (graph.calculateGoal) {
+        if (graph.calculateGoal()) {
             // y = intercept + slope * x
             res.setGoalIntercept(regression.getIntercept());
             res.setGoalSlope(regression.getSlope());

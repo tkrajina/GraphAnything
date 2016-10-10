@@ -59,8 +59,7 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
             Graph graph = new Graph();
             graph.name = "EXAMPLE: My weight";
             graph.unit = "kg";
-            graph.goal = 80;
-            graph.calculateGoal = true;
+            graph.goal = 80D;
             String data = "2016-8-14T9:27:11|\t95.1\n" +
                     "2016-8-22T8:40:45|\t92.1\n" +
                     "2016-8-31T8:30:12|\t91.1\n" +

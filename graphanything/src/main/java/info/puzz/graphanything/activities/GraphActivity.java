@@ -97,7 +97,7 @@ public class GraphActivity extends BaseActivity {
 
         graph = getDAO().loadGraph(graphId);
 
-        findViewById(R.id.graph__goal_group).setVisibility(graph.calculateGoal ? View.VISIBLE : View.GONE);
+        findViewById(R.id.graph__goal_group).setVisibility(graph.calculateGoal() ? View.VISIBLE : View.GONE);
 
         setTitle(graph.name);
 
@@ -109,7 +109,7 @@ public class GraphActivity extends BaseActivity {
             prepareTimer();
         }
 
-        redrawGraphAndStats(true);
+        redrawAndUpdateGraphAndStats(true);
 
         if (graph.isTimeActive()) {
             startTimer();
@@ -177,10 +177,10 @@ public class GraphActivity extends BaseActivity {
         graph.timerStarted = 0; // Just in case it's a timer graph
         getDAO().save(graph);
 
-        redrawGraphAndStats(true);
+        redrawAndUpdateGraphAndStats(true);
     }
 
-    private void redrawGraphAndStats(boolean showGoal) {
+    private void redrawAndUpdateGraphAndStats(boolean showGoal) {
         GraphView graphView = (GraphView) findViewById(R.id.graph);
 
         graphView.removeAllSeries();
@@ -207,7 +207,7 @@ public class GraphActivity extends BaseActivity {
         double minY = series.getLowestValueY();
         double maxY = series.getHighestValueY();
 
-        if (graph.calculateGoal && showGoal) {
+        if (graph.calculateGoal() && showGoal) {
             minY = Math.min(minY, graph.goal);
             maxY = Math.max(maxY, graph.goal);
 
@@ -288,7 +288,7 @@ public class GraphActivity extends BaseActivity {
         ((TextView) findViewById(R.id.graph__last_preriod_sum_value)).setText(Formatters.formatDouble(stats.getSumLatestPeriod()));
         ((TextView) findViewById(R.id.graph__previous_preriod_sum_value)).setText(Formatters.formatDouble(stats.getSumPreviousPeriod()));
 
-        if (graph.calculateGoal) {
+        if (graph.calculateGoal()) {
             ((TextView) findViewById(R.id.graph__goal)).setText(Formatters.formatDouble(graph.goal));
             ((TextView) findViewById(R.id.graph__goal_estimate)).setText(stats.getGoalEstimateDays() == null ? "n/a" : Formatters.formatNumber(stats.getGoalEstimateDays()) + "days");
         }
