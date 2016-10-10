@@ -198,20 +198,7 @@ public class GraphActivity extends BaseActivity {
 
         GraphStats stats = redrawStats(values);
 
-        if (dataPoints.size() <= 1) {
-            Log.w(TAG, "Sample data <= 1");
-            noGraph(graphView, R.string.no_enough_data);
-            return;
-        }
-
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(dataPoints.toArray(new DataPoint[dataPoints.size()]));
-
-        double xRange = series.getHighestValueX() - series.getLowestValueX();
-        if (xRange < TimeUnit.MINUTES.toMillis(2)) {
-            Log.w(TAG, "x range too short:" + xRange);
-            noGraph(graphView, R.string.no_enough_data);
-            return;
-        }
 
         double minX = series.getLowestValueX();
         double maxX = series.getHighestValueX();
@@ -254,6 +241,13 @@ public class GraphActivity extends BaseActivity {
             estimateSeries.setTitle(getResources().getString(R.string.estimate));
             estimateSeries.setColor(Color.MAGENTA);
             graphView.addSeries(estimateSeries);
+        }
+
+        if (minX == maxX) {
+            minX = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(10);
+            maxX = System.currentTimeMillis();
+            minY = 0;
+            maxY = 10;
         }
 
         double xpadding = minX == maxX ? 0 : (maxX - minX) * 0.01;
