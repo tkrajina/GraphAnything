@@ -5,17 +5,18 @@ package info.puzz.graphanything.models;
  */
 
 public enum GraphUnitType {
-    UNIT(1, "Any unit", null),
-    TIMER(2, "Time (with timer)", "s"),;
+
+    UNIT(1, "Any unit"),
+    TIMER(2, "Time (with timer)"),
+
+    ;
 
     private final int type;
     private final String description;
-    private final String unit;
 
-    GraphUnitType(int type, String description, String unit) {
+    GraphUnitType(int type, String description) {
         this.type = type;
         this.description = description;
-        this.unit = unit;
     }
 
     public int getType() {
@@ -26,7 +27,4 @@ public enum GraphUnitType {
         return description;
     }
 
-    public String getUnit() {
-        return unit;
-    }
 }
