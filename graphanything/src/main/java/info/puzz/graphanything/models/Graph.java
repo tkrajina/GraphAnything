@@ -1,5 +1,6 @@
 package info.puzz.graphanything.models;
 
+import info.puzz.graphanything.models.format.FormatException;
 import info.puzz.graphanything.utils.TimeUtils;
 import lombok.Data;
 
@@ -57,11 +58,16 @@ public class Graph {
     }
 
     public String formatValueWithUnit(double value) {
-        if (GraphUnitType.TIMER.getType() == unitType) {
-            return TimeUtils.formatDurationToHHMMSS((long) value);
-        } else {
-            return String.format("%.2f", value);
+        return getGraphUnitType().format(value);
+    }
+
+    public GraphUnitType getGraphUnitType() {
+        for (GraphUnitType t : GraphUnitType.values()) {
+            if (t.getType() == unitType) {
+                return t;
+            }
         }
+        return GraphUnitType.UNIT;
     }
 
     public GraphType getGraphType() {
