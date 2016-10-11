@@ -1,5 +1,7 @@
 package info.puzz.graphanything.services;
 
+import com.jjoe64.graphview.series.DataPoint;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -9,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphStats;
+import info.puzz.graphanything.models.GraphType;
 import info.puzz.graphanything.models.GraphValue;
 
 /**
@@ -26,7 +29,8 @@ public class StatsCalculatorTest {
         values.add(new GraphValue(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1), 1));
         values.add(new GraphValue(System.currentTimeMillis(), 2));
 
-        GraphStats stats = StatsCalculator.calculate(graph, values);
+        List<DataPoint> dataPoints = GraphType.VALUES.getConverter().convert(values);
+        GraphStats stats = StatsCalculator.calculate(graph, dataPoints);
 
         Assert.assertEquals(98, stats.getGoalEstimateDays().floatValue(), 0.1);
         System.out.println("estimated days=" + stats.getGoalEstimateDays());

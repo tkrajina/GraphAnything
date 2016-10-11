@@ -3,6 +3,8 @@ package info.puzz.graphanything.services;
 import android.content.SyncStatusObserver;
 import android.util.Log;
 
+import com.jjoe64.graphview.series.DataPoint;
+
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 
 import java.sql.Timestamp;
@@ -24,7 +26,7 @@ public class StatsCalculator {
         throw new Error();
     }
 
-    public static GraphStats calculate(Graph graph, List<GraphValue> valuesOrderedByCreated) {
+    public static GraphStats calculate(Graph graph, List<DataPoint> dataPoints) {
         GraphStats res = new GraphStats();
 
         int sampleIntervalDays = graph.getStatsPeriod();
@@ -45,42 +47,38 @@ public class StatsCalculator {
 
         SimpleRegression regression = new SimpleRegression();
 
-        for (int i = 0; i < valuesOrderedByCreated.size(); i++) {
-            GraphValue value = valuesOrderedByCreated.get(i);
-
-            if (res.getLatestValue() == null || value.created > res.getLatestValue().created) {
-                res.setLatestValue(value);
-            }
+        for (int i = 0; i < dataPoints.size(); i++) {
+            DataPoint point = dataPoints.get(i);
 
             if (i > 0) {
-                if (value.created < valuesOrderedByCreated.get(i - 1).created) {
+                if (point.getX() < dataPoints.get(i - 1).getX()) {
                     throw new Error("Not ordered by created!");
                 }
             }
 
-            sum += value.value;
-            boolean isThisWeek = value.created > thisWeek;
-            boolean isLastWeek = thisWeek > value.created && value.created > lastWeek;
+            sum += point.getY();
+            boolean isThisWeek = point.getX() > thisWeek;
+            boolean isLastWeek = thisWeek > point.getX() && point.getX() > lastWeek;
             if (isThisWeek) {
-                //Log.d(TAG, new Timestamp(value.created) + " this week");
-                sumThisWeek += value.value;
+                //Log.d(TAG, new Timestamp(point.created) + " this week");
+                sumThisWeek += point.getY();
                 entriesThisWeek++;
             } else if (isLastWeek) {
-                //Log.d(TAG, new Timestamp(value.created) + " last week");
-                sumLastWeek += value.value;
+                //Log.d(TAG, new Timestamp(point.created) + " last week");
+                sumLastWeek += point.getY();
                 entriesLastWeek++;
             } else {
-                //Log.d(TAG, new Timestamp(value.created) + " older");
+                //Log.d(TAG, new Timestamp(point.created) + " older");
             }
 
             if (graph.calculateGoal() && (isThisWeek || isLastWeek)) {
-                //System.out.println("data=" + value.created + "," + value.value);
-                regression.addData(value.created, value.value);
+                //System.out.println("data=" + point.created + "," + point.point);
+                regression.addData(point.getX(), point.getY());
             }
         }
 
         res.setSum(sum);
-        res.setAvg(sum / valuesOrderedByCreated.size());
+        res.setAvg(sum / dataPoints.size());
 
         res.setSumLatestPeriod(sumThisWeek);
         res.setAvgLatestPeriod(sumThisWeek / entriesThisWeek);

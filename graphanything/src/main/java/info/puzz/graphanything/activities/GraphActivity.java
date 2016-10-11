@@ -196,19 +196,20 @@ public class GraphActivity extends BaseActivity {
             graphView.getGridLabelRenderer().setNumHorizontalLabels(10);
         }
 
-        List<DataPoint> dataPoints = null;
-
-        List<GraphValue> values = getDAO().getValues(graph._id);
-        dataPoints = graph.getGraphType().getConverter().convert(values);
+        List<GraphValue> values = getDAO().getValuesByCreatedAsc(graph._id);
+        GraphValue latestValue = values.size() == 0 ? null : values.get(values.size() - 1);
+        List<DataPoint> dataPoints = graph.getGraphType().getConverter().convert(values);
 
         t.time("Before stats");
-        GraphStats stats = redrawStats(values);
+        GraphStats stats = StatsCalculator.calculate(graph, dataPoints);
         t.time("After stats");
 
+        redrawStats(stats);
+
         // And when we already computed all the stats, update the graph entity:
-        if (stats.getLatestValue() != null) {
-            graph.lastValue = stats.getLatestValue().value;
-            graph.lastValueCreated = stats.getLatestValue().created;
+        if (latestValue != null) {
+            graph.lastValue = latestValue.value;
+            graph.lastValueCreated = latestValue.created;
 
         }
         if (graph.calculateGoal()) {
@@ -298,9 +299,7 @@ public class GraphActivity extends BaseActivity {
         Log.i(TAG, "Graph drawing times:" + t.toString());
     }
 
-    private GraphStats redrawStats(List<GraphValue> values) {
-        GraphStats stats = StatsCalculator.calculate(graph, values);
-
+    private void redrawStats(GraphStats stats) {
         ((TextView) findViewById(R.id.graph__total_avg)).setText(Formatters.formatDouble(stats.getAvg()));
         ((TextView) findViewById(R.id.graph__last_preriod_avg_value)).setText(Formatters.formatDouble(stats.getAvgLatestPeriod()));
         ((TextView) findViewById(R.id.graph__previous_preriod_avg_value)).setText(Formatters.formatDouble(stats.getAvgPreviousPeriod()));
@@ -313,8 +312,6 @@ public class GraphActivity extends BaseActivity {
             ((TextView) findViewById(R.id.graph__goal)).setText(Formatters.formatDouble(graph.goal));
             ((TextView) findViewById(R.id.graph__goal_estimate)).setText(stats.getGoalEstimateDays() == null ? "n/a" : Formatters.formatNumber(stats.getGoalEstimateDays()) + "days");
         }
-
-        return stats;
     }
 
     @Deprecated

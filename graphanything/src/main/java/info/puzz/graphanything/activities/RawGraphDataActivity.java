@@ -56,7 +56,7 @@ public class RawGraphDataActivity extends BaseActivity {
 
     private void fillData() {
         graph = getDAO().loadGraph(graphId);
-        List<GraphValue> values = getDAO().getValues(graphId);
+        List<GraphValue> values = getDAO().getValuesByCreatedAsc(graphId);
 
         editText = (EditText) findViewById(R.id.raw_text);
         try {

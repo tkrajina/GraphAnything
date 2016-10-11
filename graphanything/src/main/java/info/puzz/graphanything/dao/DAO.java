@@ -102,7 +102,7 @@ public class DAO {
                 .query();
     }
 
-    public List<GraphValue> getValues(long graphId) {
+    public List<GraphValue> getValuesByCreatedAsc(long graphId) {
         ArrayList<GraphValue> result = new ArrayList<>();
 
         QueryResultIterable<GraphValue> i = null;
