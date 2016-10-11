@@ -5,11 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.activities.GraphActivity;
 import info.puzz.graphanything.models.Graph;
+import info.puzz.graphanything.models.GraphUnitType;
 import info.puzz.graphanything.utils.TimeUtils;
 
 public class GraphArrayAdapter extends ArrayAdapter<Graph> {
@@ -26,9 +28,21 @@ public class GraphArrayAdapter extends ArrayAdapter<Graph> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         View rowView = inflater.inflate(R.layout.graph, parent, false);
 
         final Graph graph = values[position];
+
+        ImageView iconTextView = (ImageView) rowView.findViewById(R.id.icon);
+        if (graph.unitType == GraphUnitType.TIMER.getType() && graph.timerStarted > 0) {
+            iconTextView.setImageResource(R.drawable.ic_timer);
+        } else if (graph.calculateGoal()) {
+            if (0 < graph.goalEstimateDays && graph.goalEstimateDays < 300) {
+                iconTextView.setImageResource(R.drawable.ic_smile);
+            } else {
+                iconTextView.setImageResource(R.drawable.ic_sad);
+            }
+        }
 
         TextView titleView = (TextView) rowView.findViewById(R.id.graph_title);
         titleView.setText(graph.name);

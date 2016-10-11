@@ -17,10 +17,10 @@
             android:gravity="center_vertical"
             android:minHeight="?android:attr/listPreferredItemHeightSmall"
             android:textStyle="normal|bold"
-            android:layout_toLeftOf="@+id/textView8"
-            android:layout_toStartOf="@+id/textView8" />
-        <TextView
-            android:text="!!!!!"
+            android:layout_toStartOf="@+id/icon"
+            android:layout_toLeftOf="@+id/icon" />
+        <ImageView
+            android:id="@+id/icon"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
