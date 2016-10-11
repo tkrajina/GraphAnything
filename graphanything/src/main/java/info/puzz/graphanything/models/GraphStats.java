@@ -16,6 +16,7 @@ public class GraphStats {
     private Double sumPreviousPeriod;
     private Float goalEstimateDays;
     private long goalTime;
+    private GraphValue latestValue;
 
     // TODO: What if there is no enough data for drawing a line?
     double goalIntercept;

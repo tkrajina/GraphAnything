@@ -48,6 +48,10 @@ public class StatsCalculator {
         for (int i = 0; i < valuesOrderedByCreated.size(); i++) {
             GraphValue value = valuesOrderedByCreated.get(i);
 
+            if (res.getLatestValue() == null || value.created > res.getLatestValue().created) {
+                res.setLatestValue(value);
+            }
+
             if (i > 0) {
                 if (value.created < valuesOrderedByCreated.get(i - 1).created) {
                     throw new Error("Not ordered by created!");

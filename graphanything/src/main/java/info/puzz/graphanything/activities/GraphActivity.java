@@ -200,6 +200,17 @@ public class GraphActivity extends BaseActivity {
 
         GraphStats stats = redrawStats(values);
 
+        // And when we already computed all the stats, update the graph entity:
+        if (stats.getLatestValue() != null) {
+            graph.lastValue = stats.getLatestValue().value;
+            graph.lastValueCreated = stats.getLatestValue().created;
+
+        }
+        if (graph.calculateGoal()) {
+            graph.goalEstimateDays = stats.getGoalEstimateDays();
+        }
+        getDAO().save(graph);
+
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(dataPoints.toArray(new DataPoint[dataPoints.size()]));
 
         double minX = series.getLowestValueX();
