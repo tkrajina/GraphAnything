@@ -83,13 +83,16 @@ public enum GraphType {
     @Getter
     private final String description;
 
-    @Getter
     private final ValuesToGraphPointsConverter converter;
 
     GraphType(int type, String description, ValuesToGraphPointsConverter converter) {
         this.type = type;
         this.description = description;
         this.converter = converter;
+    }
+
+    public List<DataPoint> convert(List<GraphValue> values) {
+        return converter.convert(values);
     }
 
 }

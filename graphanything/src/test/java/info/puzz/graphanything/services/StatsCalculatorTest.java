@@ -29,7 +29,7 @@ public class StatsCalculatorTest {
         values.add(new GraphValue(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1), 1));
         values.add(new GraphValue(System.currentTimeMillis(), 2));
 
-        List<DataPoint> dataPoints = GraphType.VALUES.getConverter().convert(values);
+        List<DataPoint> dataPoints = GraphType.VALUES.convert(values);
         GraphStats stats = StatsCalculator.calculate(graph, dataPoints);
 
         Assert.assertEquals(98, stats.getGoalEstimateDays().floatValue(), 0.1);

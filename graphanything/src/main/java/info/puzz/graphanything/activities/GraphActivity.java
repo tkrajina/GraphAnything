@@ -198,7 +198,7 @@ public class GraphActivity extends BaseActivity {
 
         List<GraphValue> values = getDAO().getValuesByCreatedAsc(graph._id);
         GraphValue latestValue = values.size() == 0 ? null : values.get(values.size() - 1);
-        List<DataPoint> dataPoints = graph.getGraphType().getConverter().convert(values);
+        List<DataPoint> dataPoints = graph.getGraphType().convert(values);
 
         t.time("Before stats");
         GraphStats stats = StatsCalculator.calculate(graph, dataPoints);
