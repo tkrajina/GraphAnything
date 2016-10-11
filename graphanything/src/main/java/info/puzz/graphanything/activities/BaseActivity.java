@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
+import info.puzz.graphanything.R;
 import info.puzz.graphanything.dao.DAO;
 
 /**
@@ -31,6 +32,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         if (!this.getClass().equals(GraphListActivity.class)) {
+            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_launcher);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
@@ -50,7 +52,8 @@ public abstract class BaseActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
+                //onBackPressed();
+                GraphListActivity.start(this);
                 return true;
         }
         return super.onOptionsItemSelected(item);
