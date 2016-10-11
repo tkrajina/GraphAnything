@@ -14,6 +14,7 @@ public class Graph {
     public Long _id;
     public String name;
     public String unit;
+
     public double lastValue;
     public long lastValueCreated;
     /**

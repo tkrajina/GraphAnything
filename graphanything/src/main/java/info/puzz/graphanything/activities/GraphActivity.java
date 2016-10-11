@@ -39,6 +39,7 @@ import info.puzz.graphanything.utils.AssertUtils;
 import info.puzz.graphanything.utils.Formatters;
 import info.puzz.graphanything.utils.ThreadUtils;
 import info.puzz.graphanything.utils.TimeUtils;
+import info.puzz.graphanything.utils.Timer;
 
 
 public class GraphActivity extends BaseActivity {
@@ -181,6 +182,8 @@ public class GraphActivity extends BaseActivity {
     }
 
     private void redrawAndUpdateGraphAndStats(boolean showGoal) {
+        Timer t = new Timer("redrawing graph");
+
         GraphView graphView = (GraphView) findViewById(R.id.graph);
 
         graphView.removeAllSeries();
@@ -198,7 +201,9 @@ public class GraphActivity extends BaseActivity {
         List<GraphValue> values = getDAO().getValues(graph._id);
         dataPoints = graph.getGraphType().getConverter().convert(values);
 
+        t.time("Before stats");
         GraphStats stats = redrawStats(values);
+        t.time("After stats");
 
         // And when we already computed all the stats, update the graph entity:
         if (stats.getLatestValue() != null) {
@@ -211,7 +216,9 @@ public class GraphActivity extends BaseActivity {
         }
         getDAO().save(graph);
 
+        t.time("before getting graph points");
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(dataPoints.toArray(new DataPoint[dataPoints.size()]));
+        t.time("after getting graph points");
 
         double minX = series.getLowestValueX();
         double maxX = series.getHighestValueX();
@@ -284,8 +291,11 @@ public class GraphActivity extends BaseActivity {
 
         series.setTitle(getResources().getString(R.string.data));
 
+        t.time("Before drawing graph");
         graphView.addSeries(series);
-        graphView.setTitleTextSize(5);
+        t.time("After drawing graph");
+
+        Log.i(TAG, "Graph drawing times:" + t.toString());
     }
 
     private GraphStats redrawStats(List<GraphValue> values) {
@@ -307,6 +317,7 @@ public class GraphActivity extends BaseActivity {
         return stats;
     }
 
+    @Deprecated
     private void noGraph(GraphView graphView, int textResourceId) {
         graphView.setVisibility(View.GONE);
         TextView textView = (TextView) findViewById(R.id.graph_not_enough_data);
