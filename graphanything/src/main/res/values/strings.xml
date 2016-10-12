@@ -26,5 +26,6 @@
     <string name="estimate">Estimate</string>
     <string name="goal">Goal</string>
     <string name="data">Data</string>
+    <string name="about">Source code: <a href="github.com/tkrajina/GraphAnything">https://github.com/tkrajina/GraphAnything</a></string>
 
 </resources>

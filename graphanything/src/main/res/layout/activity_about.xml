@@ -13,6 +13,21 @@
     tools:context="info.puzz.graphanything.activities.AboutActivity">
 
     <TextView
+        android:id="@+id/about"
+        android:text="@string/about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:inputType="textMultiLine"
+        android:gravity="center" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_margin="10dp"
+        android:background="@android:color/darker_gray"/>
+
+    <TextView
         android:text="Version code:"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,6 +39,12 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_margin="10dp"
+        android:background="@android:color/darker_gray"/>
 
     <TextView
         android:text="Version name:"
