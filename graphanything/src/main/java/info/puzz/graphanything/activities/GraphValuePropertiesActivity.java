@@ -1,5 +1,7 @@
 package info.puzz.graphanything.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -17,14 +19,21 @@ import info.puzz.graphanything.listeners.CalendarChangeListener;
 import info.puzz.graphanything.fragments.DatePickerFragment;
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.fragments.TimePickerFragment;
+import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphValue;
+import info.puzz.graphanything.models.format.FormatException;
 import info.puzz.graphanything.utils.Formatters;
 
 
 public class GraphValuePropertiesActivity extends BaseActivity implements CalendarChangeListener {
 
     private static final String ARG_GRAPH_VALUE_ID = "value_id";
+
+    private TextView valueTextView;
+
     private Calendar cal;
+
+    private Graph graph;
     private GraphValue graphValue;
 
     /**
@@ -44,12 +53,13 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
         Long graphValueId = (Long) getIntent().getExtras().get(ARG_GRAPH_VALUE_ID);
 
         graphValue = getDAO().getValue(graphValueId);
+        graph = getDAO().loadGraph(graphValue.graphId);
 
         cal = GregorianCalendar.getInstance();
         cal.setTime(new Date(graphValue.created));
 
-        TextView valueTextView = (TextView) findViewById(R.id.value);
-        valueTextView.setText("" + graphValue.value);
+        valueTextView = (TextView) findViewById(R.id.value);
+        valueTextView.setText(graph.getGraphUnitType().format(graphValue.value, false));
 
         redrawDateTime();
 
@@ -109,8 +119,21 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
     }
 
     public void onSaveValue(View view) {
-        TextView valueTextView = (TextView) findViewById(R.id.value);
-        double value = Double.valueOf(valueTextView.getText().toString());
+        double value = 0;
+        try {
+            value = graph.getGraphUnitType().parse(valueTextView.getText().toString().trim());
+        } catch (FormatException e) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Invalid value")
+                    .setMessage(e.getMessage())
+                    .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+            return;
+        }
 
         graphValue.value = value;
         graphValue.created = cal.getTimeInMillis();
