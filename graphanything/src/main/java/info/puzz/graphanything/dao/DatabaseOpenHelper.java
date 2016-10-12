@@ -9,6 +9,8 @@ import java.text.ParseException;
 import java.util.List;
 
 import info.puzz.graphanything.models.Graph;
+import info.puzz.graphanything.models.GraphType;
+import info.puzz.graphanything.models.GraphUnitType;
 import info.puzz.graphanything.models.GraphValue;
 import info.puzz.graphanything.models.format.FormatException;
 import info.puzz.graphanything.services.ExportImportUtils;
@@ -89,6 +91,35 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
                     "2016-10-5T8:57:07|\t87.6\n" +
                     "2016-10-6T8:01:01|\t87.2\n" +
                     "2016-10-7T6:46:40|\t86.7\n";
+            try {
+                importData(db, graph, data);
+            } catch (FormatException e) {
+                Log.e(TAG, e.getMessage(), e);
+            }
+        }
+        {
+            Graph graph = new Graph();
+            graph.name = "EXAMPLE: Project time";
+            graph.unitType = GraphUnitType.TIMER.getType();
+            graph.type = GraphType.SUM_ALL_PREVIOUS.getType();
+            String data = "2016-10-10T15:18:33|00:37:17\n" +
+                    "2016-10-10T15:26:44|00:05:39\n" +
+                    "2016-10-10T15:32:37|00:02:31\n" +
+                    "2016-10-10T16:22:33|00:11:10\n" +
+                    "2016-10-10T16:37:38|00:04:37\n" +
+                    "2016-10-10T19:33:35|00:00:02\n" +
+                    "2016-10-11T09:42:44|00:49:54\n" +
+                    "2016-10-11T11:16:14|00:29:42\n" +
+                    "2016-10-11T12:02:48|00:22:03\n" +
+                    "2016-10-11T14:01:41|00:40:34\n" +
+                    "2016-10-11T15:13:20|00:32:07\n" +
+                    "2016-10-11T19:26:06|00:29:33\n" +
+                    "2016-10-11T20:00:18|00:29:49\n" +
+                    "2016-10-12T09:45:38|00:33:15\n" +
+                    "2016-10-12T10:38:58|00:35:19\n" +
+                    "2016-10-12T11:48:42|00:37:00\n" +
+                    "2016-10-12T14:57:17|00:52:24\n" +
+                    "2016-10-12T18:43:16|00:45:10\n";
             try {
                 importData(db, graph, data);
             } catch (FormatException e) {
