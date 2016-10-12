@@ -10,8 +10,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
+import info.puzz.graphanything.models.GraphUnitType;
 import info.puzz.graphanything.models.GraphValue;
+import info.puzz.graphanything.models.format.FormatException;
 
 /**
  * Created by puzz on 18.04.15..
@@ -23,7 +26,8 @@ public class ExportImportUtils {
     public static final char DELIMITER = '|';
     public static final String DELIMITER_REGEX = "\\" + DELIMITER;
 
-    public static String exportGraph(List<GraphValue> values) throws Exception {
+    public static String exportGraph(Graph graph, List<GraphValue> values) throws Exception {
+        GraphUnitType graphUnitType = graph.getGraphUnitType();
         StringBuilder res = new StringBuilder();
 
         for (GraphValue value : values) {
@@ -33,22 +37,27 @@ public class ExportImportUtils {
 
             res.append(FORMATTER.format(value.created));
             res.append(DELIMITER);
-            res.append(value.value);
+            res.append(graphUnitType.format(value.value, FormatVariant.LONG));
         }
 
         return res.toString();
     }
 
-    public static List<GraphValue> importGraph(long graphId, String data) throws ParseException {
+    public static List<GraphValue> importGraph(Graph graph, String data) throws FormatException {
+        GraphUnitType graphUnitType = graph.getGraphUnitType();
         List<GraphValue> res = new ArrayList<GraphValue>();
         String[] lines = data.split("\n");
         for (String line : lines) {
             String[] parts = line.split(DELIMITER_REGEX);
             if (parts.length == 2) {
                 GraphValue val = new GraphValue();
-                val.graphId = graphId;
-                val.created = FORMATTER.parse(parts[0].trim()).getTime();
-                val.value = Float.parseFloat(parts[1].trim());
+                val.graphId = graph._id;
+                try {
+                    val.created = FORMATTER.parse(parts[0].trim()).getTime();
+                } catch (ParseException e) {
+                    throw new FormatException("Invalid timestamp:" + parts[0]);
+                }
+                val.value = graphUnitType.parse(parts[1].trim());
                 res.add(val);
             }
         }
@@ -56,7 +65,9 @@ public class ExportImportUtils {
     }
 
     public static void main(String[] args) throws Exception {
-        List<GraphValue> vals = importGraph(7, "2016-8-14T9:27:11|\t95.1\n" +
+        Graph graph = new Graph();
+        graph._id = 7L;
+        List<GraphValue> vals = importGraph(graph, "2016-8-14T9:27:11|\t95.1\n" +
                 "2016-8-22T8:40:45|\t92.1\n" +
                 "2016-8-31T8:30:12|\t91.1\n" +
                 "2016-9-2T9:55:05|\t90.2\n" +

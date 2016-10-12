@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import info.puzz.graphanything.R;
+import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphStats;
 import info.puzz.graphanything.models.GraphUnitType;
@@ -205,7 +206,7 @@ public class GraphActivity extends BaseActivity {
                     cal.setTimeInMillis((long) value);
                     return String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
                 }
-                return graphUnitType.format(value, true);
+                return graphUnitType.format(value, FormatVariant.SHORT);
             }
 
             @Override
@@ -326,26 +327,18 @@ public class GraphActivity extends BaseActivity {
     }
 
     private void redrawStats(GraphUnitType graphUnitType, GraphStats stats) {
-        ((TextView) findViewById(R.id.total_avg)).setText(graphUnitType.format(stats.getAvg(), false));
-        ((TextView) findViewById(R.id.last_preriod_avg_value)).setText(graphUnitType.format(stats.getAvgLatestPeriod(), true));
-        ((TextView) findViewById(R.id.previous_preriod_avg_value)).setText(graphUnitType.format(stats.getAvgPreviousPeriod(), true));
+        ((TextView) findViewById(R.id.total_avg)).setText(graphUnitType.format(stats.getAvg(), FormatVariant.LONG));
+        ((TextView) findViewById(R.id.last_preriod_avg_value)).setText(graphUnitType.format(stats.getAvgLatestPeriod(), FormatVariant.SHORT));
+        ((TextView) findViewById(R.id.previous_preriod_avg_value)).setText(graphUnitType.format(stats.getAvgPreviousPeriod(), FormatVariant.SHORT));
 
-        ((TextView) findViewById(R.id.total_sum)).setText(graphUnitType.format(stats.getSum(), false));
-        ((TextView) findViewById(R.id.last_preriod_sum_value)).setText(graphUnitType.format(stats.getSumLatestPeriod(), true));
-        ((TextView) findViewById(R.id.previous_period_sum_value)).setText(graphUnitType.format(stats.getSumPreviousPeriod(), true));
+        ((TextView) findViewById(R.id.total_sum)).setText(graphUnitType.format(stats.getSum(), FormatVariant.LONG));
+        ((TextView) findViewById(R.id.last_preriod_sum_value)).setText(graphUnitType.format(stats.getSumLatestPeriod(), FormatVariant.SHORT));
+        ((TextView) findViewById(R.id.previous_period_sum_value)).setText(graphUnitType.format(stats.getSumPreviousPeriod(), FormatVariant.SHORT));
 
         if (graph.calculateGoal()) {
-            ((TextView) findViewById(R.id.goal)).setText(graphUnitType.format(graph.goal, false));
+            ((TextView) findViewById(R.id.goal)).setText(graphUnitType.format(graph.goal, FormatVariant.LONG));
             ((TextView) findViewById(R.id.goal_estimate)).setText(stats.getGoalEstimateDays() == null ? "n/a" : Formatters.formatNumber(stats.getGoalEstimateDays()) + "days");
         }
-    }
-
-    @Deprecated
-    private void noGraph(GraphView graphView, int textResourceId) {
-        graphView.setVisibility(View.GONE);
-        TextView textView = (TextView) findViewById(R.id.graph_not_enough_data);
-        textView.setText(textResourceId);
-        textView.setVisibility(View.VISIBLE);
     }
 
     public void onEditRawData(MenuItem item) {
@@ -411,7 +404,7 @@ public class GraphActivity extends BaseActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            timerTextView.setText(TimeUtils.formatDurationToHHMMSS(System.currentTimeMillis() - graph.timerStarted, false));
+                            timerTextView.setText(TimeUtils.formatDurationToHHMMSS(System.currentTimeMillis() - graph.timerStarted, FormatVariant.LONG));
                         }
                     });
 

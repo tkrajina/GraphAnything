@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.activities.GraphActivity;
+import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphUnitType;
 import info.puzz.graphanything.utils.TimeUtils;
@@ -48,7 +49,7 @@ public class GraphArrayAdapter extends ArrayAdapter<Graph> {
         titleView.setText(graph.name);
 
         TextView lastValueTextView = (TextView) rowView.findViewById(R.id.graph_subtitle_last_value);
-        lastValueTextView.setText(graph.formatValueWithUnit(graph.lastValue, false));
+        lastValueTextView.setText(graph.formatValueWithUnit(graph.lastValue, FormatVariant.SHORT));
 
         TextView lastValueCreatedTextView = (TextView) rowView.findViewById(R.id.graph_subtitle_last_value_created);
         lastValueCreatedTextView.setText(TimeUtils.formatTimeAgoString(graph.lastValueCreated));

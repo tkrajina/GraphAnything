@@ -1,5 +1,6 @@
 package info.puzz.graphanything.models.format;
 
+import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.utils.StringUtils;
 
 /**
@@ -20,15 +21,15 @@ public class DoubleFormatter implements FormatterParser {
     }
 
     @Override
-    public String format(Double value, boolean shortFormat) {
+    public String format(Double value, FormatVariant variant) {
         if (value == null) {
             return "n/a";
         }
-        return String.format(shortFormat ? "%.1f" : "%.2f", value);
+        return String.format(variant == FormatVariant.SHORT ? "%.1f" : "%.2f", value);
     }
 
     public static void main(String[] args) {
-        System.out.println(new DoubleFormatter().format(2.3D, true));
-        System.out.println(new DoubleFormatter().format(2.3D, false));
+        System.out.println(new DoubleFormatter().format(2.3D, FormatVariant.SHORT));
+        System.out.println(new DoubleFormatter().format(2.3D, FormatVariant.LONG));
     }
 }

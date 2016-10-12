@@ -10,6 +10,7 @@ import java.util.List;
 
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphValue;
+import info.puzz.graphanything.models.format.FormatException;
 import info.puzz.graphanything.services.ExportImportUtils;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
@@ -88,14 +89,18 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
                     "2016-10-5T8:57:07|\t87.6\n" +
                     "2016-10-6T8:01:01|\t87.2\n" +
                     "2016-10-7T6:46:40|\t86.7\n";
-            importData(db, graph, data);
+            try {
+                importData(db, graph, data);
+            } catch (FormatException e) {
+                Log.e(TAG, e.getMessage(), e);
+            }
         }
     }
 
-    private void importData(SQLiteDatabase db, Graph graph, String data) throws ParseException {
+    private void importData(SQLiteDatabase db, Graph graph, String data) throws FormatException {
         cupboard().withDatabase(db).put(graph);
 
-        List<GraphValue> values = ExportImportUtils.importGraph(graph._id, data);
+        List<GraphValue> values = ExportImportUtils.importGraph(graph, data);
 
         long maxTime = 0;
         for (GraphValue value : values) {

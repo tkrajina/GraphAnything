@@ -1,5 +1,7 @@
 package info.puzz.graphanything.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -7,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -60,7 +63,7 @@ public class RawGraphDataActivity extends BaseActivity {
 
         editText = (EditText) findViewById(R.id.raw_text);
         try {
-            editText.setText(ExportImportUtils.exportGraph(values));
+            editText.setText(ExportImportUtils.exportGraph(graph, values));
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
@@ -75,7 +78,7 @@ public class RawGraphDataActivity extends BaseActivity {
 
     public void onUpdateRawData(MenuItem item) {
         try {
-            List<GraphValue> values = ExportImportUtils.importGraph(graphId, editText.getText().toString());
+            List<GraphValue> values = ExportImportUtils.importGraph(graph, editText.getText().toString());
 
             getDAO().deleteGraphValues(graphId);
 
@@ -85,7 +88,15 @@ public class RawGraphDataActivity extends BaseActivity {
 
             GraphActivity.start(this, graphId);
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            new AlertDialog.Builder(this)
+                    .setTitle("Invalid value")
+                    .setMessage(e.getMessage())
+                    .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
         }
     }
 }

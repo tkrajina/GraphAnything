@@ -2,6 +2,7 @@ package info.puzz.graphanything.models.format;
 
 import java.util.concurrent.TimeUnit;
 
+import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.utils.StringUtils;
 import info.puzz.graphanything.utils.TimeUtils;
 
@@ -37,11 +38,11 @@ public class TimeFormatter implements FormatterParser {
     }
 
     @Override
-    public String format(Double value, boolean shortFormat) {
+    public String format(Double value, FormatVariant variant) {
         if (value == null) {
             return "n/a";
         }
-        return TimeUtils.formatDurationToHHMMSS(value.longValue(), shortFormat);
+        return TimeUtils.formatDurationToHHMMSS(value.longValue(), variant);
     }
 
 }

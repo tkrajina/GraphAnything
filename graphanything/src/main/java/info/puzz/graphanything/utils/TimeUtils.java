@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
+import info.puzz.graphanything.models.FormatVariant;
+
 /**
  * Created by puzz on 06/10/16.
  */
@@ -42,13 +44,13 @@ public class TimeUtils {
         return formatTimeDuration(System.currentTimeMillis() - time) + " ago";
     }
 
-    public static String formatDurationToHHMMSS(long duration, boolean shortFormat) {
+    public static String formatDurationToHHMMSS(long duration, FormatVariant variant) {
         long seconds = TimeUnit.MILLISECONDS.toSeconds(duration);
         long remainingSeconds = Math.abs(seconds % 60);
         long mins = seconds / 60;
         long remainingMins = Math.abs(mins % 60);
         long hours = mins / 60;
-        if (shortFormat) {
+        if (variant == FormatVariant.SHORT) {
             return String.format("%02d:%02d", hours, remainingMins);
         }
         return String.format("%02d:%02d:%02d", hours, remainingMins, remainingSeconds);
@@ -91,7 +93,7 @@ public class TimeUtils {
     }
 
     public static void main(String[] args) {
-        System.out.println(formatDurationToHHMMSS(61000, false));
-        System.out.println(formatDurationToHHMMSS(61000, true));
+        System.out.println(formatDurationToHHMMSS(61000, FormatVariant.SHORT));
+        System.out.println(formatDurationToHHMMSS(61000, FormatVariant.LONG));
     }
 }

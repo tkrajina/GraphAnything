@@ -4,6 +4,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import info.puzz.graphanything.models.FormatVariant;
+
 /**
  * Created by puzz on 11/10/16.
  */
@@ -13,7 +15,7 @@ public class TimeFormatterTest {
     public void test() throws Exception {
         TimeFormatter f = new TimeFormatter();
         Double parsed = f.parse("12:34");
-        Assert.assertEquals(f.format(parsed, true), "12:34");
-        Assert.assertEquals(f.format(parsed, false), "12:34:00");
+        Assert.assertEquals(f.format(parsed, FormatVariant.SHORT), "12:34");
+        Assert.assertEquals(f.format(parsed, FormatVariant.LONG), "12:34:00");
     }
 }

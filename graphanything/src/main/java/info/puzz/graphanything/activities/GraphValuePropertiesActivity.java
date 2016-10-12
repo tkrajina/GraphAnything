@@ -19,6 +19,7 @@ import info.puzz.graphanything.listeners.CalendarChangeListener;
 import info.puzz.graphanything.fragments.DatePickerFragment;
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.fragments.TimePickerFragment;
+import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphValue;
 import info.puzz.graphanything.models.format.FormatException;
@@ -59,7 +60,7 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
         cal.setTime(new Date(graphValue.created));
 
         valueTextView = (TextView) findViewById(R.id.value);
-        valueTextView.setText(graph.getGraphUnitType().format(graphValue.value, false));
+        valueTextView.setText(graph.getGraphUnitType().format(graphValue.value, FormatVariant.LONG));
 
         redrawDateTime();
 
