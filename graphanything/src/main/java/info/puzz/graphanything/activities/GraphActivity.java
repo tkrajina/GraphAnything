@@ -55,6 +55,8 @@ public class GraphActivity extends BaseActivity {
 
     private boolean activityActive;
 
+    private Float graphFontSize = null;
+
     /**
      * Utility to start this activity from another one.
      */
@@ -186,10 +188,15 @@ public class GraphActivity extends BaseActivity {
 
         GraphView graphView = (GraphView) findViewById(R.id.graph);
 
+        if (graphFontSize == null) {
+            graphFontSize = graphView.getGridLabelRenderer().getTextSize();
+        }
+
         graphView.removeAllSeries();
 
         graphView.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this, new SimpleDateFormat("dd")));
-        graphView.getGridLabelRenderer().setTextSize(graphView.getGridLabelRenderer().getTextSize() / 2);
+        graphView.getGridLabelRenderer().setTextSize(graphFontSize.floatValue() / 2);
+
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             graphView.getGridLabelRenderer().setNumHorizontalLabels(20);
         } else {
