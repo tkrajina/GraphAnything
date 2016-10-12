@@ -317,6 +317,9 @@ public class GraphActivity extends BaseActivity {
         graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
         graphView.getLegendRenderer().setVisible(true);
 
+        graphView.getViewport().setScalable(true);
+        graphView.getViewport().setScrollable(true);
+
         series.setTitle(getResources().getString(R.string.data));
 
         t.time("Before drawing graph");
