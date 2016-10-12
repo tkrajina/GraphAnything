@@ -62,7 +62,11 @@ public class GraphPropertiesActivity extends BaseActivity {
         setupUnitTypeRadioButtons();
         setupGraphTypeRadioButtons();
 
-        setTitle("Edit: " + graph.name);
+        if (graphId == null) {
+            setTitle("New");
+        } else {
+            setTitle("Edit: " + graph.name);
+        }
     }
 
     private void setupGraphTypeRadioButtons() {
