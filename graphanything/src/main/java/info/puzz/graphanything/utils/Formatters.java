@@ -2,6 +2,7 @@ package info.puzz.graphanything.utils;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * Created by puzz on 22.03.15..
@@ -27,7 +28,7 @@ public final class Formatters {
             return NOT_AVAILABLE;
         }
 
-        return String.format("%.2f", f.floatValue());
+        return String.format(Locale.US, "%.2f", f.floatValue());
     }
 
     public static String formatDouble(Double d) {
@@ -37,7 +38,7 @@ public final class Formatters {
         if (Double.isNaN(d) || Double.isInfinite(d)) {
             return NOT_AVAILABLE;
         }
-        return String.format("%.2f", d.floatValue());
+        return String.format(Locale.US, "%.2f", d.floatValue());
     }
 
     public static String formatDate(long time) {
