@@ -111,7 +111,7 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
 
         long timeDelta = System.currentTimeMillis() - maxTime;
         for (GraphValue value : values) {
-            value.created -= timeDelta;
+            value.created += timeDelta;
         }
 
         cupboard().withDatabase(db).put(values);
