@@ -275,7 +275,7 @@ public class GraphActivity extends BaseActivity {
                     new DataPoint(maxX, graph.goal),
             });
             goalSeries.setThickness(2);
-            goalSeries.setColor(Color.GREEN);
+            goalSeries.setColor(0xffff9c00);
             goalSeries.setTitle(getResources().getString(R.string.goal));
             graphView.addSeries(goalSeries);
 
@@ -286,7 +286,7 @@ public class GraphActivity extends BaseActivity {
             });
             estimateSeries.setThickness(2);
             estimateSeries.setTitle(getResources().getString(R.string.estimate));
-            estimateSeries.setColor(Color.MAGENTA);
+            estimateSeries.setColor(0xff67cfff);
             graphView.addSeries(estimateSeries);
         }
 
