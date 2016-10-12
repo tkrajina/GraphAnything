@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.concurrent.TimeUnit;
+
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.activities.GraphActivity;
 import info.puzz.graphanything.models.FormatVariant;
@@ -37,12 +39,16 @@ public class GraphArrayAdapter extends ArrayAdapter<Graph> {
         ImageView iconTextView = (ImageView) rowView.findViewById(R.id.icon);
         if (graph.unitType == GraphUnitType.TIMER.getType() && graph.timerStarted > 0) {
             iconTextView.setImageResource(R.drawable.ic_timer);
+        } else if (TimeUtils.timeFrom(graph.lastValueCreated) > TimeUnit.DAYS.toMillis(Graph.DEFAULT_STATS_SAMPLE_DAYS / 2)) {
+            iconTextView.setImageResource(R.drawable.ic_zzz_bell);
         } else if (graph.calculateGoal()) {
-            if (0 < graph.goalEstimateDays && graph.goalEstimateDays < 300) {
+            if (- Graph.DEFAULT_STATS_SAMPLE_DAYS / 2 < graph.goalEstimateDays && graph.goalEstimateDays < Graph.DEFAULT_STATS_SAMPLE_DAYS * 50) {
                 iconTextView.setImageResource(R.drawable.ic_smile);
             } else {
                 iconTextView.setImageResource(R.drawable.ic_sad);
             }
+        } else {
+            iconTextView.setImageResource(R.drawable.ic_smile);
         }
 
         TextView titleView = (TextView) rowView.findViewById(R.id.graph_title);
