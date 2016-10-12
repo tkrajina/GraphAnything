@@ -86,7 +86,7 @@ public class StatsCalculator {
         res.setSumPreviousPeriod(sumLastWeek);
         res.setAvgPreviousPeriod(sumLastWeek / entriesLastWeek);
 
-        if (graph.calculateGoal()) {
+        if (graph.calculateGoal() && dataPoints.size() >= 3) {
             // y = intercept + slope * x
             res.setGoalIntercept(regression.getIntercept());
             res.setGoalSlope(regression.getSlope());
