@@ -48,7 +48,7 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
         cal = GregorianCalendar.getInstance();
         cal.setTime(new Date(graphValue.created));
 
-        TextView valueTextView = (TextView) findViewById(R.id.graph_value_properties__value);
+        TextView valueTextView = (TextView) findViewById(R.id.value);
         valueTextView.setText("" + graphValue.value);
 
         redrawDateTime();
@@ -57,8 +57,8 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
     }
 
     private void redrawDateTime() {
-        TextView dateTextView = (TextView) findViewById(R.id.graph_value_properties__date);
-        TextView timeTextView = (TextView) findViewById(R.id.graph_value_properties__time);
+        TextView dateTextView = (TextView) findViewById(R.id.date);
+        TextView timeTextView = (TextView) findViewById(R.id.time);
         dateTextView.setText(formatDate());
         timeTextView.setText(formatTime());
     }
@@ -109,7 +109,7 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
     }
 
     public void onSaveValue(View view) {
-        TextView valueTextView = (TextView) findViewById(R.id.graph_value_properties__value);
+        TextView valueTextView = (TextView) findViewById(R.id.value);
         double value = Double.valueOf(valueTextView.getText().toString());
 
         graphValue.value = value;
