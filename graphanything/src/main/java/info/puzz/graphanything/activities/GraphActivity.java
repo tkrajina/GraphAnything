@@ -35,6 +35,7 @@ import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphStats;
 import info.puzz.graphanything.models.GraphUnitType;
 import info.puzz.graphanything.models.GraphValue;
+import info.puzz.graphanything.models.format.FormatException;
 import info.puzz.graphanything.services.StatsCalculator;
 import info.puzz.graphanything.utils.AssertUtils;
 import info.puzz.graphanything.utils.Formatters;
@@ -142,16 +143,16 @@ public class GraphActivity extends BaseActivity {
 
     public void onSaveValue(View view) {
         final EditText numberField = (EditText) findViewById(R.id.number_field);
-        String text = numberField.getText().toString();
+        String text = numberField.getText().toString().trim();
 
 
-        float value;
+        double value;
         try {
-            value = Float.valueOf(String.valueOf(text));
-        } catch (NumberFormatException ignore) {
+            value = graph.getGraphUnitType().parse(text);
+        } catch (FormatException e) {
             new AlertDialog.Builder(this)
-                    .setTitle("Invalid numeric value")
-                    .setMessage("Retry")
+                    .setTitle("Invalid value")
+                    .setMessage(e.getMessage())
                     .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             numberField.setText("", TextView.BufferType.EDITABLE);
@@ -173,7 +174,7 @@ public class GraphActivity extends BaseActivity {
         Toast.makeText(this, "Value added", Toast.LENGTH_SHORT).show();
     }
 
-    private void addValue(float value) {
+    private void addValue(double value) {
         getDAO().addValue(graph._id, value);
 
         graph.lastValue = value;
