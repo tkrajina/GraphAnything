@@ -13,7 +13,7 @@ public class TimeFormatterTest {
     public void test() throws Exception {
         TimeFormatter f = new TimeFormatter();
         Double parsed = f.parse("12:34");
-        String formatted = f.format(parsed);
-        Assert.assertEquals(formatted, "12:34:00");
+        Assert.assertEquals(f.format(parsed, true), "12:34");
+        Assert.assertEquals(f.format(parsed, false), "12:34:00");
     }
 }

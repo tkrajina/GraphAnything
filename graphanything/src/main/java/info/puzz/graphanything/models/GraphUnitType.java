@@ -32,8 +32,8 @@ public enum GraphUnitType {
         return formatterParser.parse(str);
     }
 
-    public String format(Double value) {
-        return formatterParser.format(value);
+    public String format(Double value, boolean shortFormat) {
+        return formatterParser.format(value, shortFormat);
     }
 
 }

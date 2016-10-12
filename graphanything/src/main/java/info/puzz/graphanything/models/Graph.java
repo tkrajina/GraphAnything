@@ -53,12 +53,12 @@ public class Graph {
         return timerStarted > 0;
     }
 
-    public String formatValueWithUnit(GraphValue value) {
-        return formatValueWithUnit(value.value);
+    public String formatValueWithUnit(GraphValue value, boolean shortFormat) {
+        return formatValueWithUnit(value.value, shortFormat);
     }
 
-    public String formatValueWithUnit(double value) {
-        return getGraphUnitType().format(value);
+    public String formatValueWithUnit(double value, boolean shortFormat) {
+        return getGraphUnitType().format(value, shortFormat);
     }
 
     public GraphUnitType getGraphUnitType() {

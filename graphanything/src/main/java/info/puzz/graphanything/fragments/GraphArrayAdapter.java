@@ -48,7 +48,7 @@ public class GraphArrayAdapter extends ArrayAdapter<Graph> {
         titleView.setText(graph.name);
 
         TextView lastValueTextView = (TextView) rowView.findViewById(R.id.graph_subtitle_last_value);
-        lastValueTextView.setText(graph.formatValueWithUnit(graph.lastValue));
+        lastValueTextView.setText(graph.formatValueWithUnit(graph.lastValue, false));
 
         TextView lastValueCreatedTextView = (TextView) rowView.findViewById(R.id.graph_subtitle_last_value_created);
         lastValueCreatedTextView.setText(TimeUtils.formatTimeAgoString(graph.lastValueCreated));

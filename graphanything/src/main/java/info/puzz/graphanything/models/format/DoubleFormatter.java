@@ -20,14 +20,15 @@ public class DoubleFormatter implements FormatterParser {
     }
 
     @Override
-    public String format(Double value) {
+    public String format(Double value, boolean shortFormat) {
         if (value == null) {
             return "";
         }
-        return String.format("%.2f", value);
+        return String.format(shortFormat ? "%.1f" : "%.2f", value);
     }
 
     public static void main(String[] args) {
-        System.out.println(new DoubleFormatter().format(2.3D));
+        System.out.println(new DoubleFormatter().format(2.3D, true));
+        System.out.println(new DoubleFormatter().format(2.3D, false));
     }
 }

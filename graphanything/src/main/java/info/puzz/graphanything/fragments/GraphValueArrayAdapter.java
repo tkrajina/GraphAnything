@@ -34,7 +34,7 @@ public class GraphValueArrayAdapter extends ArrayAdapter<GraphValue> {
         final GraphValue graphValue = values[position];
 
         TextView titleView = (TextView) rowView.findViewById(R.id.graph_value_title);
-        titleView.setText(graph.formatValueWithUnit(graphValue));
+        titleView.setText(graph.formatValueWithUnit(graphValue, false));
 
         TextView valueCreatedTextView = (TextView) rowView.findViewById(R.id.graph_value_subtitle_created);
         valueCreatedTextView.setText(TimeUtils.formatTimeAgoString(graphValue.created));

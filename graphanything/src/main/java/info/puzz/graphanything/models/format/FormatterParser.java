@@ -6,5 +6,5 @@ package info.puzz.graphanything.models.format;
 
 public interface FormatterParser {
     Double parse(String str) throws FormatException;
-    String format(Double value);
+    String format(Double value, boolean shortFormat);
 }
