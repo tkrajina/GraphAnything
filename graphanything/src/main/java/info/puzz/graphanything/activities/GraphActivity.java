@@ -322,6 +322,11 @@ public class GraphActivity extends BaseActivity {
 
         series.setTitle(getResources().getString(R.string.data));
 
+        if (dataPoints.size() < 6) {
+            series.setDrawDataPoints(true);
+            series.setDataPointsRadius(graphFontSize / dataPoints.size());
+        }
+
         t.time("Before drawing graph");
         graphView.addSeries(series);
         t.time("After drawing graph");
