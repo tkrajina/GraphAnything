@@ -1,5 +1,7 @@
 package info.puzz.graphanything.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -8,12 +10,15 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import info.puzz.graphanything.R;
+import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphType;
 import info.puzz.graphanything.models.GraphUnitType;
+import info.puzz.graphanything.models.format.FormatException;
 
 
 public class GraphPropertiesActivity extends BaseActivity {
@@ -52,7 +57,7 @@ public class GraphPropertiesActivity extends BaseActivity {
 
         graphNameEditText.setText(graph.name == null ? "" : graph.name);
         unitOfMeasurementEditText.setText(graph.unit == null ? "" : graph.unit);
-        goalEditText.setText(graph.calculateGoal() ? String.valueOf(graph.goal) : "");
+        goalEditText.setText(graph.calculateGoal() ? graph.getGraphUnitType().format(graph.goal, FormatVariant.LONG) : "");
 
         setupUnitTypeRadioButtons();
         setupGraphTypeRadioButtons();
@@ -139,10 +144,23 @@ public class GraphPropertiesActivity extends BaseActivity {
         graph.name = graphNameEditText.getText().toString();
         graph.unit = unitOfMeasurementEditText.getText().toString();
 
-        String goalStr = goalEditText.getText().toString();
+        String goalStr = goalEditText.getText().toString().trim();
         graph.goal = null;
         if (goalStr != null && goalStr.length() > 0) {
-            graph.goal = Double.parseDouble(goalStr);
+            try {
+                graph.goal = graph.getGraphUnitType().parse(goalStr);
+            } catch (FormatException e) {
+                new AlertDialog.Builder(this)
+                        .setTitle("Invalid value")
+                        .setMessage(e.getMessage())
+                        .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+                return;
+            }
         }
 
         getDAO().save(graph);

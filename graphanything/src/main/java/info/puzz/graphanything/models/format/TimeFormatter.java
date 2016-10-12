@@ -21,7 +21,7 @@ public class TimeFormatter implements FormatterParser {
 
         String[] parts = str.split(":");
         if (parts.length < 2 || parts.length > 3) {
-            throw new FormatException("Invalid time:" + str);
+            throw new FormatException(String.format("Invalid time: \"%s\" (valid format: 12:13:14)", str));
         }
         try {
 
