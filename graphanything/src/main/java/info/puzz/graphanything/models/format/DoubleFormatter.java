@@ -24,6 +24,10 @@ public class DoubleFormatter implements FormatterParser {
         if (value == null) {
             return "";
         }
-        return String.format("%.2", value);
+        return String.format("%.2f", value);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new DoubleFormatter().format(2.3D));
     }
 }
