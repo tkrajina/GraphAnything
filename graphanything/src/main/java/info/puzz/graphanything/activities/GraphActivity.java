@@ -20,12 +20,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.LabelFormatter;
 import com.jjoe64.graphview.LegendRenderer;
+import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -194,8 +197,25 @@ public class GraphActivity extends BaseActivity {
 
         graphView.removeAllSeries();
 
-        graphView.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this, new SimpleDateFormat("dd")));
-        graphView.getGridLabelRenderer().setTextSize(graphFontSize.floatValue() / 2);
+        final GraphUnitType graphUnitType = graph.getGraphUnitType();
+        graphView.getGridLabelRenderer().setLabelFormatter(new LabelFormatter() {
+            Calendar cal = Calendar.getInstance();
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX) {
+                    cal.setTimeInMillis((long) value);
+                    return String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+                }
+                return graphUnitType.format(value, true);
+            }
+
+            @Override
+            public void setViewport(Viewport viewport) {
+
+            }
+        });
+
+        graphView.getGridLabelRenderer().setTextSize((float) (graphFontSize * 0.6));
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             graphView.getGridLabelRenderer().setNumHorizontalLabels(20);
