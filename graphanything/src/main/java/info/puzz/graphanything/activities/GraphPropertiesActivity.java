@@ -48,7 +48,7 @@ public class GraphPropertiesActivity extends BaseActivity {
         graphNameEditText = (EditText) findViewById(R.id.graphName);
         unitOfMeasurementEditText = (EditText) findViewById(R.id.graph__unit_of_measurement);
         unitOfMeasurementField = (EditText) findViewById(R.id.graph__unit_of_measurement);
-        goalEditText = (EditText) findViewById(R.id.graph__goal);
+        goalEditText = (EditText) findViewById(R.id.goal);
 
         graphNameEditText.setText(graph.name == null ? "" : graph.name);
         unitOfMeasurementEditText.setText(graph.unit == null ? "" : graph.unit);

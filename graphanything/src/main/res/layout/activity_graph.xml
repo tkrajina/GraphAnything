@@ -43,7 +43,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/graph__goal_group">
+            android:id="@+id/goal_group">
 
             <View
                 android:layout_width="fill_parent"
@@ -67,7 +67,7 @@
                     android:text="TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/graph__goal"
+                    android:id="@+id/goal"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_weight="1"
                     android:textStyle="normal|bold" />
@@ -84,7 +84,7 @@
                     android:text="TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/graph__goal_estimate"
+                    android:id="@+id/goal_estimate"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_weight="1"
                     android:textStyle="normal|bold" />
@@ -110,7 +110,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/graph__total_avg"
+                android:id="@+id/total_avg"
                 android:text="TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -119,7 +119,7 @@
                 android:textStyle="normal|bold" />
 
             <TextView
-                android:id="@+id/graph__last_preriod_avg_label"
+                android:id="@+id/last_period_avg_label"
                 android:text="Last 7d: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -127,14 +127,14 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/graph__last_preriod_avg_value"
+                android:id="@+id/last_preriod_avg_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textStyle="normal|bold" />
 
             <TextView
-                android:id="@+id/graph__previous_preriod_avg_label"
+                android:id="@+id/previous_preriod_avg_label"
                 android:text="Previous 7d: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -142,7 +142,7 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/graph__previous_preriod_avg_value"
+                android:id="@+id/previous_preriod_avg_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -163,7 +163,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/graph__total_sum"
+                android:id="@+id/total_sum"
                 android:text="TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
                 android:textStyle="normal|bold" />
 
             <TextView
-                android:id="@+id/graph__last_preriod_sum_label"
+                android:id="@+id/last_preriod_sum_label"
                 android:text="Last 7d: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -180,14 +180,14 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/graph__last_preriod_sum_value"
+                android:id="@+id/last_preriod_sum_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textStyle="normal|bold" />
 
             <TextView
-                android:id="@+id/graph__previous_preriod_sum_label"
+                android:id="@+id/previous_preriod_sum_label"
                 android:text="Previous 7d: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -195,7 +195,7 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/graph__previous_preriod_sum_value"
+                android:id="@+id/previous_period_sum_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -210,14 +210,14 @@
              android:background="@android:color/darker_gray"/>
 
         <LinearLayout
-            android:id="@+id/graph__timer_value_group"
+            android:id="@+id/timer_value_group"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
 
             <TextView
-                android:id="@+id/graph__timer"
+                android:id="@+id/timer"
                 android:text="00:00:00"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_width="wrap_content"
@@ -226,7 +226,7 @@
                 android:layout_weight="0.50" />
 
             <Button
-                android:id="@+id/graph__start_stop_timer"
+                android:id="@+id/start_stop_timer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.51"
@@ -236,7 +236,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/graph__unit_value_group"
+            android:id="@+id/unit_value_group"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

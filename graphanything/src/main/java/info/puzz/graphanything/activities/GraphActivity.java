@@ -23,11 +23,9 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LabelFormatter;
 import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.Viewport;
-import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -75,8 +73,8 @@ public class GraphActivity extends BaseActivity {
 
         setContentView(R.layout.activity_graph);
 
-        timerTextView = (TextView) findViewById(R.id.graph__timer);
-        startStopTimerButton = (Button) findViewById(R.id.graph__start_stop_timer);
+        timerTextView = (TextView) findViewById(R.id.timer);
+        startStopTimerButton = (Button) findViewById(R.id.start_stop_timer);
         AssertUtils.assertNotNull(timerTextView, "timer");
         AssertUtils.assertNotNull(startStopTimerButton, "timer button");
 
@@ -103,13 +101,13 @@ public class GraphActivity extends BaseActivity {
 
         graph = getDAO().loadGraph(graphId);
 
-        findViewById(R.id.graph__goal_group).setVisibility(graph.calculateGoal() ? View.VISIBLE : View.GONE);
+        findViewById(R.id.goal_group).setVisibility(graph.calculateGoal() ? View.VISIBLE : View.GONE);
 
         setTitle(graph.name);
 
         boolean isTimer = graph.unitType == GraphUnitType.TIMER.getType();
-        findViewById(R.id.graph__timer_value_group).setVisibility(isTimer ? View.VISIBLE : View.GONE);
-        findViewById(R.id.graph__unit_value_group).setVisibility(isTimer ? View.GONE : View.VISIBLE);
+        findViewById(R.id.timer_value_group).setVisibility(isTimer ? View.VISIBLE : View.GONE);
+        findViewById(R.id.unit_value_group).setVisibility(isTimer ? View.GONE : View.VISIBLE);
 
         if (isTimer) {
             prepareTimer();
@@ -327,17 +325,17 @@ public class GraphActivity extends BaseActivity {
     }
 
     private void redrawStats(GraphStats stats) {
-        ((TextView) findViewById(R.id.graph__total_avg)).setText(Formatters.formatDouble(stats.getAvg()));
-        ((TextView) findViewById(R.id.graph__last_preriod_avg_value)).setText(Formatters.formatDouble(stats.getAvgLatestPeriod()));
-        ((TextView) findViewById(R.id.graph__previous_preriod_avg_value)).setText(Formatters.formatDouble(stats.getAvgPreviousPeriod()));
+        ((TextView) findViewById(R.id.total_avg)).setText(Formatters.formatDouble(stats.getAvg()));
+        ((TextView) findViewById(R.id.last_preriod_avg_value)).setText(Formatters.formatDouble(stats.getAvgLatestPeriod()));
+        ((TextView) findViewById(R.id.previous_preriod_avg_value)).setText(Formatters.formatDouble(stats.getAvgPreviousPeriod()));
 
-        ((TextView) findViewById(R.id.graph__total_sum)).setText(Formatters.formatDouble(stats.getSum()));
-        ((TextView) findViewById(R.id.graph__last_preriod_sum_value)).setText(Formatters.formatDouble(stats.getSumLatestPeriod()));
-        ((TextView) findViewById(R.id.graph__previous_preriod_sum_value)).setText(Formatters.formatDouble(stats.getSumPreviousPeriod()));
+        ((TextView) findViewById(R.id.total_sum)).setText(Formatters.formatDouble(stats.getSum()));
+        ((TextView) findViewById(R.id.last_preriod_sum_value)).setText(Formatters.formatDouble(stats.getSumLatestPeriod()));
+        ((TextView) findViewById(R.id.previous_period_sum_value)).setText(Formatters.formatDouble(stats.getSumPreviousPeriod()));
 
         if (graph.calculateGoal()) {
-            ((TextView) findViewById(R.id.graph__goal)).setText(Formatters.formatDouble(graph.goal));
-            ((TextView) findViewById(R.id.graph__goal_estimate)).setText(stats.getGoalEstimateDays() == null ? "n/a" : Formatters.formatNumber(stats.getGoalEstimateDays()) + "days");
+            ((TextView) findViewById(R.id.goal)).setText(Formatters.formatDouble(graph.goal));
+            ((TextView) findViewById(R.id.goal_estimate)).setText(stats.getGoalEstimateDays() == null ? "n/a" : Formatters.formatNumber(stats.getGoalEstimateDays()) + "days");
         }
     }
 
