@@ -10,8 +10,7 @@ import info.puzz.graphanything.R;
 import info.puzz.graphanything.fragments.GraphListFragment;
 
 
-public class GraphListActivity extends BaseActivity
-        implements GraphListFragment.Callbacks {
+public class GraphListActivity extends BaseActivity implements GraphListFragment.Callbacks {
 
     /**
      * Utility to start this activity from another one.

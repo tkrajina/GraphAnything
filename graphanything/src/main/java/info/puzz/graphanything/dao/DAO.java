@@ -57,24 +57,8 @@ public class DAO {
         cupboard().withDatabase(mDb).delete(graph);
     }
 
-    public List<Graph> fetchAllGraphs() {
-        ArrayList<Graph> result = new ArrayList<>();
-        Cursor graphs = cupboard().withDatabase(mDb).query(Graph.class).getCursor();
-
-        QueryResultIterable<Graph> itr = null;
-        try {
-            // Iterate books
-            itr = cupboard().withDatabase(mDb).query(Graph.class).query();
-            for (Graph graph : itr) {
-                result.add(graph);
-                // do something with book
-            }
-        } finally {
-            // close the cursor
-            itr.close();
-        }
-
-        return result;
+    public List<Graph> getGraphsByUpdatedDesc() {
+        return cupboard().withDatabase(mDb).query(Graph.class).orderBy("-lastValueCreated").list();
     }
 
     public Graph loadGraph(long id) throws SQLException {
