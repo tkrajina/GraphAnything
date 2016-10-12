@@ -7,6 +7,7 @@
     <item
         android:id="@+id/action_new_graph"
         android:title="@string/action_new"
+        android:icon="@drawable/ic_add"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
         android:onClick="newGraph" />
@@ -14,6 +15,7 @@
     <item
         android:id="@+id/action_info"
         android:title="@string/action_info"
+        android:icon="@drawable/ic_question_mark"
         android:orderInCategory="110"
         app:showAsAction="never"
         android:onClick="showInfo" />

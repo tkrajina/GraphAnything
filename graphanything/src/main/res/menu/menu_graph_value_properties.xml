@@ -6,6 +6,7 @@
     <item
         android:id="@+id/action_delete"
         android:title="@string/action_delete"
+        android:icon="@drawable/ic_trash"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
         android:onClick="deleteGraphValue"
