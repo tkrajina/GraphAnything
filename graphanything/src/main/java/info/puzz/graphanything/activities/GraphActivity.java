@@ -239,7 +239,7 @@ public class GraphActivity extends BaseActivity {
             graph.lastValueCreated = latestValue.created;
 
         }
-        if (graph.calculateGoal()) {
+        if (graph.calculateGoal() && stats.getGoalEstimateDays() != null) {
             graph.goalEstimateDays = stats.getGoalEstimateDays();
         }
         getDAO().save(graph);
