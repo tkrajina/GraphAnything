@@ -348,7 +348,12 @@ public class GraphActivity extends BaseActivity {
 
         if (graph.calculateGoal()) {
             ((TextView) findViewById(R.id.goal)).setText(graphUnitType.format(graph.goal, FormatVariant.LONG));
-            ((TextView) findViewById(R.id.goal_estimate)).setText(stats.getGoalEstimateDays() == null ? "n/a" : Formatters.formatNumber(stats.getGoalEstimateDays()) + "days");
+
+            String estimate = "n/a";
+            if (stats.getGoalEstimateDays() != null && stats.getGoalEstimateDays().floatValue() >= 0) {
+                estimate = Formatters.formatNumber(stats.getGoalEstimateDays()) + "days";
+            }
+            ((TextView) findViewById(R.id.goal_estimate)).setText(estimate);
         }
     }
 
