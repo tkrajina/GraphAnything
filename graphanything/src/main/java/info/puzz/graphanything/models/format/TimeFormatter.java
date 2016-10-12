@@ -39,7 +39,7 @@ public class TimeFormatter implements FormatterParser {
     @Override
     public String format(Double value, boolean shortFormat) {
         if (value == null) {
-            return "";
+            return "n/a";
         }
         return TimeUtils.formatDurationToHHMMSS(value.longValue(), shortFormat);
     }

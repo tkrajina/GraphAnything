@@ -22,7 +22,7 @@ public class DoubleFormatter implements FormatterParser {
     @Override
     public String format(Double value, boolean shortFormat) {
         if (value == null) {
-            return "";
+            return "n/a";
         }
         return String.format(shortFormat ? "%.1f" : "%.2f", value);
     }

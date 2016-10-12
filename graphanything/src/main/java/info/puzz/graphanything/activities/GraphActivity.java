@@ -230,7 +230,7 @@ public class GraphActivity extends BaseActivity {
         GraphStats stats = StatsCalculator.calculate(graph, dataPoints);
         t.time("After stats");
 
-        redrawStats(stats);
+        redrawStats(graphUnitType, stats);
 
         // And when we already computed all the stats, update the graph entity:
         if (latestValue != null) {
@@ -325,17 +325,17 @@ public class GraphActivity extends BaseActivity {
         Log.i(TAG, "Graph drawing times:" + t.toString());
     }
 
-    private void redrawStats(GraphStats stats) {
-        ((TextView) findViewById(R.id.total_avg)).setText(Formatters.formatDouble(stats.getAvg()));
-        ((TextView) findViewById(R.id.last_preriod_avg_value)).setText(Formatters.formatDouble(stats.getAvgLatestPeriod()));
-        ((TextView) findViewById(R.id.previous_preriod_avg_value)).setText(Formatters.formatDouble(stats.getAvgPreviousPeriod()));
+    private void redrawStats(GraphUnitType graphUnitType, GraphStats stats) {
+        ((TextView) findViewById(R.id.total_avg)).setText(graphUnitType.format(stats.getAvg(), false));
+        ((TextView) findViewById(R.id.last_preriod_avg_value)).setText(graphUnitType.format(stats.getAvgLatestPeriod(), true));
+        ((TextView) findViewById(R.id.previous_preriod_avg_value)).setText(graphUnitType.format(stats.getAvgPreviousPeriod(), true));
 
-        ((TextView) findViewById(R.id.total_sum)).setText(Formatters.formatDouble(stats.getSum()));
-        ((TextView) findViewById(R.id.last_preriod_sum_value)).setText(Formatters.formatDouble(stats.getSumLatestPeriod()));
-        ((TextView) findViewById(R.id.previous_period_sum_value)).setText(Formatters.formatDouble(stats.getSumPreviousPeriod()));
+        ((TextView) findViewById(R.id.total_sum)).setText(graphUnitType.format(stats.getSum(), false));
+        ((TextView) findViewById(R.id.last_preriod_sum_value)).setText(graphUnitType.format(stats.getSumLatestPeriod(), true));
+        ((TextView) findViewById(R.id.previous_period_sum_value)).setText(graphUnitType.format(stats.getSumPreviousPeriod(), true));
 
         if (graph.calculateGoal()) {
-            ((TextView) findViewById(R.id.goal)).setText(Formatters.formatDouble(graph.goal));
+            ((TextView) findViewById(R.id.goal)).setText(graphUnitType.format(graph.goal, false));
             ((TextView) findViewById(R.id.goal_estimate)).setText(stats.getGoalEstimateDays() == null ? "n/a" : Formatters.formatNumber(stats.getGoalEstimateDays()) + "days");
         }
     }
