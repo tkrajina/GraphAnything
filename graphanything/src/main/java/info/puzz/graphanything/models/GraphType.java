@@ -70,7 +70,9 @@ public enum GraphType {
                 }
                 previousDate = date;
             }
-            res.add(dataPoint);
+            if (dataPoint != null) {
+                res.add(dataPoint);
+            }
 
             return res;
         }
