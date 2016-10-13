@@ -119,7 +119,7 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
-    public void onSaveValue(View view) {
+    public void save(MenuItem item) {
         double value = 0;
         try {
             value = graph.getGraphUnitType().parse(valueTextView.getText().toString().trim());
@@ -146,13 +146,27 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
     }
 
     public void deleteGraphValue(MenuItem item) {
-        getDAO().deleteGraphValue(graphValue);
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                    getDAO().deleteGraphValue(graphValue);
+                    GraphActivity.start(GraphValuePropertiesActivity.this, graphValue.graphId);
+                }
+            }
+        };
 
-        GraphActivity.start(this, graphValue.graphId);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder
+                .setMessage("Delete value?")
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener)
+                .show();
     }
 
     @Override
     public void onCalendarChanged(Calendar cal) {
         redrawDateTime();
     }
+
 }
