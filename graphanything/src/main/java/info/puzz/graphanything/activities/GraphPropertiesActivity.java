@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -65,8 +66,15 @@ public class GraphPropertiesActivity extends BaseActivity {
         if (graphId == null) {
             setTitle("New");
         } else {
-            setTitle("Edit: " + graph.name);
+            setTitle(R.string.action_edit);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_graph_properties, menu);
+        return true;
     }
 
     private void setupGraphTypeRadioButtons() {
@@ -143,8 +151,7 @@ public class GraphPropertiesActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void saveGraphProperties(View view) {
-
+    public void saveGraphProperties(MenuItem item) {
         graph.name = graphNameEditText.getText().toString();
         graph.unit = unitOfMeasurementEditText.getText().toString();
 
