@@ -8,8 +8,8 @@ android {
         applicationId "info.puzz.graphanything"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 19
-        versionName "alpha"
+        versionCode 20
+        versionName "0.1-rc"
     }
     buildTypes {
         release {
