@@ -16,7 +16,7 @@
         android:title="@string/action_delete"
         android:icon="@drawable/ic_trash"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom"
+        app:showAsAction="never"
         android:onClick="deleteGraphValue"
         />
 
