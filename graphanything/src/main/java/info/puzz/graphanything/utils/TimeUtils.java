@@ -2,8 +2,10 @@ package info.puzz.graphanything.utils;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import info.puzz.graphanything.Constants;
 import info.puzz.graphanything.models.FormatVariant;
 
 /**
@@ -12,8 +14,8 @@ import info.puzz.graphanything.models.FormatVariant;
 
 public class TimeUtils {
 
-    public static final SimpleDateFormat YYYYMMDDHHMMSS_FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public static final SimpleDateFormat YYYYMMDD_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
+    public static final SimpleDateFormat YYYYMMDDHHMMSS_FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Constants.LOCALE);
+    public static final SimpleDateFormat YYYYMMDD_FORMATTER = new SimpleDateFormat("yyyy-MM-dd", Constants.LOCALE);
 
     private TimeUtils() throws Exception {
         throw new Exception();
@@ -51,9 +53,9 @@ public class TimeUtils {
         long remainingMins = Math.abs(mins % 60);
         long hours = mins / 60;
         if (variant == FormatVariant.SHORT) {
-            return String.format("%02d:%02d", hours, remainingMins);
+            return String.format(Constants.LOCALE, "%02d:%02d", hours, remainingMins);
         }
-        return String.format("%02d:%02d:%02d", hours, remainingMins, remainingSeconds);
+        return String.format(Constants.LOCALE, "%02d:%02d:%02d", hours, remainingMins, remainingSeconds);
     }
 
     /** Returng string in format "1 seconds ago" or "12 days ago", depending on timestamp */

@@ -2,6 +2,7 @@ package info.puzz.graphanything.models.format;
 
 import java.util.Locale;
 
+import info.puzz.graphanything.Constants;
 import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.utils.StringUtils;
 
@@ -27,7 +28,7 @@ public class DoubleFormatter implements FormatterParser {
         if (value == null) {
             return "n/a";
         }
-        return String.format(Locale.US, variant == FormatVariant.SHORT ? "%.1f" : "%.2f", value);
+        return String.format(Constants.LOCALE, variant == FormatVariant.SHORT ? "%.1f" : "%.2f", value);
     }
 
     public static void main(String[] args) {

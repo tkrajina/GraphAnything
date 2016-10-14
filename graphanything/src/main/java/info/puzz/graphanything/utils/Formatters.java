@@ -4,14 +4,16 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import info.puzz.graphanything.Constants;
+
 /**
  * Created by puzz on 22.03.15..
  */
 public final class Formatters {
 
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
-    public static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Constants.LOCALE);
+    public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm", Constants.LOCALE);
+    public static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm", Constants.LOCALE);
 
     public static final int ROUND_DIGITS = 2;
     public static final String NOT_AVAILABLE = "n/a";
@@ -28,7 +30,7 @@ public final class Formatters {
             return NOT_AVAILABLE;
         }
 
-        return String.format(Locale.US, "%.2f", f.floatValue());
+        return String.format(Constants.LOCALE, "%.2f", f.floatValue());
     }
 
     public static String formatDouble(Double d) {
@@ -38,7 +40,7 @@ public final class Formatters {
         if (Double.isNaN(d) || Double.isInfinite(d)) {
             return NOT_AVAILABLE;
         }
-        return String.format(Locale.US, "%.2f", d.floatValue());
+        return String.format(Constants.LOCALE, "%.2f", d.floatValue());
     }
 
     public static String formatDate(long time) {

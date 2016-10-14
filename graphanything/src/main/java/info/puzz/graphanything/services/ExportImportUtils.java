@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.puzz.graphanything.Constants;
 import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphUnitType;
@@ -21,7 +22,7 @@ import info.puzz.graphanything.models.format.FormatException;
  */
 public class ExportImportUtils {
 
-    private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Constants.LOCALE);
 
     public static final char DELIMITER = '|';
     public static final String DELIMITER_REGEX = "\\" + DELIMITER;

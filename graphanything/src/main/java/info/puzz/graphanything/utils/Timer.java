@@ -2,6 +2,7 @@ package info.puzz.graphanything.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -27,7 +28,7 @@ public class Timer {
         StringBuilder res = new StringBuilder();
         for (int i = 0; i < this.times.size(); i++) {
             long time = i == 0 ? 0 : this.times.get(i) - this.times.get(i - 1);
-            res.append(String.format("%8dms ", time)).append(desc.get(i)).append("\n");
+            res.append(String.format(Locale.US, "%8dms ", time)).append(desc.get(i)).append("\n");
         }
         return res.toString();
     }
