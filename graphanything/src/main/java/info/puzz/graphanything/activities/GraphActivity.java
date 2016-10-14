@@ -293,10 +293,10 @@ public class GraphActivity extends BaseActivity {
         }
 
         if (minX == maxX) {
-            minX = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(10);
-            maxX = System.currentTimeMillis();
-            minY = 0;
-            maxY = 10;
+            minX -= 10;
+            maxX += 10;
+            minY -= 10;
+            maxY += 10;
         }
 
         double xpadding = minX == maxX ? 0 : (maxX - minX) * 0.01;
