@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import info.puzz.graphanything.models.Graph;
+import info.puzz.graphanything.models.GraphColumn;
 import info.puzz.graphanything.models.GraphType;
 import info.puzz.graphanything.models.GraphUnitType;
 import info.puzz.graphanything.models.GraphValue;
@@ -25,6 +26,7 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
         // register our models
         cupboard().register(Graph.class);
         cupboard().register(GraphValue.class);
+        cupboard().register(GraphColumn.class);
     }
 
     private static final String DATABASE_NAME = "graphanything2";
