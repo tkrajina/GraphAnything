@@ -17,7 +17,6 @@ public class GraphStats {
     private Float goalEstimateDays;
     private long goalTime;
 
-    // TODO: What if there is no enough data for drawing a line?
     double goalIntercept;
     double goalSlope;
 
