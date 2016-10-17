@@ -37,7 +37,10 @@
         <activity
             android:name=".activities.RawGraphDataActivity"
             android:label="@string/title_activity_raw_graph_data" />
-        <activity android:name=".activities.AboutActivity"></activity>
+        <activity android:name=".activities.AboutActivity" />
+        <activity
+            android:name=".activities.HelpActivity"
+            android:label="@string/title_activity_help"></activity>
     </application>
 
 </manifest>

@@ -27,5 +27,6 @@
     <string name="goal">Goal</string>
     <string name="data">Data</string>
     <string name="about">Source code: <a href="github.com/tkrajina/GraphAnything">https://github.com/tkrajina/GraphAnything</a></string>
+    <string name="title_activity_help">HelpActivity</string>
 
 </resources>

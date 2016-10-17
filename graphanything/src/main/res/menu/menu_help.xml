@@ -1,0 +1,11 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="info.puzz.graphanything.activities.HelpActivity">
+
+    <item
+        android:title="Back"
+        app:showAsAction="always"
+        android:onClick="onClose" />
+</menu>

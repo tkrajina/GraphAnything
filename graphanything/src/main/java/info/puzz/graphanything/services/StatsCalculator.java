@@ -93,20 +93,15 @@ public class StatsCalculator {
 
             //System.out.println(("intercept=" + intercept + " slope=" + slope));
 
-            // TODO: slope == 0;
-            long goalTime = (long) ((graph.goal - res.getGoalIntercept()) / res.getGoalSlope());
+            if (res.getGoalSlope() != 0) {
+                long goalTime = (long) ((graph.goal - res.getGoalIntercept()) / res.getGoalSlope());
 
-            //System.out.println("goal time:" + new Timestamp(goalTime));
-            //System.out.println("..." + graph.goal);
-            //System.out.println("in " + goalTime + "=" + (intercept + slope * goalTime));
-
-            res.setGoalEstimateDays((float) (TimeUnit.MILLISECONDS.toHours(goalTime - System.currentTimeMillis()) / 24.0));
-            res.setGoalTime(goalTime);
+                res.setGoalEstimateDays((float) (TimeUnit.MILLISECONDS.toHours(goalTime - System.currentTimeMillis()) / 24.0));
+                res.setGoalTime(goalTime);
+            }
         }
 
         return res;
     }
 
-    public static void main(String[] args) {
-    }
 }
