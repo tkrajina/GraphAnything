@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphStats;
+import info.puzz.graphanything.models.GraphType;
 import info.puzz.graphanything.models.GraphValue;
 
 /**
@@ -50,22 +51,27 @@ public class StatsCalculator {
         for (int i = 0; i < dataPoints.size(); i++) {
             DataPoint point = dataPoints.get(i);
 
+            double y = point.getY();
+            if (graph.getGraphType() == GraphType.SUM_ALL_PREVIOUS && i > 0) {
+                y -= dataPoints.get(i - 1).getY();
+            }
+
             if (i > 0) {
                 if (point.getX() < dataPoints.get(i - 1).getX()) {
                     throw new Error("Not ordered by created!");
                 }
             }
 
-            sum += point.getY();
+            sum += y;
             boolean isThisWeek = point.getX() > thisWeek;
             boolean isLastWeek = thisWeek > point.getX() && point.getX() > lastWeek;
             if (isThisWeek) {
                 //Log.d(TAG, new Timestamp(point.created) + " this week");
-                sumThisWeek += point.getY();
+                sumThisWeek += y;
                 entriesThisWeek++;
             } else if (isLastWeek) {
                 //Log.d(TAG, new Timestamp(point.created) + " last week");
-                sumLastWeek += point.getY();
+                sumLastWeek += y;
                 entriesLastWeek++;
             } else {
                 //Log.d(TAG, new Timestamp(point.created) + " older");
@@ -73,7 +79,7 @@ public class StatsCalculator {
 
             if (graph.calculateGoal() && (isThisWeek || isLastWeek)) {
                 //System.out.println("data=" + point.created + "," + point.point);
-                regression.addData(point.getX(), point.getY());
+                regression.addData(point.getX(), y);
             }
         }
 
