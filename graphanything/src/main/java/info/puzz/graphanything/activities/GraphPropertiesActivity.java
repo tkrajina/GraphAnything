@@ -29,10 +29,6 @@ public class GraphPropertiesActivity extends BaseActivity {
     private static final String ARG_GRAPH_ID = "graph_id";
 
     private EditText graphNameEditText;
-    private EditText unitOfMeasurementEditText;
-    private EditText unitOfMeasurementField;
-    private EditText goalEditText;
-    private LinearLayout fieldsLinearLayout;
 
     private Graph graph;
 
@@ -55,13 +51,8 @@ public class GraphPropertiesActivity extends BaseActivity {
         }
 
         graphNameEditText = (EditText) findViewById(R.id.graphName);
-        unitOfMeasurementEditText = (EditText) findViewById(R.id.graph__unit_of_measurement);
-        unitOfMeasurementField = (EditText) findViewById(R.id.graph__unit_of_measurement);
-        goalEditText = (EditText) findViewById(R.id.goal);
 
         graphNameEditText.setText(graph.name == null ? "" : graph.name);
-        unitOfMeasurementEditText.setText(graph.unit == null ? "" : graph.unit);
-        goalEditText.setText(graph.calculateGoal() ? graph.getGraphUnitType().format(graph.goal, FormatVariant.LONG) : "");
 
         FragmentTransaction tx = getFragmentManager().beginTransaction();
         for (int i = 0; i < GraphEntry.COLUMNS_NO; i++) {
@@ -69,7 +60,6 @@ public class GraphPropertiesActivity extends BaseActivity {
         }
         tx.commit();
 
-        setupUnitTypeRadioButtons();
         setupGraphTypeRadioButtons();
 
         if (graphId == null) {
@@ -114,37 +104,6 @@ public class GraphPropertiesActivity extends BaseActivity {
         }
     }
 
-    private void setupUnitTypeRadioButtons() {
-        int[] unitTypeRadioButtonIds = new int[]{R.id.graph_properties__unit_type_1, R.id.graph_properties__unit_type_2};
-        RadioButton[] unitTypeRadioButtons = new RadioButton[unitTypeRadioButtonIds.length];
-        if (unitTypeRadioButtonIds.length != GraphUnitType.values().length) {
-            throw new Error("Invalid # of radio buttons");
-        }
-
-        for (int i = 0; i < GraphUnitType.values().length; i++) {
-            final GraphUnitType graphUnitType = GraphUnitType.values()[i];
-
-            unitTypeRadioButtons[i] = (RadioButton) findViewById(unitTypeRadioButtonIds[i]);
-            unitTypeRadioButtons[i].setText(graphUnitType.getDescription());
-            unitTypeRadioButtons[i].setChecked(graph.unitType == graphUnitType.getType());
-
-            unitTypeRadioButtons[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        graph.unitType = graphUnitType.getType();
-                        reloadUnitOfMeasurementField(graphUnitType.getType());
-                    }
-                }
-            });
-        }
-        reloadUnitOfMeasurementField(graph.unitType);
-    }
-
-    private void reloadUnitOfMeasurementField(int graphType) {
-        unitOfMeasurementField.setEnabled(graphType != GraphUnitType.TIMER.getType());
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -162,26 +121,8 @@ public class GraphPropertiesActivity extends BaseActivity {
 
     public void saveGraphProperties(MenuItem item) {
         graph.name = graphNameEditText.getText().toString();
-        graph.unit = unitOfMeasurementEditText.getText().toString();
 
-        String goalStr = goalEditText.getText().toString().trim();
         graph.goal = null;
-        if (goalStr != null && goalStr.length() > 0) {
-            try {
-                graph.goal = graph.getGraphUnitType().parse(goalStr);
-            } catch (FormatException e) {
-                new AlertDialog.Builder(this)
-                        .setTitle("Invalid value")
-                        .setMessage(e.getMessage())
-                        .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-                return;
-            }
-        }
 
         getDAO().save(graph);
 

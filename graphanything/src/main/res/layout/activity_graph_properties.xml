@@ -67,65 +67,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"></LinearLayout>
 
-        <TextView
-            android:text="Measurement type:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <RadioGroup
-            android:id="@+id/action_graph_properties_type_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <RadioButton
-                android:id="@+id/graph_properties__unit_type_1"
-                android:text="RadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textView"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                />
-
-            <RadioButton
-                android:id="@+id/graph_properties__unit_type_2"
-                android:text="RadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Unit of measurement:"
-            />
-
-        <EditText
-            android:id="@+id/graph__unit_of_measurement"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent" />
-
-        <TextView
-            android:text="Goal value:"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
-        <EditText
-            android:id="@+id/goal"
-            android:text=""
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            />
-
     </LinearLayout>
 
 

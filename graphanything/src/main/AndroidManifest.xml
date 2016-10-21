@@ -40,7 +40,8 @@
         <activity android:name=".activities.AboutActivity" />
         <activity
             android:name=".activities.HelpActivity"
-            android:label="@string/title_activity_help"></activity>
+            android:label="@string/title_activity_help" />
+        <activity android:name=".activities.GraphColumnActivity"></activity>
     </application>
 
 </manifest>
