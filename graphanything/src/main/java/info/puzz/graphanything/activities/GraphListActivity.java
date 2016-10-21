@@ -17,6 +17,7 @@ public class GraphListActivity extends BaseActivity implements GraphListFragment
      */
     public static void start(ActionBarActivity activity) {
         Intent intent = new Intent(activity, GraphListActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         activity.startActivity(intent);
     }
 
