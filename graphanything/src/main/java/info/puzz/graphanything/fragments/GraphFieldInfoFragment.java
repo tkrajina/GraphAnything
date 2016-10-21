@@ -1,4 +1,4 @@
-package info.puzz.graphanything;
+package info.puzz.graphanything.fragments;
 
 import android.app.Fragment;
 import android.net.Uri;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import info.puzz.graphanything.R;
 
 
 public class GraphFieldInfoFragment extends Fragment {
