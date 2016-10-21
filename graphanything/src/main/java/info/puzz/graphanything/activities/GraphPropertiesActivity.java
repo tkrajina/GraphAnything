@@ -1,6 +1,9 @@
 package info.puzz.graphanything.activities;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -10,10 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import info.puzz.graphanything.GraphFieldInfoFragment;
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
@@ -30,6 +35,7 @@ public class GraphPropertiesActivity extends BaseActivity {
     private EditText unitOfMeasurementEditText;
     private EditText unitOfMeasurementField;
     private EditText goalEditText;
+    private LinearLayout fieldsLinearLayout;
 
     private Graph graph;
 
@@ -59,6 +65,17 @@ public class GraphPropertiesActivity extends BaseActivity {
         graphNameEditText.setText(graph.name == null ? "" : graph.name);
         unitOfMeasurementEditText.setText(graph.unit == null ? "" : graph.unit);
         goalEditText.setText(graph.calculateGoal() ? graph.getGraphUnitType().format(graph.goal, FormatVariant.LONG) : "");
+
+        FragmentTransaction tx = getFragmentManager().beginTransaction();
+        tx.add(R.id.fields, new GraphFieldInfoFragment());
+        tx.add(R.id.fields, new GraphFieldInfoFragment());
+        tx.add(R.id.fields, new GraphFieldInfoFragment());
+        tx.add(R.id.fields, new GraphFieldInfoFragment());
+        tx.add(R.id.fields, new GraphFieldInfoFragment());
+        tx.add(R.id.fields, new GraphFieldInfoFragment());
+        tx.add(R.id.fields, new GraphFieldInfoFragment());
+        tx.add(R.id.fields, new GraphFieldInfoFragment());
+        tx.commit();
 
         setupUnitTypeRadioButtons();
         setupGraphTypeRadioButtons();

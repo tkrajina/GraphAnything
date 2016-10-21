@@ -61,6 +61,12 @@
                 android:layout_weight="1" />
         </RadioGroup>
 
+        <LinearLayout
+            android:id="@+id/fields"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></LinearLayout>
+
         <TextView
             android:text="Measurement type:"
             android:layout_width="wrap_content"
