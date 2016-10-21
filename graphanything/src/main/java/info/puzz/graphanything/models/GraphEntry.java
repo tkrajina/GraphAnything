@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class GraphEntry {
 
+    public static final int COLUMNS_NO = 10;
+
     public Long _id;
     public long graphId;
     public long created;

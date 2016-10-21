@@ -22,6 +22,7 @@ import info.puzz.graphanything.GraphFieldInfoFragment;
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
+import info.puzz.graphanything.models.GraphEntry;
 import info.puzz.graphanything.models.GraphType;
 import info.puzz.graphanything.models.GraphUnitType;
 import info.puzz.graphanything.models.format.FormatException;
@@ -67,14 +68,9 @@ public class GraphPropertiesActivity extends BaseActivity {
         goalEditText.setText(graph.calculateGoal() ? graph.getGraphUnitType().format(graph.goal, FormatVariant.LONG) : "");
 
         FragmentTransaction tx = getFragmentManager().beginTransaction();
-        tx.add(R.id.fields, new GraphFieldInfoFragment());
-        tx.add(R.id.fields, new GraphFieldInfoFragment());
-        tx.add(R.id.fields, new GraphFieldInfoFragment());
-        tx.add(R.id.fields, new GraphFieldInfoFragment());
-        tx.add(R.id.fields, new GraphFieldInfoFragment());
-        tx.add(R.id.fields, new GraphFieldInfoFragment());
-        tx.add(R.id.fields, new GraphFieldInfoFragment());
-        tx.add(R.id.fields, new GraphFieldInfoFragment());
+        for (int i = 0; i < GraphEntry.COLUMNS_NO; i++) {
+            tx.add(R.id.fields, new GraphFieldInfoFragment());
+        }
         tx.commit();
 
         setupUnitTypeRadioButtons();

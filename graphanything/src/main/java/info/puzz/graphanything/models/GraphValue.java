@@ -4,7 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by puzz on 08.03.15..
+ * @deprecated
+ * @see GraphEntry
  */
 @NoArgsConstructor
 @Data
