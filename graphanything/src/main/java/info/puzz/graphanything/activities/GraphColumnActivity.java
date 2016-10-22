@@ -11,24 +11,27 @@ import android.widget.RadioButton;
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
+import info.puzz.graphanything.models.GraphColumn;
 import info.puzz.graphanything.models.GraphUnitType;
 import info.puzz.graphanything.models.format.FormatException;
 
 public class GraphColumnActivity extends BaseActivity {
 
     private static final String ARG_GRAPH_ID = "gid";
-    private static final String COLUMN_NO = "colno";
+    private static final String ARG_COLUMN_NO = "colno";
 
     private EditText unitOfMeasurementEditText;
     private EditText unitOfMeasurementField;
     private EditText goalEditText;
+    private EditText columnNameEditText;
 
     private Graph graph;
+    private GraphColumn graphColumn;
 
     public static void start(BaseActivity activity, int graphId, int columndNo) {
         Intent intent = new Intent(activity, GraphColumnActivity.class);
         intent.putExtra(GraphColumnActivity.ARG_GRAPH_ID, graphId);
-        intent.putExtra(GraphColumnActivity.COLUMN_NO, columndNo);
+        intent.putExtra(GraphColumnActivity.ARG_COLUMN_NO, columndNo);
         activity.startActivity(intent);
     }
 
@@ -38,8 +41,21 @@ public class GraphColumnActivity extends BaseActivity {
         setContentView(R.layout.activity_graph_column);
 
         Long graphId = (Long) getIntent().getExtras().get(ARG_GRAPH_ID);
+        Integer columnNo = (Integer) getIntent().getExtras().get(ARG_COLUMN_NO);
         graph = getDAO().loadGraph(graphId);
 
+        for (GraphColumn column : getDAO().getColumns(graphId)) {
+            if (column.columnNo == columnNo) {
+                graphColumn = column;
+            }
+        }
+        if (graphColumn == null) {
+            graphColumn = new GraphColumn()
+                    .setColumnNo(columnNo)
+                    .setGraphId(graphId);
+        }
+
+        columnNameEditText = (EditText) findViewById(R.id.column_name);
         unitOfMeasurementEditText = (EditText) findViewById(R.id.graph__unit_of_measurement);
         unitOfMeasurementField = (EditText) findViewById(R.id.graph__unit_of_measurement);
         goalEditText = (EditText) findViewById(R.id.goal);

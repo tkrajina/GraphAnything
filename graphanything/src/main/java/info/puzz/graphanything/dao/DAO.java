@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.puzz.graphanything.models.Graph;
+import info.puzz.graphanything.models.GraphColumn;
 import info.puzz.graphanything.models.GraphEntry;
 import nl.qbusict.cupboard.QueryResultIterable;
 
@@ -105,4 +106,11 @@ public class DAO {
         return cupboard().withDatabase(mDb).get(GraphEntry.class, graphValueId);
     }
 
+    public List<GraphColumn> getColumns(Long graphId) {
+        return cupboard().withDatabase(mDb)
+                .query(GraphColumn.class)
+                .withSelection("graphId = ?", String.valueOf(graphId))
+                .orderBy("columnNo")
+                .list();
+    }
 }
