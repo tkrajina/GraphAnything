@@ -13,6 +13,7 @@ import info.puzz.graphanything.models.GraphColumn;
 import info.puzz.graphanything.models.GraphEntry;
 import info.puzz.graphanything.models.GraphType;
 import info.puzz.graphanything.models.GraphUnitType;
+import info.puzz.graphanything.models.GraphValue;
 import info.puzz.graphanything.models.format.FormatException;
 import info.puzz.graphanything.services.ExportImportUtils;
 
@@ -26,12 +27,13 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
         // register our models
         cupboard().register(Graph.class);
         cupboard().register(GraphEntry.class);
+        cupboard().register(GraphValue.class);
         cupboard().register(GraphColumn.class);
     }
 
     private static final String DATABASE_NAME = "graphanything2";
 
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
 
     DatabaseOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -56,6 +58,28 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 7) {
+            for (Graph graph : cupboard().withDatabase(db).query(Graph.class).list()) {
+                GraphColumn column = new GraphColumn()
+                        .setGraphId(graph._id)
+                        .setColumnNo(0)
+                        .setGoal(graph.goal)
+                        .setGoalEstimateDays(graph.goalEstimateDays)
+                        .setName(graph.name)
+                        .setUnit(graph.unit)
+                        .setUnitType(graph.unitType);
+                cupboard().withDatabase(db).put(column);
+            }
+
+            for (GraphValue graphValue : cupboard().withDatabase(db).query(GraphValue.class).list()) {
+                GraphEntry entry = new GraphEntry()
+                        .setGraphId(graphValue.graphId)
+                        .setCreated(graphValue.created)
+                        .set(0, graphValue.value);
+                cupboard().withDatabase(db).put(entry);
+                cupboard().withDatabase(db).delete(graphValue);
+            }
+        }
         cupboard().withDatabase(db).upgradeTables();
     }
 

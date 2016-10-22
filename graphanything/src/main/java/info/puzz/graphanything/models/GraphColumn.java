@@ -1,12 +1,20 @@
 package info.puzz.graphanything.models;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 /**
  * Created by puzz on 14/10/16.
  */
 
+@Data
+@Accessors(chain = true)
 public class GraphColumn {
     public Long _id;
     public long graphId;
+
+    public String name;
+
     public int columnNo;
 
     public Double goal;
