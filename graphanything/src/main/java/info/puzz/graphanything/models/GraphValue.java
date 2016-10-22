@@ -9,14 +9,14 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 @Data
-public class GraphValue {
+class _GraphValue {
 
     public Long _id;
     public long graphId;
     public long created;
     public double value;
 
-    public GraphValue(long created, double value) {
+    public _GraphValue(long created, double value) {
         this.created = created;
         this.value = value;
     }

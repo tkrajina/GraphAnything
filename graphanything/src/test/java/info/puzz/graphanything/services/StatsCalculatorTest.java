@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import info.puzz.graphanything.models.Graph;
+import info.puzz.graphanything.models.GraphEntry;
 import info.puzz.graphanything.models.GraphStats;
 import info.puzz.graphanything.models.GraphType;
-import info.puzz.graphanything.models.GraphValue;
 
 /**
  * Created by puzz on 08/10/16.
@@ -25,11 +25,11 @@ public class StatsCalculatorTest {
         graph.setStatsPeriod(7);
         graph.goal = 100D;
 
-        List<GraphValue> values = new ArrayList<>();
-        values.add(new GraphValue(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1), 1));
-        values.add(new GraphValue(System.currentTimeMillis(), 2));
+        List<GraphEntry> entries = new ArrayList<>();
+        entries.add(new GraphEntry().setCreated(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1)).set(0, 1D));
+        entries.add(new GraphEntry().setCreated(System.currentTimeMillis()).set(0, 2D));
 
-        List<DataPoint> dataPoints = GraphType.VALUES.convert(values);
+        List<DataPoint> dataPoints = GraphType.VALUES.convert(entries, 0);
         GraphStats stats = StatsCalculator.calculate(graph, dataPoints);
 
         Assert.assertEquals(98, stats.getGoalEstimateDays().floatValue(), 0.1);

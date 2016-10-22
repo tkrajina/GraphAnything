@@ -1,7 +1,5 @@
 package info.puzz.graphanything.models;
 
-import info.puzz.graphanything.models.format.FormatException;
-import info.puzz.graphanything.utils.TimeUtils;
 import lombok.Data;
 
 /**
@@ -59,10 +57,6 @@ public class Graph {
 
     public boolean isTimeActive() {
         return timerStarted > 0;
-    }
-
-    public String formatValueWithUnit(GraphValue value, FormatVariant variant) {
-        return formatValueWithUnit(value.value, variant);
     }
 
     public String formatValueWithUnit(double value, FormatVariant variant) {

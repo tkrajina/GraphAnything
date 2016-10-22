@@ -1,7 +1,5 @@
 package info.puzz.graphanything.models.format;
 
-import java.util.Locale;
-
 import info.puzz.graphanything.Constants;
 import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.utils.StringUtils;

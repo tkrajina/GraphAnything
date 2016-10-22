@@ -9,7 +9,6 @@ import java.util.List;
 
 import info.puzz.graphanything.utils.TimeUtils;
 import lombok.Getter;
-import nl.qbusict.cupboard.QueryResultIterable;
 
 /**
  * Created by puzz on 06/10/16.
@@ -18,11 +17,11 @@ import nl.qbusict.cupboard.QueryResultIterable;
 public enum GraphType {
     VALUES(1, "Simple values graph", new ValuesToGraphPointsConverter() {
         @Override
-        public List<DataPoint> convert(List<GraphValue> graphValues) {
+        public List<DataPoint> convert(List<GraphEntry> entries, int columnNo) {
             ArrayList<DataPoint> res = new ArrayList<>();
 
-            for (GraphValue graphValue : graphValues) {
-                res.add(new DataPoint(graphValue.created, graphValue.value));
+            for (GraphEntry entry : entries) {
+                res.add(new DataPoint(entry.created, entry.get(columnNo)));
             }
 
             return res;
@@ -30,13 +29,13 @@ public enum GraphType {
     }),
     SUM_ALL_PREVIOUS(2, "Every value adds up to the previous value", new ValuesToGraphPointsConverter() {
         @Override
-        public List<DataPoint> convert(List<GraphValue> graphValues) {
+        public List<DataPoint> convert(List<GraphEntry> entries, int columnNo) {
             ArrayList<DataPoint> res = new ArrayList<>();
 
             double sum = 0D;
-            for (GraphValue graphValue : graphValues) {
-                sum += graphValue.value;
-                res.add(new DataPoint(graphValue.created, sum));
+            for (GraphEntry entry : entries) {
+                sum += entry.get(columnNo);
+                res.add(new DataPoint(entry.created, sum));
             }
 
             return res;
@@ -44,16 +43,16 @@ public enum GraphType {
     }),
     SUM_DAILY(3, "Group all values on a single day", new ValuesToGraphPointsConverter() {
         @Override
-        public List<DataPoint> convert(List<GraphValue> graphValues) {
+        public List<DataPoint> convert(List<GraphEntry> entries, int columnNo) {
             ArrayList<DataPoint> res = new ArrayList<>();
 
             DataPoint dataPoint = null;
             String previousDate = "ignore_this";
-            for (GraphValue graphValue : graphValues) {
-                Timestamp currTs = new Timestamp(graphValue.created);
+            for (GraphEntry entry : entries) {
+                Timestamp currTs = new Timestamp(entry.created);
                 String date = TimeUtils.YYYYMMDD_FORMATTER.format(currTs);
                 if (date.equals(previousDate)) {
-                    dataPoint = new DataPoint(dataPoint.getX(), dataPoint.getY() + graphValue.value);
+                    dataPoint = new DataPoint(dataPoint.getX(), dataPoint.getY() + entry.get(columnNo));
                 } else {
                     if (dataPoint != null) {
                         res.add(dataPoint);
@@ -66,7 +65,7 @@ public enum GraphType {
                     cal.set(Calendar.MINUTE, 0);
                     cal.set(Calendar.SECOND, 0);
 
-                    dataPoint = new DataPoint(cal.getTime().getTime(), graphValue.value);
+                    dataPoint = new DataPoint(cal.getTime().getTime(), entry.get(columnNo));
                 }
                 previousDate = date;
             }
@@ -93,8 +92,8 @@ public enum GraphType {
         this.converter = converter;
     }
 
-    public List<DataPoint> convert(List<GraphValue> values) {
-        return converter.convert(values);
+    public List<DataPoint> convert(List<GraphEntry> entries, int columnNo) {
+        return converter.convert(entries, columnNo);
     }
 
 }

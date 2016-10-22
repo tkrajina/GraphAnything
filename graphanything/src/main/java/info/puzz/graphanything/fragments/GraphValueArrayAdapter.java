@@ -11,15 +11,15 @@ import info.puzz.graphanything.R;
 import info.puzz.graphanything.activities.GraphValuePropertiesActivity;
 import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models.GraphValue;
+import info.puzz.graphanything.models.GraphEntry;
 import info.puzz.graphanything.utils.TimeUtils;
 
-public class GraphValueArrayAdapter extends ArrayAdapter<GraphValue> {
+public class GraphValueArrayAdapter extends ArrayAdapter<GraphEntry> {
     private final Context context;
-    private final GraphValue[] values;
+    private final GraphEntry[] values;
     private final Graph graph;
 
-    public GraphValueArrayAdapter(Context context, Graph graph,  GraphValue[] values) {
+    public GraphValueArrayAdapter(Context context, Graph graph,  GraphEntry[] values) {
         super(context, R.layout.graph, values);
         this.context = context;
         this.graph = graph;
@@ -32,18 +32,18 @@ public class GraphValueArrayAdapter extends ArrayAdapter<GraphValue> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.graph_value, parent, false);
 
-        final GraphValue graphValue = values[position];
+        final GraphEntry graphEntry = values[position];
 
         TextView titleView = (TextView) rowView.findViewById(R.id.graph_value_title);
-        titleView.setText(graph.formatValueWithUnit(graphValue, FormatVariant.LONG));
+        titleView.setText(graph.formatValueWithUnit(graphEntry.get(0), FormatVariant.LONG));
 
         TextView valueCreatedTextView = (TextView) rowView.findViewById(R.id.graph_value_subtitle_created);
-        valueCreatedTextView.setText(TimeUtils.formatTimeAgoString(graphValue.created));
+        valueCreatedTextView.setText(TimeUtils.formatTimeAgoString(graphEntry.created));
 
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GraphValuePropertiesActivity.start((android.support.v7.app.ActionBarActivity) context, graphValue._id);
+                GraphValuePropertiesActivity.start((android.support.v7.app.ActionBarActivity) context, graphEntry._id);
             }
         });
 

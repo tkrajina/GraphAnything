@@ -9,10 +9,10 @@ import android.widget.ListView;
 import java.util.List;
 
 import info.puzz.graphanything.activities.BaseActivity;
-import info.puzz.graphanything.dao.DAO;
 import info.puzz.graphanything.activities.GraphValuesActivity;
+import info.puzz.graphanything.dao.DAO;
 import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models.GraphValue;
+import info.puzz.graphanything.models.GraphEntry;
 
 /**
  * A fragment representing a list of Items.
@@ -25,7 +25,7 @@ public class GraphValueFragment extends ListFragment {
 
     private OnFragmentInteractionListener mListener;
     private long graphId;
-    private List<GraphValue> graphValues;
+    private List<GraphEntry> graphEntries;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -47,13 +47,13 @@ public class GraphValueFragment extends ListFragment {
         DAO DAO = ((BaseActivity) getActivity()).getDAO();
 
         Graph graph = DAO.loadGraph(graphId);
-        graphValues = DAO.getValuesByCreatedAsc(graphId);
+        graphEntries = DAO.getValuesByCreatedAsc(graphId);
 
         setListAdapter(
                 new GraphValueArrayAdapter(
                         getActivity(),
                         graph,
-                        graphValues.toArray(new GraphValue[graphValues.size()])));
+                        graphEntries.toArray(new GraphEntry[graphEntries.size()])));
     }
 
 
@@ -80,7 +80,7 @@ public class GraphValueFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
 
         if (null != mListener) {
-            mListener.onFragmentInteraction(graphValues.get(position)._id);
+            mListener.onFragmentInteraction(graphEntries.get(position)._id);
         }
     }
 

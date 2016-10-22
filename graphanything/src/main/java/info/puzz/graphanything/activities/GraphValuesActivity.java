@@ -1,13 +1,13 @@
 package info.puzz.graphanything.activities;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import info.puzz.graphanything.fragments.GraphValueFragment;
 import info.puzz.graphanything.R;
+import info.puzz.graphanything.fragments.GraphValueFragment;
 import info.puzz.graphanything.models.Graph;
 
 

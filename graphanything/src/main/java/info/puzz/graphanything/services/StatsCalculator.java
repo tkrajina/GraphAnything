@@ -1,20 +1,15 @@
 package info.puzz.graphanything.services;
 
-import android.content.SyncStatusObserver;
-import android.util.Log;
-
 import com.jjoe64.graphview.series.DataPoint;
 
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphStats;
 import info.puzz.graphanything.models.GraphType;
-import info.puzz.graphanything.models.GraphValue;
 
 /**
  * Created by puzz on 08/10/16.

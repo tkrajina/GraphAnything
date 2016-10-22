@@ -16,7 +16,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,9 +33,9 @@ import java.util.concurrent.TimeUnit;
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
+import info.puzz.graphanything.models.GraphEntry;
 import info.puzz.graphanything.models.GraphStats;
 import info.puzz.graphanything.models.GraphUnitType;
-import info.puzz.graphanything.models.GraphValue;
 import info.puzz.graphanything.models.format.FormatException;
 import info.puzz.graphanything.services.StatsCalculator;
 import info.puzz.graphanything.utils.AssertUtils;
@@ -224,9 +223,9 @@ public class GraphActivity extends BaseActivity {
             graphView.getGridLabelRenderer().setNumHorizontalLabels(10);
         }
 
-        List<GraphValue> values = getDAO().getValuesByCreatedAsc(graph._id);
-        GraphValue latestValue = values.size() == 0 ? null : values.get(values.size() - 1);
-        List<DataPoint> dataPoints = graph.getGraphType().convert(values);
+        List<GraphEntry> values = getDAO().getValuesByCreatedAsc(graph._id);
+        GraphEntry latestValue = values.size() == 0 ? null : values.get(values.size() - 1);
+        List<DataPoint> dataPoints = graph.getGraphType().convert(values, 0); // TODO
 
         t.time("Before stats");
         GraphStats stats = StatsCalculator.calculate(graph, dataPoints);
@@ -236,7 +235,7 @@ public class GraphActivity extends BaseActivity {
 
         // And when we already computed all the stats, update the graph entity:
         if (latestValue != null) {
-            graph.lastValue = latestValue.value;
+            graph.lastValue = latestValue.get(0);
             graph.lastValueCreated = latestValue.created;
 
         }

@@ -1,9 +1,5 @@
 package info.puzz.graphanything.services;
 
-import android.text.TextUtils;
-
-import org.json.JSONObject;
-
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,8 +9,8 @@ import java.util.List;
 import info.puzz.graphanything.Constants;
 import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
+import info.puzz.graphanything.models.GraphEntry;
 import info.puzz.graphanything.models.GraphUnitType;
-import info.puzz.graphanything.models.GraphValue;
 import info.puzz.graphanything.models.format.FormatException;
 
 /**
@@ -27,38 +23,38 @@ public class ExportImportUtils {
     public static final char DELIMITER = '|';
     public static final String DELIMITER_REGEX = "\\" + DELIMITER;
 
-    public static String exportGraph(Graph graph, List<GraphValue> values) throws Exception {
+    public static String exportGraph(Graph graph, List<GraphEntry> entry) throws Exception {
         GraphUnitType graphUnitType = graph.getGraphUnitType();
         StringBuilder res = new StringBuilder();
 
-        for (GraphValue value : values) {
+        for (GraphEntry value : entry) {
             if (res.length() > 0) {
                 res.append('\n');
             }
 
             res.append(FORMATTER.format(value.created));
             res.append(DELIMITER);
-            res.append(graphUnitType.format(value.value, FormatVariant.LONG));
+            res.append(graphUnitType.format(value.get(0), FormatVariant.LONG));
         }
 
         return res.toString();
     }
 
-    public static List<GraphValue> importGraph(Graph graph, String data) throws FormatException {
+    public static List<GraphEntry> importGraph(Graph graph, String data) throws FormatException {
         GraphUnitType graphUnitType = graph.getGraphUnitType();
-        List<GraphValue> res = new ArrayList<GraphValue>();
+        List<GraphEntry> res = new ArrayList<GraphEntry>();
         String[] lines = data.split("\n");
         for (String line : lines) {
             String[] parts = line.split(DELIMITER_REGEX);
             if (parts.length == 2) {
-                GraphValue val = new GraphValue();
+                GraphEntry val = new GraphEntry();
                 val.graphId = graph._id;
                 try {
                     val.created = FORMATTER.parse(parts[0].trim()).getTime();
                 } catch (ParseException e) {
                     throw new FormatException("Invalid timestamp:" + parts[0]);
                 }
-                val.value = graphUnitType.parse(parts[1].trim());
+                val.set(0, graphUnitType.parse(parts[1].trim()));
                 res.add(val);
             }
         }
@@ -68,7 +64,7 @@ public class ExportImportUtils {
     public static void main(String[] args) throws Exception {
         Graph graph = new Graph();
         graph._id = 7L;
-        List<GraphValue> vals = importGraph(graph, "2016-8-14T9:27:11|\t95.1\n" +
+        List<GraphEntry> entries = importGraph(graph, "2016-8-14T9:27:11|\t95.1\n" +
                 "2016-8-22T8:40:45|\t92.1\n" +
                 "2016-8-31T8:30:12|\t91.1\n" +
                 "2016-9-2T9:55:05|\t90.2\n" +
@@ -96,11 +92,11 @@ public class ExportImportUtils {
                 "2016-10-5T8:57:07|\t87.6\n" +
                 "2016-10-6T8:01:01|\t87.2\n" +
                 "2016-10-7T6:46:40|\t86.7\n");
-        for (GraphValue val : vals) {
-            System.out.println((new Timestamp(val.created) + "->" + val.value));
+        for (GraphEntry entry : entries) {
+            //System.out.println((new Timestamp(entry.created) + "->" + entry.value));
         }
-        System.out.println(new SimpleDateFormat("yyyy-MM-dd").parse("2016-8-22").toString());
-        System.out.println(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse("2016-8-22T8:40:45").toString());
+        //System.out.println(new SimpleDateFormat("yyyy-MM-dd").parse("2016-8-22").toString());
+        //System.out.println(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse("2016-8-22T8:40:45").toString());
     }
 
 }

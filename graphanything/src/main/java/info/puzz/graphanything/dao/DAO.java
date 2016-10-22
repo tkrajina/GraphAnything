@@ -1,7 +1,6 @@
 package info.puzz.graphanything.dao;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models.GraphValue;
+import info.puzz.graphanything.models.GraphEntry;
 import nl.qbusict.cupboard.QueryResultIterable;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
@@ -23,20 +22,20 @@ public class DAO {
     private DatabaseOpenHelper mDbHelper;
     private SQLiteDatabase mDb;
 
-    public void updateGraphValue(GraphValue graphValue) {
-        cupboard().withDatabase(mDb).put(graphValue);
+    public void updateGraphValue(GraphEntry graphEntry) {
+        cupboard().withDatabase(mDb).put(graphEntry);
     }
 
     public void save(Graph graph) {
         cupboard().withDatabase(mDb).put(graph);
     }
 
-    public void deleteGraphValue(GraphValue graphValue) {
-        cupboard().withDatabase(mDb).delete(graphValue);
+    public void deleteGraphValue(GraphEntry graphEntry) {
+        cupboard().withDatabase(mDb).delete(graphEntry);
     }
 
     public void deleteGraphValues(long graphId) throws SQLException {
-        cupboard().withDatabase(mDb).delete(GraphValue.class, "graphId = ?", String.valueOf(graphId));
+        cupboard().withDatabase(mDb).delete(GraphEntry.class, "graphId = ?", String.valueOf(graphId));
     }
 
     public DAO(Context ctx) {
@@ -66,33 +65,33 @@ public class DAO {
     }
 
     public void addValue(long graphId, double value) {
-        GraphValue graphValue = new GraphValue();
+        GraphEntry graphValue = new GraphEntry();
         graphValue.graphId = graphId;
-        graphValue.value = value;
+        graphValue.set(0, value);
         graphValue.created = System.currentTimeMillis();
 
         addValue(graphValue);
     }
 
-    public void addValue(GraphValue graphValue) {
-        cupboard().withDatabase(mDb).put(graphValue);
+    public void addValue(GraphEntry graphEntry) {
+        cupboard().withDatabase(mDb).put(graphEntry);
     }
 
-    public QueryResultIterable<GraphValue> getValuesByCreatedAscCursor(long graphId) {
+    public QueryResultIterable<GraphEntry> getValuesByCreatedAscCursor(long graphId) {
         return cupboard().withDatabase(mDb)
-                .query(GraphValue.class)
+                .query(GraphEntry.class)
                 .withSelection("graphId = ?", String.valueOf(graphId))
                 .orderBy("created")
                 .query();
     }
 
-    public List<GraphValue> getValuesByCreatedAsc(long graphId) {
-        ArrayList<GraphValue> result = new ArrayList<>();
+    public List<GraphEntry> getValuesByCreatedAsc(long graphId) {
+        ArrayList<GraphEntry> result = new ArrayList<>();
 
-        QueryResultIterable<GraphValue> i = null;
+        QueryResultIterable<GraphEntry> i = null;
         try {
             i = getValuesByCreatedAscCursor(graphId);
-            for (GraphValue graphValue : i) {
+            for (GraphEntry graphValue : i) {
                 result.add(graphValue);
             }
         } finally {
@@ -102,8 +101,8 @@ public class DAO {
         return result;
     }
 
-    public GraphValue getValue(long graphValueId) {
-        return cupboard().withDatabase(mDb).get(GraphValue.class, graphValueId);
+    public GraphEntry getValue(long graphValueId) {
+        return cupboard().withDatabase(mDb).get(GraphEntry.class, graphValueId);
     }
 
 }

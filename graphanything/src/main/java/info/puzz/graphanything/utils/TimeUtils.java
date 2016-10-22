@@ -2,7 +2,6 @@ package info.puzz.graphanything.utils;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import info.puzz.graphanything.Constants;

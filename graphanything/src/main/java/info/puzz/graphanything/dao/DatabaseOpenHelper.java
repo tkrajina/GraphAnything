@@ -10,9 +10,9 @@ import java.util.List;
 
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphColumn;
+import info.puzz.graphanything.models.GraphEntry;
 import info.puzz.graphanything.models.GraphType;
 import info.puzz.graphanything.models.GraphUnitType;
-import info.puzz.graphanything.models.GraphValue;
 import info.puzz.graphanything.models.format.FormatException;
 import info.puzz.graphanything.services.ExportImportUtils;
 
@@ -25,7 +25,7 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
     static {
         // register our models
         cupboard().register(Graph.class);
-        cupboard().register(GraphValue.class);
+        cupboard().register(GraphEntry.class);
         cupboard().register(GraphColumn.class);
     }
 
@@ -133,21 +133,21 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
     private void importData(SQLiteDatabase db, Graph graph, String data) throws FormatException {
         cupboard().withDatabase(db).put(graph);
 
-        List<GraphValue> values = ExportImportUtils.importGraph(graph, data);
+        List<GraphEntry> entries = ExportImportUtils.importGraph(graph, data);
 
         long maxTime = 0;
-        for (GraphValue value : values) {
-            if (value.created > maxTime) {
-                maxTime = value.created;
+        for (GraphEntry entry : entries) {
+            if (entry.created > maxTime) {
+                maxTime = entry.created;
             }
         }
 
         long timeDelta = System.currentTimeMillis() - maxTime;
-        for (GraphValue value : values) {
-            value.created += timeDelta;
+        for (GraphEntry entry : entries) {
+            entry.created += timeDelta;
         }
 
-        cupboard().withDatabase(db).put(values);
+        cupboard().withDatabase(db).put(entries);
     }
 }
 

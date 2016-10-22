@@ -1,9 +1,7 @@
 package info.puzz.graphanything.activities;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
@@ -11,7 +9,6 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 
 import info.puzz.graphanything.R;
-import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphUnitType;

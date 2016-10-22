@@ -1,27 +1,21 @@
 package info.puzz.graphanything.activities;
 
-import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import info.puzz.graphanything.fragments.GraphFieldInfoFragment;
 import info.puzz.graphanything.R;
-import info.puzz.graphanything.models.FormatVariant;
+import info.puzz.graphanything.fragments.GraphFieldInfoFragment;
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphEntry;
 import info.puzz.graphanything.models.GraphType;
-import info.puzz.graphanything.models.GraphUnitType;
-import info.puzz.graphanything.models.format.FormatException;
 
 
 public class GraphPropertiesActivity extends BaseActivity {

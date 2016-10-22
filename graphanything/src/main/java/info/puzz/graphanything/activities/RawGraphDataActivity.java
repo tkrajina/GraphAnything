@@ -9,14 +9,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import java.util.List;
 
-import info.puzz.graphanything.services.ExportImportUtils;
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models.GraphValue;
+import info.puzz.graphanything.models.GraphEntry;
+import info.puzz.graphanything.services.ExportImportUtils;
 
 public class RawGraphDataActivity extends BaseActivity {
 
@@ -59,11 +58,11 @@ public class RawGraphDataActivity extends BaseActivity {
 
     private void fillData() {
         graph = getDAO().loadGraph(graphId);
-        List<GraphValue> values = getDAO().getValuesByCreatedAsc(graphId);
+        List<GraphEntry> entries = getDAO().getValuesByCreatedAsc(graphId);
 
         editText = (EditText) findViewById(R.id.raw_text);
         try {
-            editText.setText(ExportImportUtils.exportGraph(graph, values));
+            editText.setText(ExportImportUtils.exportGraph(graph, entries));
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
@@ -78,12 +77,12 @@ public class RawGraphDataActivity extends BaseActivity {
 
     public void onUpdateRawData(MenuItem item) {
         try {
-            List<GraphValue> values = ExportImportUtils.importGraph(graph, editText.getText().toString());
+            List<GraphEntry> entries = ExportImportUtils.importGraph(graph, editText.getText().toString());
 
             getDAO().deleteGraphValues(graphId);
 
-            for (GraphValue value : values) {
-                getDAO().addValue(value);
+            for (GraphEntry entry : entries) {
+                getDAO().addValue(entry);
             }
 
             GraphActivity.start(this, graphId);

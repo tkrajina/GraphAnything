@@ -15,13 +15,13 @@ import java.sql.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import info.puzz.graphanything.listeners.CalendarChangeListener;
-import info.puzz.graphanything.fragments.DatePickerFragment;
 import info.puzz.graphanything.R;
+import info.puzz.graphanything.fragments.DatePickerFragment;
 import info.puzz.graphanything.fragments.TimePickerFragment;
+import info.puzz.graphanything.listeners.CalendarChangeListener;
 import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models.GraphValue;
+import info.puzz.graphanything.models.GraphEntry;
 import info.puzz.graphanything.models.format.FormatException;
 import info.puzz.graphanything.utils.Formatters;
 
@@ -35,7 +35,7 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
     private Calendar cal;
 
     private Graph graph;
-    private GraphValue graphValue;
+    private GraphEntry graphEntry;
 
     /**
      * Utility to start this activity from another one.
@@ -53,14 +53,14 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
 
         Long graphValueId = (Long) getIntent().getExtras().get(ARG_GRAPH_VALUE_ID);
 
-        graphValue = getDAO().getValue(graphValueId);
-        graph = getDAO().loadGraph(graphValue.graphId);
+        graphEntry = getDAO().getValue(graphValueId);
+        graph = getDAO().loadGraph(graphEntry.graphId);
 
         cal = GregorianCalendar.getInstance();
-        cal.setTime(new Date(graphValue.created));
+        cal.setTime(new Date(graphEntry.created));
 
         valueTextView = (TextView) findViewById(R.id.value);
-        valueTextView.setText(graph.getGraphUnitType().format(graphValue.value, FormatVariant.LONG));
+        valueTextView.setText(graph.getGraphUnitType().format(graphEntry.get(0), FormatVariant.LONG));
 
         redrawDateTime();
 
@@ -136,11 +136,11 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
             return;
         }
 
-        graphValue.value = value;
-        graphValue.created = cal.getTimeInMillis();
-        getDAO().updateGraphValue(graphValue);
+        graphEntry.set(0, value);
+        graphEntry.created = cal.getTimeInMillis();
+        getDAO().updateGraphValue(graphEntry);
 
-        GraphActivity.start(this, graphValue.graphId);
+        GraphActivity.start(this, graphEntry.graphId);
 
         Toast.makeText(this, "Value updated", Toast.LENGTH_SHORT).show();
     }
@@ -150,8 +150,8 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                    getDAO().deleteGraphValue(graphValue);
-                    GraphActivity.start(GraphValuePropertiesActivity.this, graphValue.graphId);
+                    getDAO().deleteGraphValue(graphEntry);
+                    GraphActivity.start(GraphValuePropertiesActivity.this, graphEntry.graphId);
                 }
             }
         };

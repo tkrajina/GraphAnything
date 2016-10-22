@@ -2,12 +2,15 @@ package info.puzz.graphanything.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+import lombok.installer.IdeFinder;
 
 /**
  * Created by puzz on 08.03.15..
  */
 @NoArgsConstructor
 @Data
+@Accessors(chain = true)
 public class GraphEntry {
 
     public static final int COLUMNS_NO = 10;
@@ -30,7 +33,10 @@ public class GraphEntry {
     /**
      * Stupid, but it works.
      */
-    public void set(int i, Double val) {
+    public GraphEntry set(int i, Double val) {
+        if (i < 0 || i > COLUMNS_NO) {
+            throw new Error("Invalid index:" + i);
+        }
         switch (i) {
             case 0: value0 = val;
             case 1: value1 = val;
@@ -42,8 +48,8 @@ public class GraphEntry {
             case 7: value7 = val;
             case 8: value8 = val;
             case 9: value9 = val;
-            default: throw new Error("Invalid index:" + i);
         }
+        return this;
     }
 
     public Double get(int i) {
