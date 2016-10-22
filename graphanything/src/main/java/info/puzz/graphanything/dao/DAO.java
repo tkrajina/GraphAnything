@@ -22,7 +22,7 @@ public class DAO {
     private DatabaseOpenHelper mDbHelper;
     private SQLiteDatabase mDb;
 
-    public void updateGraphValue(GraphEntry graphEntry) {
+    public void updateGraphEntry(GraphEntry graphEntry) {
         cupboard().withDatabase(mDb).put(graphEntry);
     }
 
@@ -30,11 +30,11 @@ public class DAO {
         cupboard().withDatabase(mDb).put(graph);
     }
 
-    public void deleteGraphValue(GraphEntry graphEntry) {
+    public void deleteGraphEntry(GraphEntry graphEntry) {
         cupboard().withDatabase(mDb).delete(graphEntry);
     }
 
-    public void deleteGraphValues(long graphId) throws SQLException {
+    public void deleteGraphEntries(long graphId) throws SQLException {
         cupboard().withDatabase(mDb).delete(GraphEntry.class, "graphId = ?", String.valueOf(graphId));
     }
 
@@ -64,20 +64,20 @@ public class DAO {
         return cupboard().withDatabase(mDb).get(Graph.class, id);
     }
 
-    public void addValue(long graphId, double value) {
+    public void addEntry(long graphId, double value) {
         GraphEntry graphValue = new GraphEntry();
         graphValue.graphId = graphId;
         graphValue.set(0, value);
         graphValue.created = System.currentTimeMillis();
 
-        addValue(graphValue);
+        addEntry(graphValue);
     }
 
-    public void addValue(GraphEntry graphEntry) {
+    public void addEntry(GraphEntry graphEntry) {
         cupboard().withDatabase(mDb).put(graphEntry);
     }
 
-    public QueryResultIterable<GraphEntry> getValuesByCreatedAscCursor(long graphId) {
+    public QueryResultIterable<GraphEntry> getEntriesByCreatedAscCursor(long graphId) {
         return cupboard().withDatabase(mDb)
                 .query(GraphEntry.class)
                 .withSelection("graphId = ?", String.valueOf(graphId))
@@ -85,12 +85,12 @@ public class DAO {
                 .query();
     }
 
-    public List<GraphEntry> getValuesByCreatedAsc(long graphId) {
+    public List<GraphEntry> getEntriesByCreatedAsc(long graphId) {
         ArrayList<GraphEntry> result = new ArrayList<>();
 
         QueryResultIterable<GraphEntry> i = null;
         try {
-            i = getValuesByCreatedAscCursor(graphId);
+            i = getEntriesByCreatedAscCursor(graphId);
             for (GraphEntry graphValue : i) {
                 result.add(graphValue);
             }
@@ -101,7 +101,7 @@ public class DAO {
         return result;
     }
 
-    public GraphEntry getValue(long graphValueId) {
+    public GraphEntry getEntry(long graphValueId) {
         return cupboard().withDatabase(mDb).get(GraphEntry.class, graphValueId);
     }
 

@@ -53,7 +53,7 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
 
         Long graphValueId = (Long) getIntent().getExtras().get(ARG_GRAPH_VALUE_ID);
 
-        graphEntry = getDAO().getValue(graphValueId);
+        graphEntry = getDAO().getEntry(graphValueId);
         graph = getDAO().loadGraph(graphEntry.graphId);
 
         cal = GregorianCalendar.getInstance();
@@ -138,7 +138,7 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
 
         graphEntry.set(0, value);
         graphEntry.created = cal.getTimeInMillis();
-        getDAO().updateGraphValue(graphEntry);
+        getDAO().updateGraphEntry(graphEntry);
 
         GraphActivity.start(this, graphEntry.graphId);
 
@@ -150,7 +150,7 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                    getDAO().deleteGraphValue(graphEntry);
+                    getDAO().deleteGraphEntry(graphEntry);
                     GraphActivity.start(GraphValuePropertiesActivity.this, graphEntry.graphId);
                 }
             }

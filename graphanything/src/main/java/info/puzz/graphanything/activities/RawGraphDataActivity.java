@@ -58,7 +58,7 @@ public class RawGraphDataActivity extends BaseActivity {
 
     private void fillData() {
         graph = getDAO().loadGraph(graphId);
-        List<GraphEntry> entries = getDAO().getValuesByCreatedAsc(graphId);
+        List<GraphEntry> entries = getDAO().getEntriesByCreatedAsc(graphId);
 
         editText = (EditText) findViewById(R.id.raw_text);
         try {
@@ -79,10 +79,10 @@ public class RawGraphDataActivity extends BaseActivity {
         try {
             List<GraphEntry> entries = ExportImportUtils.importGraph(graph, editText.getText().toString());
 
-            getDAO().deleteGraphValues(graphId);
+            getDAO().deleteGraphEntries(graphId);
 
             for (GraphEntry entry : entries) {
-                getDAO().addValue(entry);
+                getDAO().addEntry(entry);
             }
 
             GraphActivity.start(this, graphId);

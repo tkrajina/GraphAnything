@@ -176,7 +176,7 @@ public class GraphActivity extends BaseActivity {
     }
 
     private void addValue(double value) {
-        getDAO().addValue(graph._id, value);
+        getDAO().addEntry(graph._id, value);
 
         graph.lastValue = value;
         graph.lastValueCreated = System.currentTimeMillis();
@@ -223,7 +223,7 @@ public class GraphActivity extends BaseActivity {
             graphView.getGridLabelRenderer().setNumHorizontalLabels(10);
         }
 
-        List<GraphEntry> values = getDAO().getValuesByCreatedAsc(graph._id);
+        List<GraphEntry> values = getDAO().getEntriesByCreatedAsc(graph._id);
         GraphEntry latestValue = values.size() == 0 ? null : values.get(values.size() - 1);
         List<DataPoint> dataPoints = graph.getGraphType().convert(values, 0); // TODO
 

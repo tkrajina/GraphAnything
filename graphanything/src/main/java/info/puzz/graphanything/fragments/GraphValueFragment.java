@@ -47,7 +47,7 @@ public class GraphValueFragment extends ListFragment {
         DAO DAO = ((BaseActivity) getActivity()).getDAO();
 
         Graph graph = DAO.loadGraph(graphId);
-        graphEntries = DAO.getValuesByCreatedAsc(graphId);
+        graphEntries = DAO.getEntriesByCreatedAsc(graphId);
 
         setListAdapter(
                 new GraphValueArrayAdapter(
