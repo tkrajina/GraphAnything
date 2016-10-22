@@ -58,6 +58,8 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        cupboard().withDatabase(db).upgradeTables();
+
         if (oldVersion < 7) {
             for (Graph graph : cupboard().withDatabase(db).query(Graph.class).list()) {
                 GraphColumn column = new GraphColumn()
@@ -80,7 +82,6 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
                 cupboard().withDatabase(db).delete(graphValue);
             }
         }
-        cupboard().withDatabase(db).upgradeTables();
     }
 
     private void importSampleGraphs(SQLiteDatabase db) throws ParseException {
