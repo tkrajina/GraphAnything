@@ -5,7 +5,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphColumn;
@@ -107,10 +109,26 @@ public class DAO {
     }
 
     public List<GraphColumn> getColumns(Long graphId) {
-        return cupboard().withDatabase(mDb)
+        Set<Integer> columnNumbers = new HashSet<>();
+        List<GraphColumn> columns = cupboard().withDatabase(mDb)
                 .query(GraphColumn.class)
                 .withSelection("graphId = ?", String.valueOf(graphId))
                 .orderBy("columnNo")
                 .list();
+
+        for (GraphColumn column : columns) {
+            columnNumbers.add(column.getColumnNo());
+        }
+
+        for (int i = 0; i < GraphEntry.COLUMNS_NO; i++) {
+            if (!columnNumbers.contains(i)) {
+                GraphColumn missingColumn = new GraphColumn()
+                        .setGraphId(graphId)
+                        .setColumnNo(i);
+                columns.add(missingColumn);
+            }
+        }
+
+        return columns;
     }
 }

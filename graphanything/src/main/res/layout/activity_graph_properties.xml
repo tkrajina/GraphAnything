@@ -61,6 +61,13 @@
                 android:layout_weight="1" />
         </RadioGroup>
 
+        <TextView
+            android:text="Columns:"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
+
         <LinearLayout
             android:id="@+id/fields"
             android:orientation="vertical"

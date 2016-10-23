@@ -10,6 +10,10 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class GraphColumn {
+
+    public static final int COLUMNS_NO = GraphEntry.COLUMNS_NO;
+
+
     public Long _id;
     public long graphId;
 
@@ -30,4 +34,5 @@ public class GraphColumn {
     public int unitType = GraphUnitType.UNIT.getType();
 
     public String unit;
+
 }
