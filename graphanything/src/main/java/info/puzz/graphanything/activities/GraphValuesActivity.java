@@ -20,7 +20,7 @@ public class GraphValuesActivity extends BaseActivity implements GraphValueFragm
     /**
      * Utility to start this activity from another one.
      */
-    public static void start(ActionBarActivity activity, long graphId) {
+    public static void start(BaseActivity activity, long graphId) {
         Intent intent = new Intent(activity, GraphValuesActivity.class);
         intent.putExtra(GraphActivity.ARG_GRAPH_ID, graphId);
         activity.startActivity(intent);

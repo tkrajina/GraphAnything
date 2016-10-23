@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.concurrent.TimeUnit;
 
 import info.puzz.graphanything.R;
+import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.activities.GraphActivity;
 import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
@@ -63,7 +64,7 @@ public class GraphArrayAdapter extends ArrayAdapter<Graph> {
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GraphActivity.start((android.support.v7.app.ActionBarActivity) context, graph._id);
+                GraphActivity.start((BaseActivity) context, graph._id);
             }
         });
 

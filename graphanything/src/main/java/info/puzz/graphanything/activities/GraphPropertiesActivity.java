@@ -26,7 +26,7 @@ public class GraphPropertiesActivity extends BaseActivity {
 
     private Graph graph;
 
-    public static void start(ActionBarActivity activity, Long graphId) {
+    public static void start(BaseActivity activity, Long graphId) {
         Intent intent = new Intent(activity, GraphPropertiesActivity.class);
         intent.putExtra(GraphPropertiesActivity.ARG_GRAPH_ID, graphId);
         activity.startActivity(intent);

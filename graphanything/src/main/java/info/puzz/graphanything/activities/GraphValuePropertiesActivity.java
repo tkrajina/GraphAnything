@@ -40,7 +40,7 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
     /**
      * Utility to start this activity from another one.
      */
-    public static void start(ActionBarActivity activity, long graphValueId) {
+    public static void start(BaseActivity activity, long graphValueId) {
         Intent intent = new Intent(activity, GraphValuePropertiesActivity.class);
         intent.putExtra(GraphValuePropertiesActivity.ARG_GRAPH_VALUE_ID, graphValueId);
         activity.startActivity(intent);

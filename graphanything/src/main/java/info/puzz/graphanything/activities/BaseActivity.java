@@ -1,7 +1,7 @@
 package info.puzz.graphanything.activities;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -11,7 +11,7 @@ import info.puzz.graphanything.dao.DAO;
 /**
  * Created by puzz on 05/10/16.
  */
-public abstract class BaseActivity extends ActionBarActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
 

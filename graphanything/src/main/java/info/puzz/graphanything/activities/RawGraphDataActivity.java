@@ -35,7 +35,7 @@ public class RawGraphDataActivity extends BaseActivity {
     /**
      * Utility to start this activity from another one.
      */
-    public static void start(ActionBarActivity activity, long graphId) {
+    public static void start(BaseActivity activity, long graphId) {
         Intent intent = new Intent(activity, RawGraphDataActivity.class);
         intent.putExtra(ARG_GRAPH_ID, graphId);
         activity.startActivity(intent);
