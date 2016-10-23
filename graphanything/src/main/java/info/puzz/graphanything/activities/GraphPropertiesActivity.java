@@ -40,12 +40,13 @@ public class GraphPropertiesActivity extends BaseActivity {
         Long graphId = (Long) getIntent().getExtras().get(ARG_GRAPH_ID);
         if (graphId == null) {
             graph = new Graph();
+            setTitle("New");
         } else {
             graph = getDAO().loadGraph(graphId);
+            setTitle(R.string.action_edit);
         }
 
         graphNameEditText = (EditText) findViewById(R.id.graphName);
-
         graphNameEditText.setText(graph.name == null ? "" : graph.name);
 
         FragmentTransaction tx = getFragmentManager().beginTransaction();
@@ -55,12 +56,6 @@ public class GraphPropertiesActivity extends BaseActivity {
         tx.commit();
 
         setupGraphTypeRadioButtons();
-
-        if (graphId == null) {
-            setTitle("New");
-        } else {
-            setTitle(R.string.action_edit);
-        }
     }
 
     @Override
