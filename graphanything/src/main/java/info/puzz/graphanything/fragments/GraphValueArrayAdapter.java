@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import info.puzz.graphanything.R;
+import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.activities.GraphValuePropertiesActivity;
 import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
@@ -43,7 +44,7 @@ public class GraphValueArrayAdapter extends ArrayAdapter<GraphEntry> {
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GraphValuePropertiesActivity.start((android.support.v7.app.ActionBarActivity) context, graphEntry._id);
+                GraphValuePropertiesActivity.start((BaseActivity) context, graphEntry._id);
             }
         });
 

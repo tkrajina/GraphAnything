@@ -19,7 +19,7 @@
             android:id="@+id/textView2" />
 
         <EditText
-            android:id="@+id/column_name"
+            android:id="@+id/graphName"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_alignParentLeft="true"
