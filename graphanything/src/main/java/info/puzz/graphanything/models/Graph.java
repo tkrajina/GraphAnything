@@ -1,12 +1,15 @@
 package info.puzz.graphanything.models;
 
+import java.io.Serializable;
+
 import lombok.Data;
+import lombok.Getter;
 
 /**
  * Created by puzz on 24.12.14..
  */
 @Data
-public class Graph {
+public class Graph implements Serializable {
 
     public static final int DEFAULT_STATS_SAMPLE_DAYS = 7;
 

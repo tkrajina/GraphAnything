@@ -5,8 +5,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import info.puzz.graphanything.models.Graph;
@@ -108,8 +110,8 @@ public class DAO {
         return cupboard().withDatabase(mDb).get(GraphEntry.class, graphValueId);
     }
 
-    public List<GraphColumn> getColumns(Long graphId) {
-        Set<Integer> columnNumbers = new HashSet<>();
+    public Map<Integer, GraphColumn> getColumnsByColumnNo(Long graphId) {
+        HashMap<Integer, GraphColumn> result = new HashMap<>();
         List<GraphColumn> columns = cupboard().withDatabase(mDb)
                 .query(GraphColumn.class)
                 .withSelection("graphId = ?", String.valueOf(graphId))
@@ -117,18 +119,18 @@ public class DAO {
                 .list();
 
         for (GraphColumn column : columns) {
-            columnNumbers.add(column.getColumnNo());
+            result.put(column.getColumnNo(), column);
         }
 
-        for (int i = 0; i < GraphEntry.COLUMNS_NO; i++) {
-            if (!columnNumbers.contains(i)) {
+        for (int columnNo = 0; columnNo < GraphEntry.COLUMNS_NO; columnNo++) {
+            if (!result.containsKey(columnNo)) {
                 GraphColumn missingColumn = new GraphColumn()
                         .setGraphId(graphId)
-                        .setColumnNo(i);
-                columns.add(missingColumn);
+                        .setColumnNo(columnNo);
+                result.put(columnNo, missingColumn);
             }
         }
 
-        return columns;
+        return result;
     }
 }

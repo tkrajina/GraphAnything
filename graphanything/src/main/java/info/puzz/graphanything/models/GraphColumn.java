@@ -1,5 +1,7 @@
 package info.puzz.graphanything.models;
 
+import java.io.Serializable;
+
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -9,10 +11,9 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class GraphColumn {
+public class GraphColumn implements Serializable {
 
     public static final int COLUMNS_NO = GraphEntry.COLUMNS_NO;
-
 
     public Long _id;
     public long graphId;

@@ -14,11 +14,12 @@ import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphColumn;
 import info.puzz.graphanything.models.GraphUnitType;
 import info.puzz.graphanything.models.format.FormatException;
+import lombok.Getter;
 
 public class GraphColumnActivity extends BaseActivity {
 
-    private static final String ARG_GRAPH_ID = "gid";
-    private static final String ARG_COLUMN_NO = "colno";
+    private static final String ARG_GRAPH = "graph";
+    private static final String ARG_GRAPH_COLUMN = "column";
 
     private EditText unitOfMeasurementEditText;
     private EditText unitOfMeasurementField;
@@ -26,12 +27,13 @@ public class GraphColumnActivity extends BaseActivity {
     private EditText columnNameEditText;
 
     private Graph graph;
+    @Getter
     private GraphColumn graphColumn;
 
-    public static void start(BaseActivity activity, int graphId, int columndNo) {
+    public static void start(BaseActivity activity, Graph graph, GraphColumn column) {
         Intent intent = new Intent(activity, GraphColumnActivity.class);
-        intent.putExtra(GraphColumnActivity.ARG_GRAPH_ID, graphId);
-        intent.putExtra(GraphColumnActivity.ARG_COLUMN_NO, columndNo);
+        intent.putExtra(GraphColumnActivity.ARG_GRAPH, graph);
+        intent.putExtra(GraphColumnActivity.ARG_GRAPH_COLUMN, column);
         activity.startActivity(intent);
     }
 
@@ -40,20 +42,8 @@ public class GraphColumnActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_column);
 
-        Long graphId = (Long) getIntent().getExtras().get(ARG_GRAPH_ID);
-        Integer columnNo = (Integer) getIntent().getExtras().get(ARG_COLUMN_NO);
-        graph = getDAO().loadGraph(graphId);
-
-        for (GraphColumn column : getDAO().getColumns(graphId)) {
-            if (column.columnNo == columnNo) {
-                graphColumn = column;
-            }
-        }
-        if (graphColumn == null) {
-            graphColumn = new GraphColumn()
-                    .setColumnNo(columnNo)
-                    .setGraphId(graphId);
-        }
+        graph = (Graph) getIntent().getExtras().get(ARG_GRAPH);
+        graphColumn = (GraphColumn) getIntent().getExtras().get(ARG_GRAPH_COLUMN);
 
         columnNameEditText = (EditText) findViewById(R.id.column_name);
         unitOfMeasurementEditText = (EditText) findViewById(R.id.graph__unit_of_measurement);

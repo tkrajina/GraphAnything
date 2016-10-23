@@ -3,17 +3,20 @@ package info.puzz.graphanything.activities;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import java.util.Map;
+
 import info.puzz.graphanything.R;
-import info.puzz.graphanything.fragments.GraphFieldInfoFragment;
+import info.puzz.graphanything.fragments.GraphColumnInfoFragment;
 import info.puzz.graphanything.models.Graph;
+import info.puzz.graphanything.models.GraphColumn;
 import info.puzz.graphanything.models.GraphEntry;
 import info.puzz.graphanything.models.GraphType;
 
@@ -49,9 +52,11 @@ public class GraphPropertiesActivity extends BaseActivity {
         graphNameEditText = (EditText) findViewById(R.id.graphName);
         graphNameEditText.setText(graph.name == null ? "" : graph.name);
 
+        Map<Integer, GraphColumn> columns = getDAO().getColumnsByColumnNo(graph._id);
+
         FragmentTransaction tx = getFragmentManager().beginTransaction();
-        for (int i = 0; i < GraphEntry.COLUMNS_NO; i++) {
-            tx.add(R.id.fields, new GraphFieldInfoFragment());
+        for (int columnNo = 0; columnNo < GraphEntry.COLUMNS_NO; columnNo++) {
+            tx.add(R.id.fields, GraphColumnInfoFragment.newInstance(graph, columns.get(columnNo)));
         }
         tx.commit();
 
