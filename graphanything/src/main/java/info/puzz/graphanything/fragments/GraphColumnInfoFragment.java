@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.activities.BaseActivity;
@@ -26,6 +27,7 @@ public class GraphColumnInfoFragment extends Fragment {
     private Graph graph;
 
     private Button edtiGraphButton;
+    private TextView graphColumnTextView;
 
     public static GraphColumnInfoFragment newInstance(Graph graph, GraphColumn graphColumn) {
         GraphColumnInfoFragment fragment = new GraphColumnInfoFragment();
@@ -54,6 +56,15 @@ public class GraphColumnInfoFragment extends Fragment {
                 onSelectColumn();
             }
         });
+
+        graphColumnTextView = (TextView) view.findViewById(R.id.graph_column_description);
+
+        if (graphColumn.isEnabled()) {
+            graphColumnTextView.setText(String.format("%s [%s]", graphColumn.getName(), graphColumn.getUnit()));
+            edtiGraphButton.setText(R.string.change);
+        } else {
+            edtiGraphButton.setText(R.string.enable);
+        }
 
         return view;
     }

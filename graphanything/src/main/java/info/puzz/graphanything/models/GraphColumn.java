@@ -18,6 +18,8 @@ public class GraphColumn implements Serializable {
     public Long _id;
     public long graphId;
 
+    boolean enabled;
+
     public String name;
 
     public int columnNo;
