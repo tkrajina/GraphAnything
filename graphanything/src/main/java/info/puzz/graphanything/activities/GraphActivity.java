@@ -50,9 +50,10 @@ public class GraphActivity extends BaseActivity {
     private static final String TAG = GraphActivity.class.getSimpleName();
 
     public static final String ARG_GRAPH_ID = "graph_id";
+    public static final String ARG_GRAPH = "graph";
 
     private Graph graph;
-    private long graphId;
+    private Long graphId;
     private TextView timerTextView;
     private Button startStopTimerButton;
 
@@ -69,6 +70,12 @@ public class GraphActivity extends BaseActivity {
         activity.startActivity(intent);
     }
 
+    public static void start(BaseActivity activity, Graph graph) {
+        Intent intent = new Intent(activity, GraphActivity.class);
+        intent.putExtra(GraphActivity.ARG_GRAPH, graph);
+        activity.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,11 +87,11 @@ public class GraphActivity extends BaseActivity {
         AssertUtils.assertNotNull(timerTextView, "timer");
         AssertUtils.assertNotNull(startStopTimerButton, "timer button");
 
-        if (!getIntent().getExtras().containsKey(ARG_GRAPH_ID)) {
-            throw new Error(getClass().getSimpleName() + " without graphId!");
-        }
-
+        graph = (Graph) getIntent().getExtras().getSerializable(ARG_GRAPH);
         graphId = getIntent().getExtras().getLong(ARG_GRAPH_ID);
+        if (graphId == null && graph == null) {
+            throw new Error(getClass().getSimpleName() + " without graphId and graph");
+        }
 
         // Prevent opening the keyboard every time (since the text fiels will have the focus by default):
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);

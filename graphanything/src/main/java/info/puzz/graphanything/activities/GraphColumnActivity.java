@@ -3,6 +3,7 @@ package info.puzz.graphanything.activities;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -56,6 +57,12 @@ public class GraphColumnActivity extends BaseActivity {
         setupUnitTypeRadioButtons();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_graph_column, menu);
+        return true;
+    }
+
     public void onSave(MenuItem item) {
         graph.unit = unitOfMeasurementEditText.getText().toString();
         String goalStr = goalEditText.getText().toString().trim();
@@ -75,6 +82,8 @@ public class GraphColumnActivity extends BaseActivity {
                 return;
             }
         }
+
+        GraphActivity.start(this, graph);
     }
 
 
