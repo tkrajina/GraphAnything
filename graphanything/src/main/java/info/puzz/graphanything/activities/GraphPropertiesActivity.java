@@ -3,14 +3,20 @@ package info.puzz.graphanything.activities;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import java.util.List;
 import java.util.Map;
 
 import info.puzz.graphanything.R;
@@ -26,6 +32,7 @@ public class GraphPropertiesActivity extends BaseActivity {
     private static final String ARG_GRAPH_ID = "graph_id";
 
     private EditText graphNameEditText;
+    private ListView fieldsListView;
 
     private Graph graph;
 
@@ -52,13 +59,18 @@ public class GraphPropertiesActivity extends BaseActivity {
         graphNameEditText = (EditText) findViewById(R.id.graphName);
         graphNameEditText.setText(graph.name == null ? "" : graph.name);
 
-        Map<Integer, GraphColumn> columns = getDAO().getColumnsByColumnNo(graph._id);
+        final List<GraphColumn> columns = getDAO().getColumns(graphId);
 
-        FragmentTransaction tx = getFragmentManager().beginTransaction();
-        for (int columnNo = 0; columnNo < GraphEntry.COLUMNS_NO; columnNo++) {
-            tx.add(R.id.fields, GraphColumnInfoFragment.newInstance(graph, columns.get(columnNo)));
-        }
-        tx.commit();
+        ArrayAdapter<GraphColumn> adapter = new ArrayAdapter<GraphColumn>(this, R.layout.fragment_graph_column_info, columns.toArray(new GraphColumn[columns.size()])) {
+            @NonNull
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                return getLayoutInflater().inflate(R.layout.fragment_graph_column_info, null);
+            }
+        };
+
+        fieldsListView = (ListView) findViewById(R.id.fields);
+        fieldsListView.setAdapter(adapter);
 
         setupGraphTypeRadioButtons();
     }

@@ -112,11 +112,7 @@ public class DAO {
 
     public Map<Integer, GraphColumn> getColumnsByColumnNo(Long graphId) {
         HashMap<Integer, GraphColumn> result = new HashMap<>();
-        List<GraphColumn> columns = cupboard().withDatabase(mDb)
-                .query(GraphColumn.class)
-                .withSelection("graphId = ?", String.valueOf(graphId))
-                .orderBy("columnNo")
-                .list();
+        List<GraphColumn> columns = getColumns(graphId);
 
         for (GraphColumn column : columns) {
             result.put(column.getColumnNo(), column);
@@ -132,5 +128,13 @@ public class DAO {
         }
 
         return result;
+    }
+
+    public List<GraphColumn> getColumns(Long graphId) {
+        return cupboard().withDatabase(mDb)
+                .query(GraphColumn.class)
+                .withSelection("graphId = ?", String.valueOf(graphId))
+                .orderBy("columnNo")
+                .list();
     }
 }
