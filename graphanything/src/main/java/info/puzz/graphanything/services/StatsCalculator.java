@@ -73,8 +73,7 @@ public class StatsCalculator {
             }
 
             if (graph.calculateGoal() && (isThisWeek || isLastWeek)) {
-                //System.out.println("data=" + point.created + "," + point.point);
-                regression.addData(point.getX(), y);
+                regression.addData(point.getX(), point.getY());
             }
         }
 
