@@ -118,15 +118,6 @@ public class DAO {
             result.put(column.getColumnNo(), column);
         }
 
-        for (int columnNo = 0; columnNo < GraphEntry.COLUMNS_NO; columnNo++) {
-            if (!result.containsKey(columnNo)) {
-                GraphColumn missingColumn = new GraphColumn()
-                        .setGraphId(graphId)
-                        .setColumnNo(columnNo);
-                result.put(columnNo, missingColumn);
-            }
-        }
-
         return result;
     }
 

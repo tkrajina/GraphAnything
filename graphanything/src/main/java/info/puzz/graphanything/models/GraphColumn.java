@@ -18,8 +18,6 @@ public class GraphColumn implements Serializable {
     public Long _id;
     public long graphId;
 
-    boolean enabled;
-
     public String name;
 
     public int columnNo;
@@ -37,5 +35,9 @@ public class GraphColumn implements Serializable {
     public int unitType = GraphUnitType.UNIT.getType();
 
     public String unit;
+
+    public boolean calculateGoal() {
+        return goal != null;
+    }
 
 }

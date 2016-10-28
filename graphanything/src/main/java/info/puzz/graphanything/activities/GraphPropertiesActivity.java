@@ -1,29 +1,26 @@
 package info.puzz.graphanything.activities;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
-import java.util.Map;
 
 import info.puzz.graphanything.R;
-import info.puzz.graphanything.fragments.GraphColumnInfoFragment;
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphColumn;
-import info.puzz.graphanything.models.GraphEntry;
 import info.puzz.graphanything.models.GraphType;
 
 
@@ -50,6 +47,7 @@ public class GraphPropertiesActivity extends BaseActivity {
         Long graphId = (Long) getIntent().getExtras().get(ARG_GRAPH_ID);
         if (graphId == null) {
             graph = new Graph();
+            graph.set_id(System.nanoTime());
             setTitle("New");
         } else {
             graph = getDAO().loadGraph(graphId);
@@ -65,8 +63,26 @@ public class GraphPropertiesActivity extends BaseActivity {
             @NonNull
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                return getLayoutInflater().inflate(R.layout.fragment_graph_column_info, null);
+                final GraphColumn graphColumn = columns.get(position);
+                View view = getLayoutInflater().inflate(R.layout.fragment_graph_column_info, null);
+
+                Button edtiGraphButton = (Button) view.findViewById(R.id.edit_column);
+                edtiGraphButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        GraphColumnActivity.start(GraphPropertiesActivity.this, graph, graphColumn);
+                    }
+
+                });
+
+                TextView graphColumnTextView = (TextView) view.findViewById(R.id.graph_column_description);
+                graphColumnTextView.setText(String.format("%s [%s]", graphColumn.getName(), graphColumn.getUnit()));
+                edtiGraphButton.setText(R.string.change);
+                //edtiGraphButton.setText(R.string.enable);
+
+                return view;
             }
+
         };
 
         fieldsListView = (ListView) findViewById(R.id.fields);

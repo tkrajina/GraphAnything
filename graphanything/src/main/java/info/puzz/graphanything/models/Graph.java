@@ -54,10 +54,6 @@ public class Graph implements Serializable {
         return name;
     }
 
-    public boolean calculateGoal() {
-        return goal != null;
-    }
-
     public boolean isTimeActive() {
         return timerStarted > 0;
     }

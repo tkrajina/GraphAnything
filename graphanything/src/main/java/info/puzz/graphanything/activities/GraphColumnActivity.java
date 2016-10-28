@@ -51,8 +51,10 @@ public class GraphColumnActivity extends BaseActivity {
         unitOfMeasurementField = (EditText) findViewById(R.id.graph__unit_of_measurement);
         goalEditText = (EditText) findViewById(R.id.goal);
 
-        unitOfMeasurementEditText.setText(graph.unit == null ? "" : graph.unit);
-        goalEditText.setText(graph.calculateGoal() ? graph.getGraphUnitType().format(graph.goal, FormatVariant.LONG) : "");
+        unitOfMeasurementEditText.setText(graphColumn.unit == null ? "" : graphColumn.unit);
+        goalEditText.setText(graph.calculateGoal() ? graph.getGraphUnitType().format(graphColumn.goal, FormatVariant.LONG) : "");
+
+        findViewById(R.id.goal_group).setVisibility(graphColumn.calculateGoal() ? View.VISIBLE : View.GONE);
 
         setupUnitTypeRadioButtons();
     }
@@ -64,14 +66,14 @@ public class GraphColumnActivity extends BaseActivity {
     }
 
     public void onSave(MenuItem item) {
-        graph.unit = unitOfMeasurementEditText.getText().toString();
+        graphColumn.unit = unitOfMeasurementEditText.getText().toString();
         String goalStr = goalEditText.getText().toString().trim();
 
         // TODO: Update column definition, not graph!
 
         if (goalStr != null && goalStr.length() > 0) {
             try {
-                graph.goal = graph.getGraphUnitType().parse(goalStr);
+                graphColumn.goal = graph.getGraphUnitType().parse(goalStr);
             } catch (FormatException e) {
                 new AlertDialog.Builder(this)
                         .setTitle("Invalid value")
