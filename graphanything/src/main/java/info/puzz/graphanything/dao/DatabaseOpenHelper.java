@@ -88,8 +88,6 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
         {
             Graph graph = new Graph();
             graph.name = "EXAMPLE: My weight";
-            graph.unit = "kg";
-            graph.goal = 80D;
             String data = "2016-8-14T9:27:11|\t95.1\n" +
                     "2016-8-22T8:40:45|\t92.1\n" +
                     "2016-8-31T8:30:12|\t91.1\n" +
@@ -119,7 +117,7 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
                     "2016-10-6T8:01:01|\t87.2\n" +
                     "2016-10-7T6:46:40|\t86.7\n";
             try {
-                importData(db, graph, data);
+                importData(db, graph, data, "Weight", "kg", GraphUnitType.UNIT);
             } catch (FormatException e) {
                 Log.e(TAG, e.getMessage(), e);
             }
@@ -148,15 +146,20 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
                     "2016-10-12T14:57:17|00:52:24\n" +
                     "2016-10-12T18:43:16|00:45:10\n";
             try {
-                importData(db, graph, data);
+                importData(db, graph, data, "Time", "", GraphUnitType.TIMER);
             } catch (FormatException e) {
                 Log.e(TAG, e.getMessage(), e);
             }
         }
     }
 
-    private void importData(SQLiteDatabase db, Graph graph, String data) throws FormatException {
+    private void importData(SQLiteDatabase db, Graph graph, String data, String columnName, String columnUnit, GraphUnitType unitType) throws FormatException {
         cupboard().withDatabase(db).put(graph);
+        cupboard().withDatabase(db).put(new GraphColumn()
+                .setGraphId(graph._id)
+                .setName(columnName)
+                .setUnit(columnUnit)
+                .setUnitType(unitType.getType()));
 
         List<GraphEntry> entries = ExportImportUtils.importGraph(graph, data);
 
