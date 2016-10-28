@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 25
     buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "info.puzz.graphanything"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 25
+        versionCode 26
         versionName "0.1-rc"
     }
     buildTypes {
@@ -22,9 +22,11 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     provided "org.projectlombok:lombok:1.12.6"
-    compile 'com.android.support:appcompat-v7:21.0.3'
+
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:support-v4:25.0.0'
+
     compile 'com.jjoe64:graphview:4.2.1'
-    compile 'com.android.support:support-v4:21.0.3'
     compile 'nl.qbusict:cupboard:2.1.1'
     compile 'org.apache.commons:commons-math3:3.6.1'
 
