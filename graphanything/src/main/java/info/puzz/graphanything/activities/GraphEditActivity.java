@@ -27,6 +27,7 @@ import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphColumn;
 import info.puzz.graphanything.models.GraphType;
 import info.puzz.graphanything.utils.AssertUtils;
+import info.puzz.graphanything.utils.ListViewUtils;
 
 
 public class GraphEditActivity extends BaseActivity {
@@ -101,27 +102,36 @@ public class GraphEditActivity extends BaseActivity {
             }
         }
 
-        ArrayAdapter<GraphColumn> adapter = new ArrayAdapter<GraphColumn>(this, R.layout.fragment_graph_column_info, columns.toArray(new GraphColumn[columns.size()])) {
+        final GraphColumn[] columnsArray = columns.toArray(new GraphColumn[columns.size()]);
+        ArrayAdapter<GraphColumn> adapter = new ArrayAdapter<GraphColumn>(this, R.layout.fragment_graph_column_info, columnsArray) {
             @NonNull
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
-                final GraphColumn graphColumn = columnsByColumnNumbers.get(position);
-                View view = getLayoutInflater().inflate(R.layout.fragment_graph_column_info, null);
+                final GraphColumn graphColumn = getItem(position);
 
-                Button edtiGraphButton = (Button) view.findViewById(R.id.edit_column);
-                edtiGraphButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        GraphColumnActivity.start(GraphEditActivity.this, graph, columnsByColumnNumbers, graphColumn.getColumnNo());
-                    }
+                View view = convertView;
+                if (view == null) {
+                    view = getLayoutInflater().inflate(R.layout.fragment_graph_column_info, null);
+                }
 
-                });
+                Button editGraphButton = (Button) view.findViewById(R.id.edit_column);
 
-                TextView graphColumnTextView = (TextView) view.findViewById(R.id.graph_column_description);
-                graphColumnTextView.setText(String.format("%s [%s]", graphColumn.getName(), graphColumn.getUnit()));
-                edtiGraphButton.setText(R.string.change);
-                //edtiGraphButton.setText(R.string.enable);
+                if (graphColumn == null) {
+                    editGraphButton.setText(R.string.new_column);
+                } else {
+                    editGraphButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            GraphColumnActivity.start(GraphEditActivity.this, graph, columnsByColumnNumbers, graphColumn.getColumnNo());
+                        }
 
+                    });
+
+                    TextView graphColumnTextView = (TextView) view.findViewById(R.id.graph_column_description);
+                    graphColumnTextView.setText(String.format("%s [%s]", graphColumn.getName(), graphColumn.getUnit()));
+                    editGraphButton.setText(R.string.change);
+                    //editGraphButton.setText(R.string.enable);
+                }
                 return view;
             }
 
@@ -129,6 +139,7 @@ public class GraphEditActivity extends BaseActivity {
 
         fieldsListView = (ListView) findViewById(R.id.fields);
         fieldsListView.setAdapter(adapter);
+        ListViewUtils.setListViewHeightBasedOnChildren(fieldsListView);
     }
 
     @Override
