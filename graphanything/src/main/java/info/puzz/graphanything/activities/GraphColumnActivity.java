@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -20,7 +19,6 @@ import info.puzz.graphanything.models.GraphColumn;
 import info.puzz.graphanything.models.GraphUnitType;
 import info.puzz.graphanything.models.format.FormatException;
 import info.puzz.graphanything.utils.AssertUtils;
-import lombok.Getter;
 
 public class GraphColumnActivity extends BaseActivity {
 
@@ -107,7 +105,7 @@ public class GraphColumnActivity extends BaseActivity {
             }
         }
 
-        GraphPropertiesActivity.start(this, graph, graphColumns);
+        GraphEditActivity.start(this, graph, graphColumns);
     }
 
 

@@ -26,7 +26,7 @@
                 android:value=".activities.GraphListActivity" />
         </activity>
         <activity
-            android:name=".activities.GraphPropertiesActivity"
+            android:name=".activities.GraphEditActivity"
             android:label="@string/title_activity_graph_properties" />
         <activity
             android:name=".activities.GraphValuesActivity"

@@ -136,7 +136,7 @@ public class GraphActivity extends BaseActivity {
     }
 
     public void editGraph(MenuItem item) {
-        GraphPropertiesActivity.start(this, graph._id);
+        GraphEditActivity.start(this, graph._id);
     }
 
     public void showValues(MenuItem item) {

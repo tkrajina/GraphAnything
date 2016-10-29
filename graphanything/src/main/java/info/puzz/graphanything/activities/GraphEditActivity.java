@@ -28,7 +28,7 @@ import info.puzz.graphanything.models.GraphType;
 import info.puzz.graphanything.utils.AssertUtils;
 
 
-public class GraphPropertiesActivity extends BaseActivity {
+public class GraphEditActivity extends BaseActivity {
 
     private static final String ARG_GRAPH_ID = "graph_id";
     private static final String ARG_GRAPH = "graph";
@@ -41,8 +41,8 @@ public class GraphPropertiesActivity extends BaseActivity {
     private Map<Integer, GraphColumn> columnsByColumnNumbers;
 
     public static void start(BaseActivity activity, Long graphId) {
-        Intent intent = new Intent(activity, GraphPropertiesActivity.class);
-        intent.putExtra(GraphPropertiesActivity.ARG_GRAPH_ID, graphId);
+        Intent intent = new Intent(activity, GraphEditActivity.class);
+        intent.putExtra(GraphEditActivity.ARG_GRAPH_ID, graphId);
         activity.startActivity(intent);
     }
 
@@ -50,7 +50,7 @@ public class GraphPropertiesActivity extends BaseActivity {
         AssertUtils.assertNotNull(graph);
         AssertUtils.assertNotNull(columns);
 
-        Intent intent = new Intent(activity, GraphPropertiesActivity.class);
+        Intent intent = new Intent(activity, GraphEditActivity.class);
         intent.putExtra(ARG_GRAPH, graph);
         intent.putExtra(ARG_GRAPH_COLUMNS, (Serializable) columns);
         activity.startActivity(intent);
@@ -59,7 +59,7 @@ public class GraphPropertiesActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph_properties);
+        setContentView(R.layout.activity_graph_edit);
 
         Long graphId = (Long) getIntent().getExtras().get(ARG_GRAPH_ID);
         if (graphId == null) {
@@ -104,7 +104,7 @@ public class GraphPropertiesActivity extends BaseActivity {
                 edtiGraphButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        GraphColumnActivity.start(GraphPropertiesActivity.this, graph, columnsByColumnNumbers, graphColumn.getColumnNo());
+                        GraphColumnActivity.start(GraphEditActivity.this, graph, columnsByColumnNumbers, graphColumn.getColumnNo());
                     }
 
                 });
