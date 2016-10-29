@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,19 +62,26 @@ public class GraphEditActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_edit);
 
-        Long graphId = (Long) getIntent().getExtras().get(ARG_GRAPH_ID);
-        if (graphId == null) {
-            graph = new Graph();
-            graph.set_id(System.nanoTime());
-            setTitle("New");
+        graph = (Graph) getIntent().getSerializableExtra(ARG_GRAPH);
+        if (graph == null) {
+            Long graphId = (Long) getIntent().getExtras().get(ARG_GRAPH_ID);
+            if (graphId == null) {
+                graph = new Graph();
+                graph.set_id(System.nanoTime());
+                columnsByColumnNumbers = new HashMap<Integer, GraphColumn>();
+            } else {
+                graph = getDAO().loadGraph(graphId);
+                columnsByColumnNumbers = getDAO().getColumnsByColumnNo(graphId);
+                setTitle(R.string.action_edit);
+            }
         } else {
-            graph = getDAO().loadGraph(graphId);
-            setTitle(R.string.action_edit);
+            columnsByColumnNumbers = (Map<Integer, GraphColumn>) getIntent().getExtras().getSerializable(ARG_GRAPH_COLUMNS);
+            AssertUtils.assertNotNull(columnsByColumnNumbers);
         }
 
-        columnsByColumnNumbers = (Map<Integer, GraphColumn>) getIntent().getExtras().getSerializable(ARG_GRAPH_COLUMNS);
-        if (columnsByColumnNumbers == null) {
-            AssertUtils.assertNotNull(graphId);
+        setTitle(R.string.edit_graph);
+
+        if (columnsByColumnNumbers == null || columnsByColumnNumbers.size() == 0) {
             columnsByColumnNumbers = getDAO().getColumnsByColumnNo(graph._id);
         }
 

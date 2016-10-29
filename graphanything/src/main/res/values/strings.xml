@@ -31,5 +31,6 @@
     <string name="column_name_colon">Column name:</string>
     <string name="change">Change</string>
     <string name="enable">Enable</string>
+    <string name="edit_graph">Edit graph</string>
 
 </resources>
