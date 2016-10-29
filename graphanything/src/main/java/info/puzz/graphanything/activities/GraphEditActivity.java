@@ -178,6 +178,16 @@ public class GraphEditActivity extends BaseActivity {
 
         graph.goal = null;
 
+        Map<Integer, GraphColumn> currentColumns = getDAO().getColumnsByColumnNo(graph._id);
+        for (Map.Entry<Integer, GraphColumn> e : currentColumns.entrySet()) {
+            GraphColumn column = columnsByColumnNumbers.get(e.getKey());
+            if (columnsByColumnNumbers.containsKey(e.getKey())) {
+                column.setGraphId(graph._id);
+                getDAO().save(column);
+            } else {
+                getDAO().deleteGraph(column);
+            }
+        }
         getDAO().save(graph);
 
         GraphActivity.start(this, graph._id);

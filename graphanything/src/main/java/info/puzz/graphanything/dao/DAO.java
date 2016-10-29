@@ -31,8 +31,8 @@ public class DAO {
         cupboard().withDatabase(mDb).put(graphEntry);
     }
 
-    public void save(Graph graph) {
-        cupboard().withDatabase(mDb).put(graph);
+    public void save(Object entity) {
+        cupboard().withDatabase(mDb).put(entity);
     }
 
     public void deleteGraphEntry(GraphEntry graphEntry) {
@@ -57,8 +57,8 @@ public class DAO {
         mDbHelper.close();
     }
 
-    public void deleteGraph(Graph graph) {
-        cupboard().withDatabase(mDb).delete(graph);
+    public void deleteGraph(Object entity) {
+        cupboard().withDatabase(mDb).delete(entity);
     }
 
     public List<Graph> getGraphsByUpdatedDesc() {
