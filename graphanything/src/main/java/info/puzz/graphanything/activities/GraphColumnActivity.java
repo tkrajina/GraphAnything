@@ -10,18 +10,23 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
+import java.io.Serializable;
+import java.util.Map;
+
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphColumn;
 import info.puzz.graphanything.models.GraphUnitType;
 import info.puzz.graphanything.models.format.FormatException;
+import info.puzz.graphanything.utils.AssertUtils;
 import lombok.Getter;
 
 public class GraphColumnActivity extends BaseActivity {
 
     private static final String ARG_GRAPH = "graph";
-    private static final String ARG_GRAPH_COLUMN = "column";
+    private static final String ARG_GRAPH_COLUMNS = "graph_columns";
+    private static final String ARG_GRAPH_COLUMN_NO = "graph_column_NO";
 
     private EditText unitOfMeasurementEditText;
     private EditText unitOfMeasurementField;
@@ -29,13 +34,18 @@ public class GraphColumnActivity extends BaseActivity {
     private EditText columnNameEditText;
 
     private Graph graph;
-    @Getter
-    private GraphColumn graphColumn;
+    private int graphColumnNo;
+    private Map<Integer, GraphColumn> graphColumns;
 
-    public static void start(BaseActivity activity, Graph graph, GraphColumn column) {
+    public static void start(BaseActivity activity, Graph graph, Map<Integer, GraphColumn> columns, int column) {
+        AssertUtils.assertNotNull(graph);
+        AssertUtils.assertNotNull(columns);
+        AssertUtils.assertTrue(columns.containsKey(column));
+
         Intent intent = new Intent(activity, GraphColumnActivity.class);
-        intent.putExtra(GraphColumnActivity.ARG_GRAPH, graph);
-        intent.putExtra(GraphColumnActivity.ARG_GRAPH_COLUMN, column);
+        intent.putExtra(ARG_GRAPH, graph);
+        intent.putExtra(ARG_GRAPH_COLUMNS, (Serializable) columns);
+        intent.putExtra(ARG_GRAPH_COLUMN_NO, column);
         activity.startActivity(intent);
     }
 
@@ -45,19 +55,31 @@ public class GraphColumnActivity extends BaseActivity {
         setContentView(R.layout.activity_graph_column);
 
         graph = (Graph) getIntent().getExtras().get(ARG_GRAPH);
-        graphColumn = (GraphColumn) getIntent().getExtras().get(ARG_GRAPH_COLUMN);
+        graphColumns = (Map<Integer, GraphColumn>) getIntent().getExtras().get(ARG_GRAPH_COLUMNS);
+        Integer graphColumnNo = (Integer) getIntent().getExtras().get(ARG_GRAPH_COLUMN_NO);
+
+        AssertUtils.assertNotNull(graphColumnNo);
+        AssertUtils.assertTrue(graphColumns.containsKey(graphColumnNo));
+
+        this.graphColumnNo = graphColumnNo;
+
+        AssertUtils.assertNotNull(graph);
+        AssertUtils.assertNotNull(graphColumns);
 
         columnNameEditText = (EditText) findViewById(R.id.column_name);
         unitOfMeasurementEditText = (EditText) findViewById(R.id.graph__unit_of_measurement);
         unitOfMeasurementField = (EditText) findViewById(R.id.graph__unit_of_measurement);
         goalEditText = (EditText) findViewById(R.id.goal);
 
-        unitOfMeasurementEditText.setText(graphColumn.unit == null ? "" : graphColumn.unit);
-        goalEditText.setText(graph.calculateGoal() ? graph.getGraphUnitType().format(graphColumn.goal, FormatVariant.LONG) : "");
-
-        findViewById(R.id.goal_group).setVisibility(graphColumn.calculateGoal() ? View.VISIBLE : View.GONE);
+        unitOfMeasurementEditText.setText(getCurrentGraphColumn().unit == null ? "" : getCurrentGraphColumn().unit);
+        goalEditText.setText(getCurrentGraphColumn().calculateGoal() ? getCurrentGraphColumn().getGraphUnitType().format(getCurrentGraphColumn().goal, FormatVariant.LONG) : "");
+        columnNameEditText.setText(getCurrentGraphColumn().name);
 
         setupUnitTypeRadioButtons();
+    }
+
+    private GraphColumn getCurrentGraphColumn() {
+        return graphColumns.get(graphColumnNo);
     }
 
     @Override
@@ -67,14 +89,13 @@ public class GraphColumnActivity extends BaseActivity {
     }
 
     public void onSave(MenuItem item) {
-        graphColumn.unit = unitOfMeasurementEditText.getText().toString();
+        getCurrentGraphColumn().unit = unitOfMeasurementEditText.getText().toString();
+        getCurrentGraphColumn().name = columnNameEditText.getText().toString();
         String goalStr = goalEditText.getText().toString().trim();
-
-        // TODO: Update column definition, not graph!
 
         if (goalStr != null && goalStr.length() > 0) {
             try {
-                graphColumn.goal = graph.getGraphUnitType().parse(goalStr);
+                getCurrentGraphColumn().goal = graph.getGraphUnitType().parse(goalStr);
             } catch (FormatException e) {
                 new AlertDialog.Builder(this)
                         .setTitle("Invalid value")
@@ -86,7 +107,7 @@ public class GraphColumnActivity extends BaseActivity {
             }
         }
 
-        GraphActivity.start(this, graph);
+        GraphPropertiesActivity.start(this, graph, graphColumns);
     }
 
 

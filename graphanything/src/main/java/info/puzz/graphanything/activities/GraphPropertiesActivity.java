@@ -16,26 +16,43 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphColumn;
 import info.puzz.graphanything.models.GraphType;
+import info.puzz.graphanything.utils.AssertUtils;
 
 
 public class GraphPropertiesActivity extends BaseActivity {
 
     private static final String ARG_GRAPH_ID = "graph_id";
+    private static final String ARG_GRAPH = "graph";
+    private static final String ARG_GRAPH_COLUMNS = "graph_columns";
 
     private EditText graphNameEditText;
     private ListView fieldsListView;
 
     private Graph graph;
+    private Map<Integer, GraphColumn> columnsByColumnNumbers;
 
     public static void start(BaseActivity activity, Long graphId) {
         Intent intent = new Intent(activity, GraphPropertiesActivity.class);
         intent.putExtra(GraphPropertiesActivity.ARG_GRAPH_ID, graphId);
+        activity.startActivity(intent);
+    }
+
+    public static void start(BaseActivity activity, Graph graph, Map<Integer, GraphColumn> columns) {
+        AssertUtils.assertNotNull(graph);
+        AssertUtils.assertNotNull(columns);
+
+        Intent intent = new Intent(activity, GraphPropertiesActivity.class);
+        intent.putExtra(ARG_GRAPH, graph);
+        intent.putExtra(ARG_GRAPH_COLUMNS, (Serializable) columns);
         activity.startActivity(intent);
     }
 
@@ -54,23 +71,40 @@ public class GraphPropertiesActivity extends BaseActivity {
             setTitle(R.string.action_edit);
         }
 
+        columnsByColumnNumbers = (Map<Integer, GraphColumn>) getIntent().getExtras().getSerializable(ARG_GRAPH_COLUMNS);
+        if (columnsByColumnNumbers == null) {
+            AssertUtils.assertNotNull(graphId);
+            columnsByColumnNumbers = getDAO().getColumnsByColumnNo(graph._id);
+        }
+
         graphNameEditText = (EditText) findViewById(R.id.graphName);
         graphNameEditText.setText(graph.name == null ? "" : graph.name);
 
-        final List<GraphColumn> columns = getDAO().getColumns(graphId);
+        reloadFields();
+
+        setupGraphTypeRadioButtons();
+    }
+
+    private void reloadFields() {
+        final List<GraphColumn> columns = new ArrayList<>(columnsByColumnNumbers.size());
+        for (int columnNo = 0; columnNo < GraphColumn.COLUMNS_NO; columnNo++) {
+            if (columnsByColumnNumbers.containsKey(columnNo)) {
+                columns.add(columnsByColumnNumbers.get(columnNo));
+            }
+        }
 
         ArrayAdapter<GraphColumn> adapter = new ArrayAdapter<GraphColumn>(this, R.layout.fragment_graph_column_info, columns.toArray(new GraphColumn[columns.size()])) {
             @NonNull
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                final GraphColumn graphColumn = columns.get(position);
+            public View getView(final int position, View convertView, ViewGroup parent) {
+                final GraphColumn graphColumn = columnsByColumnNumbers.get(position);
                 View view = getLayoutInflater().inflate(R.layout.fragment_graph_column_info, null);
 
                 Button edtiGraphButton = (Button) view.findViewById(R.id.edit_column);
                 edtiGraphButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        GraphColumnActivity.start(GraphPropertiesActivity.this, graph, graphColumn);
+                        GraphColumnActivity.start(GraphPropertiesActivity.this, graph, columnsByColumnNumbers, graphColumn.getColumnNo());
                     }
 
                 });
@@ -87,8 +121,6 @@ public class GraphPropertiesActivity extends BaseActivity {
 
         fieldsListView = (ListView) findViewById(R.id.fields);
         fieldsListView.setAdapter(adapter);
-
-        setupGraphTypeRadioButtons();
     }
 
     @Override

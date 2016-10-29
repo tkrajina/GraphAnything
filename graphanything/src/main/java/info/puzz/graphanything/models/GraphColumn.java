@@ -40,4 +40,8 @@ public class GraphColumn implements Serializable {
         return goal != null;
     }
 
+    public GraphUnitType getGraphUnitType() {
+        return GraphUnitType.findByType(unitType);
+    }
+
 }

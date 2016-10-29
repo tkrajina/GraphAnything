@@ -67,22 +67,13 @@ public class Graph implements Serializable {
         return getGraphUnitType().format(value, variant);
     }
 
+    @Deprecated
     public GraphUnitType getGraphUnitType() {
-        for (GraphUnitType t : GraphUnitType.values()) {
-            if (t.getType() == unitType) {
-                return t;
-            }
-        }
-        return GraphUnitType.UNIT;
+        return GraphUnitType.findByType(unitType);
     }
 
     public GraphType getGraphType() {
-        for (GraphType graphType : GraphType.values()) {
-            if (graphType.getType() == type) {
-                return graphType;
-            }
-        }
-        return GraphType.VALUES;
+        return GraphType.findByType(type);
     }
 
     public static void main(String[] args) {

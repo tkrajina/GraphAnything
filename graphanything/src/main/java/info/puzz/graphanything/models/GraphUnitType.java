@@ -36,4 +36,12 @@ public enum GraphUnitType {
         return formatterParser.format(value, variant);
     }
 
+    public static GraphUnitType findByType(int unitType) {
+        for (GraphUnitType t : values()) {
+            if (t.getType() == unitType) {
+                return t;
+            }
+        }
+        return GraphUnitType.UNIT;
+    }
 }

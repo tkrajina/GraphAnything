@@ -96,4 +96,12 @@ public enum GraphType {
         return converter.convert(entries, columnNo);
     }
 
+    public static GraphType findByType(int type) {
+        for (GraphType graphType : values()) {
+            if (graphType.getType() == type) {
+                return graphType;
+            }
+        }
+        return GraphType.VALUES;
+    }
 }

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,16 +53,13 @@ public class GraphActivity extends BaseActivity {
 
     private Graph graph;
     private Long graphId;
+
     private TextView timerTextView;
     private Button startStopTimerButton;
 
     private boolean activityActive;
-
     private Float graphFontSize = null;
 
-    /**
-     * Utility to start this activity from another one.
-     */
     public static void start(BaseActivity activity, long graphId) {
         Intent intent = new Intent(activity, GraphActivity.class);
         intent.putExtra(GraphActivity.ARG_GRAPH_ID, graphId);
