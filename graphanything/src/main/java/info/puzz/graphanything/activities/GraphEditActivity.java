@@ -95,12 +95,21 @@ public class GraphEditActivity extends BaseActivity {
     }
 
     private void reloadFields() {
+        Integer freeColumnNo = null;
         final List<GraphColumn> columns = new ArrayList<>(columnsByColumnNumbers.size());
         for (int columnNo = 0; columnNo < GraphColumn.COLUMNS_NO; columnNo++) {
             if (columnsByColumnNumbers.containsKey(columnNo)) {
                 columns.add(columnsByColumnNumbers.get(columnNo));
+            } else if (freeColumnNo == null) {
+                freeColumnNo = columnNo;
             }
         }
+
+        if (freeColumnNo != null) {
+            columns.add(null);
+        }
+
+        final Integer freeColumnNoFinal = freeColumnNo;
 
         final GraphColumn[] columnsArray = columns.toArray(new GraphColumn[columns.size()]);
         ArrayAdapter<GraphColumn> adapter = new ArrayAdapter<GraphColumn>(this, R.layout.fragment_graph_column_info, columnsArray) {
@@ -117,14 +126,21 @@ public class GraphEditActivity extends BaseActivity {
                 Button editGraphButton = (Button) view.findViewById(R.id.edit_column);
 
                 if (graphColumn == null) {
+                    AssertUtils.assertNotNull(freeColumnNoFinal);
                     editGraphButton.setText(R.string.new_column);
+                    editGraphButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            columnsByColumnNumbers.put(freeColumnNoFinal, new GraphColumn().setColumnNo(freeColumnNoFinal));
+                            GraphColumnActivity.start(GraphEditActivity.this, graph, columnsByColumnNumbers, freeColumnNoFinal);
+                        }
+                    });
                 } else {
                     editGraphButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             GraphColumnActivity.start(GraphEditActivity.this, graph, columnsByColumnNumbers, graphColumn.getColumnNo());
                         }
-
                     });
 
                     TextView graphColumnTextView = (TextView) view.findViewById(R.id.graph_column_description);
@@ -199,13 +215,13 @@ public class GraphEditActivity extends BaseActivity {
 
         Map<Integer, GraphColumn> currentColumns = getDAO().getColumnsByColumnNo(graph._id);
         for (Map.Entry<Integer, GraphColumn> e : currentColumns.entrySet()) {
-            GraphColumn column = columnsByColumnNumbers.get(e.getKey());
-            if (columnsByColumnNumbers.containsKey(e.getKey())) {
-                column.setGraphId(graph._id);
-                getDAO().save(column);
-            } else {
-                getDAO().deleteGraph(column);
+            if (!columnsByColumnNumbers.containsKey(e.getKey())) {
+                getDAO().deleteGraph(e.getValue());
             }
+        }
+        for (Map.Entry<Integer, GraphColumn> e : columnsByColumnNumbers.entrySet()) {
+            e.getValue().setGraphId(graph._id);
+            getDAO().save(e.getValue());
         }
         getDAO().save(graph);
 
