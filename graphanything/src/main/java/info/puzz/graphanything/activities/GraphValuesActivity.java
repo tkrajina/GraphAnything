@@ -2,7 +2,6 @@ package info.puzz.graphanything.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -72,6 +71,6 @@ public class GraphValuesActivity extends BaseActivity implements GraphValueFragm
 
     @Override
     public void onFragmentInteraction(long graphValueId) {
-        GraphValuePropertiesActivity.start(this, graphValueId);
+        GraphValueEditActivity.start(this, graphValueId);
     }
 }

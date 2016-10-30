@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +25,7 @@ import info.puzz.graphanything.models.format.FormatException;
 import info.puzz.graphanything.utils.Formatters;
 
 
-public class GraphValuePropertiesActivity extends BaseActivity implements CalendarChangeListener {
+public class GraphValueEditActivity extends BaseActivity implements CalendarChangeListener {
 
     private static final String ARG_GRAPH_VALUE_ID = "value_id";
 
@@ -41,15 +40,15 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
      * Utility to start this activity from another one.
      */
     public static void start(BaseActivity activity, long graphValueId) {
-        Intent intent = new Intent(activity, GraphValuePropertiesActivity.class);
-        intent.putExtra(GraphValuePropertiesActivity.ARG_GRAPH_VALUE_ID, graphValueId);
+        Intent intent = new Intent(activity, GraphValueEditActivity.class);
+        intent.putExtra(GraphValueEditActivity.ARG_GRAPH_VALUE_ID, graphValueId);
         activity.startActivity(intent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph_value_properties);
+        setContentView(R.layout.activity_graph_value_edit);
 
         Long graphValueId = (Long) getIntent().getExtras().get(ARG_GRAPH_VALUE_ID);
 
@@ -151,7 +150,7 @@ public class GraphValuePropertiesActivity extends BaseActivity implements Calend
             public void onClick(DialogInterface dialog, int which) {
                 if (which == DialogInterface.BUTTON_POSITIVE) {
                     getDAO().deleteGraphEntry(graphEntry);
-                    GraphActivity.start(GraphValuePropertiesActivity.this, graphEntry.graphId);
+                    GraphActivity.start(GraphValueEditActivity.this, graphEntry.graphId);
                 }
             }
         };

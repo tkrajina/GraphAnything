@@ -32,7 +32,7 @@
             android:name=".activities.GraphValuesActivity"
             android:label="@string/title_activity_graph_values" />
         <activity
-            android:name=".activities.GraphValuePropertiesActivity"
+            android:name=".activities.GraphValueEditActivity"
             android:label="@string/title_activity_graph_value_properties" />
         <activity
             android:name=".activities.RawGraphDataActivity"
