@@ -155,8 +155,7 @@ public class GraphValueEditActivity extends BaseActivity implements CalendarChan
             }
         };
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder
+        new AlertDialog.Builder(this)
                 .setMessage("Delete value?")
                 .setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener)

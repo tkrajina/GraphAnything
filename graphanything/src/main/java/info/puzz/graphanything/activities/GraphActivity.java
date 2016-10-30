@@ -371,8 +371,7 @@ public class GraphActivity extends BaseActivity {
             }
         };
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder
+        new AlertDialog.Builder(this)
                 .setMessage("Delete \"" + graph.name + "\"?")
                 .setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener)

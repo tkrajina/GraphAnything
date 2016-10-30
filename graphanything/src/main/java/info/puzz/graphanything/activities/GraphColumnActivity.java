@@ -1,13 +1,16 @@
 package info.puzz.graphanything.activities;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -34,6 +37,7 @@ public class GraphColumnActivity extends BaseActivity {
     private Graph graph;
     private int graphColumnNo;
     private Map<Integer, GraphColumn> graphColumns;
+    private RadioGroup unitOfMeasurementRadioGroup;
 
     public static void start(BaseActivity activity, Graph graph, Map<Integer, GraphColumn> columns, int column) {
         AssertUtils.assertNotNull(graph);
@@ -65,9 +69,15 @@ public class GraphColumnActivity extends BaseActivity {
         AssertUtils.assertNotNull(graphColumns);
 
         columnNameEditText = (EditText) findViewById(R.id.column_name);
+        unitOfMeasurementRadioGroup = (RadioGroup) findViewById(R.id.action_graph_properties_type_group);
         unitOfMeasurementEditText = (EditText) findViewById(R.id.graph__unit_of_measurement);
         unitOfMeasurementField = (EditText) findViewById(R.id.graph__unit_of_measurement);
         goalEditText = (EditText) findViewById(R.id.goal);
+
+        if (graphColumnNo == 0) {
+        } else {
+            unitOfMeasurementRadioGroup.setVisibility(View.GONE);
+        }
 
         unitOfMeasurementEditText.setText(getCurrentGraphColumn().unit == null ? "" : getCurrentGraphColumn().unit);
         goalEditText.setText(getCurrentGraphColumn().calculateGoal() ? getCurrentGraphColumn().getGraphUnitType().format(getCurrentGraphColumn().goal, FormatVariant.LONG) : "");
@@ -83,7 +93,15 @@ public class GraphColumnActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_graph_column, menu);
+
+        // Cannot delete first column
+        menu.findItem(R.id.action_delete).setEnabled(canBeRemoved());
+
         return true;
+    }
+
+    private boolean canBeRemoved() {
+        return graphColumnNo != 0;
     }
 
     public void onSave(MenuItem item) {
@@ -140,4 +158,23 @@ public class GraphColumnActivity extends BaseActivity {
         unitOfMeasurementField.setEnabled(graphType != GraphUnitType.TIMER.getType());
     }
 
+    public void onDeleteColumn(MenuItem item) {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                    AssertUtils.assertTrue(canBeRemoved());
+
+                    graphColumns.remove(graphColumnNo);
+                    GraphEditActivity.start(GraphColumnActivity.this, graph, graphColumns);
+                }
+            }
+        };
+
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.delete_column)
+                .setPositiveButton(R.string.yes, dialogClickListener)
+                .setNegativeButton(R.string.no, dialogClickListener)
+                .show();
+    }
 }
