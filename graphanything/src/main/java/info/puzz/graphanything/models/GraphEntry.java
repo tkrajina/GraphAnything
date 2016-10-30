@@ -19,6 +19,8 @@ public class GraphEntry {
     public long graphId;
     public long created;
 
+    public String comment;
+
     public Double value0;
     public Double value1;
     public Double value2;
