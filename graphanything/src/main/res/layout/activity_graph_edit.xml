@@ -68,7 +68,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             />
 
-        <ListView
+        <LinearLayout
             android:id="@+id/fields"
             android:orientation="vertical"
             android:layout_width="match_parent"

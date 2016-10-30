@@ -2,15 +2,13 @@ package info.puzz.graphanything.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -27,7 +25,6 @@ import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphColumn;
 import info.puzz.graphanything.models.GraphType;
 import info.puzz.graphanything.utils.AssertUtils;
-import info.puzz.graphanything.utils.ListViewUtils;
 
 
 public class GraphEditActivity extends BaseActivity {
@@ -37,7 +34,7 @@ public class GraphEditActivity extends BaseActivity {
     private static final String ARG_GRAPH_COLUMNS = "graph_columns";
 
     private EditText graphNameEditText;
-    private ListView fieldsListView;
+    private LinearLayout fieldsListView;
 
     private Graph graph;
     private Map<Integer, GraphColumn> columnsByColumnNumbers;
@@ -87,6 +84,8 @@ public class GraphEditActivity extends BaseActivity {
         }
 
         graphNameEditText = (EditText) findViewById(R.id.graphName);
+        fieldsListView = (LinearLayout) findViewById(R.id.fields);
+
         graphNameEditText.setText(graph.name == null ? "" : graph.name);
 
         reloadFields();
@@ -111,51 +110,37 @@ public class GraphEditActivity extends BaseActivity {
 
         final Integer freeColumnNoFinal = freeColumnNo;
 
-        final GraphColumn[] columnsArray = columns.toArray(new GraphColumn[columns.size()]);
-        ArrayAdapter<GraphColumn> adapter = new ArrayAdapter<GraphColumn>(this, R.layout.fragment_graph_column_info, columnsArray) {
-            @NonNull
-            @Override
-            public View getView(final int position, View convertView, ViewGroup parent) {
-                final GraphColumn graphColumn = getItem(position);
+        for (final GraphColumn graphColumn : columns) {
+            View graphColumnView = getLayoutInflater().inflate(R.layout.fragment_graph_column_info, null);
 
-                View view = convertView;
-                if (view == null) {
-                    view = getLayoutInflater().inflate(R.layout.fragment_graph_column_info, null);
-                }
+            Button editGraphButton = (Button) graphColumnView.findViewById(R.id.edit_column);
 
-                Button editGraphButton = (Button) view.findViewById(R.id.edit_column);
+            if (graphColumn == null) {
+                AssertUtils.assertNotNull(freeColumnNoFinal);
+                editGraphButton.setText(R.string.new_column);
+                editGraphButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        columnsByColumnNumbers.put(freeColumnNoFinal, new GraphColumn().setColumnNo(freeColumnNoFinal));
+                        GraphColumnActivity.start(GraphEditActivity.this, graph, columnsByColumnNumbers, freeColumnNoFinal);
+                    }
+                });
+            } else {
+                editGraphButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        GraphColumnActivity.start(GraphEditActivity.this, graph, columnsByColumnNumbers, graphColumn.getColumnNo());
+                    }
+                });
 
-                if (graphColumn == null) {
-                    AssertUtils.assertNotNull(freeColumnNoFinal);
-                    editGraphButton.setText(R.string.new_column);
-                    editGraphButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            columnsByColumnNumbers.put(freeColumnNoFinal, new GraphColumn().setColumnNo(freeColumnNoFinal));
-                            GraphColumnActivity.start(GraphEditActivity.this, graph, columnsByColumnNumbers, freeColumnNoFinal);
-                        }
-                    });
-                } else {
-                    editGraphButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            GraphColumnActivity.start(GraphEditActivity.this, graph, columnsByColumnNumbers, graphColumn.getColumnNo());
-                        }
-                    });
-
-                    TextView graphColumnTextView = (TextView) view.findViewById(R.id.graph_column_description);
-                    graphColumnTextView.setText(String.format("%s [%s]", graphColumn.getName(), graphColumn.getUnit()));
-                    editGraphButton.setText(R.string.change);
-                    //editGraphButton.setText(R.string.enable);
-                }
-                return view;
+                TextView graphColumnTextView = (TextView) graphColumnView.findViewById(R.id.graph_column_description);
+                graphColumnTextView.setText(String.format("%s [%s]", graphColumn.getName(), graphColumn.getUnit()));
+                editGraphButton.setText(R.string.change);
+                //editGraphButton.setText(R.string.enable);
             }
 
-        };
-
-        fieldsListView = (ListView) findViewById(R.id.fields);
-        fieldsListView.setAdapter(adapter);
-        ListViewUtils.setListViewHeightBasedOnChildren(fieldsListView);
+            fieldsListView.addView(graphColumnView);
+        }
     }
 
     @Override
