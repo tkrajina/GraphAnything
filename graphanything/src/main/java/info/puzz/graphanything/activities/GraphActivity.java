@@ -25,6 +25,8 @@ import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import junit.framework.Assert;
+
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -37,7 +39,6 @@ import info.puzz.graphanything.models.GraphStats;
 import info.puzz.graphanything.models.GraphUnitType;
 import info.puzz.graphanything.models.format.FormatException;
 import info.puzz.graphanything.services.StatsCalculator;
-import info.puzz.graphanything.utils.Asserts;
 import info.puzz.graphanything.utils.Formatters;
 import info.puzz.graphanything.utils.ThreadUtils;
 import info.puzz.graphanything.utils.TimeUtils;
@@ -80,8 +81,8 @@ public class GraphActivity extends BaseActivity {
 
         timerTextView = (TextView) findViewById(R.id.timer);
         startStopTimerButton = (Button) findViewById(R.id.start_stop_timer);
-        Asserts.assertNotNull(timerTextView, "timer");
-        Asserts.assertNotNull(startStopTimerButton, "timer button");
+        Assert.assertNotNull(timerTextView);
+        Assert.assertNotNull(startStopTimerButton);
 
         graph = (Graph) getIntent().getExtras().getSerializable(ARG_GRAPH);
         graphId = getIntent().getExtras().getLong(ARG_GRAPH_ID);

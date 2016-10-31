@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.fragments.GraphValueFragment;
 import info.puzz.graphanything.models.Graph;
+import info.puzz.graphanything.models.GraphEntry;
 
 
 public class GraphValuesActivity extends BaseActivity implements GraphValueFragment.OnFragmentInteractionListener {
@@ -15,6 +16,7 @@ public class GraphValuesActivity extends BaseActivity implements GraphValueFragm
     public static final String ARG_GRAPH_ID = "graph_id";
 
     private long graphId;
+    private Graph graph;
 
     /**
      * Utility to start this activity from another one.
@@ -41,7 +43,7 @@ public class GraphValuesActivity extends BaseActivity implements GraphValueFragm
 
         setContentView(R.layout.activity_graph_values);
 
-        Graph graph = getDAO().loadGraph(graphId);
+        graph = getDAO().loadGraph(graphId);
 
         setTitle("\"" + graph.name + "\" values");
     }
@@ -70,7 +72,7 @@ public class GraphValuesActivity extends BaseActivity implements GraphValueFragm
     }
 
     @Override
-    public void onFragmentInteraction(long graphValueId) {
-        GraphValueEditActivity.start(this, graphValueId);
+    public void onFragmentInteraction(GraphEntry graphEntry) {
+        GraphEntryActivity.start(this, graph._id, graphEntry);
     }
 }

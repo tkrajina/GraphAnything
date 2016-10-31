@@ -80,12 +80,12 @@ public class GraphValueFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
 
         if (null != mListener) {
-            mListener.onFragmentInteraction(graphEntries.get(position)._id);
+            mListener.onFragmentInteraction(graphEntries.get(position));
         }
     }
 
     public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(long graphValueId);
+        public void onFragmentInteraction(GraphEntry graphEntry);
     }
 
 }

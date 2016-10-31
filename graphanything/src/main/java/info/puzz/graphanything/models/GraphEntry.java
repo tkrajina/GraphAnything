@@ -43,11 +43,11 @@ public class GraphEntry implements Serializable {
             throw new Error("Invalid index:" + i);
         }
         switch (i) {
-            case 0: value0 = val;
-            case 1: value1 = val;
-            case 2: value2 = val;
-            case 3: value3 = val;
-            case 4: value4 = val;
+            case 0: value0 = val; break;
+            case 1: value1 = val; break;
+            case 2: value2 = val; break;
+            case 3: value3 = val; break;
+            case 4: value4 = val; break;
             /*
             case 5: value5 = val;
             case 6: value6 = val;
