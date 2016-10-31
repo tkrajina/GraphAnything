@@ -1,5 +1,6 @@
 package info.puzz.graphanything.activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,16 +9,20 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import junit.framework.Assert;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphColumn;
 import info.puzz.graphanything.models.GraphEntry;
+import info.puzz.graphanything.models.format.FormatException;
 
 public class GraphEntryActivity extends BaseActivity {
 
@@ -29,10 +34,12 @@ public class GraphEntryActivity extends BaseActivity {
     private Graph graph;
     private GraphEntry graphEntry;
     private List<GraphColumn> columns;
+    private Map<Integer, EditText> columnViewsByColumnNo;
 
     public static void start(BaseActivity activity, long graphId, GraphEntry entry) {
         Assert.assertNotNull(entry);
         Assert.assertTrue(entry.getGraphId() == graphId);
+        Assert.assertTrue(entry.getCreated() > 0);
 
         Intent intent = new Intent(activity, GraphEntryActivity.class);
         intent.putExtra(ARG_GRAPH_ID, graphId);
@@ -72,6 +79,8 @@ public class GraphEntryActivity extends BaseActivity {
         Assert.assertNotNull(columns);
         Assert.assertTrue(columns.size() > 0);
 
+        columnViewsByColumnNo = new HashMap<>();
+
         for (GraphColumn column : columns) {
             View graphColumnView = getLayoutInflater().inflate(R.layout.fragment_graph_edit_column, null);
 
@@ -80,14 +89,36 @@ public class GraphEntryActivity extends BaseActivity {
 
             columnLabelTextView.setText(column.getName() + ":");
             Double value = graphEntry.get(column.getColumnNo());
-            columnValueTextView.setText(column.getGraphUnitType().format(value, FormatVariant.LONG));
+            columnValueTextView.setText(value == null ? "" : column.getGraphUnitType().format(value, FormatVariant.LONG));
+
+            columnViewsByColumnNo.put(column.getColumnNo(), columnValueTextView);
 
             columnsLinearLayout.addView(graphColumnView);
         }
     }
 
     public void onSave(MenuItem item) {
+        for (GraphColumn column : columns) {
+            EditText columnValueTextView = columnViewsByColumnNo.get(column.getColumnNo());
+            Assert.assertNotNull("columnNo=" + column.getColumnNo(), columnValueTextView);
+
+            String valueString = columnValueTextView.getText().toString();
+            try {
+                graphEntry.set(column.columnNo, column.getGraphUnitType().parse(valueString));
+            } catch (FormatException e) {
+                new AlertDialog.Builder(this)
+                        .setTitle("Invalid value:" + valueString)
+                        .setMessage(e.getMessage())
+                        .setNeutralButton(android.R.string.ok, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+                return;
+            }
+        }
+
         getDAO().save(graphEntry);
+
+        Toast.makeText(this, "Value added", Toast.LENGTH_SHORT).show();
         GraphActivity.start(this, graph._id);
     }
 }

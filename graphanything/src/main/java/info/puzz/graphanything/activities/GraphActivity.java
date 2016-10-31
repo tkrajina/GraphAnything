@@ -166,26 +166,15 @@ public class GraphActivity extends BaseActivity {
             return;
         }
 
-        addValue(value);
-
-        numberField.setText("");
-
-        // Close keyboard:
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-        Toast.makeText(this, "Value added", Toast.LENGTH_SHORT).show();
+        this.addValue(value);
     }
 
     private void addValue(double value) {
-        getDAO().addEntry(graph._id, value);
-
-        graph.lastValue = value;
-        graph.lastValueCreated = System.currentTimeMillis();
-        graph.timerStarted = 0; // Just in case it's a timer graph
-        getDAO().save(graph);
-
-        redrawAndUpdateGraphAndStats(true);
+        GraphEntry graphEntry = new GraphEntry()
+                .setGraphId(graph._id)
+                .setCreated(System.currentTimeMillis())
+                .set(0, value);
+        GraphEntryActivity.start(this, graph._id, graphEntry);
     }
 
     private void redrawAndUpdateGraphAndStats(boolean showGoal) {
