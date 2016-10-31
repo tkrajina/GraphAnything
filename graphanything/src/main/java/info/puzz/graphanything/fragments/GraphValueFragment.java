@@ -11,7 +11,7 @@ import java.util.List;
 import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.activities.GraphValuesActivity;
 import info.puzz.graphanything.dao.DAO;
-import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphEntry;
 
 /**
@@ -46,7 +46,7 @@ public class GraphValueFragment extends ListFragment {
 
         DAO DAO = ((BaseActivity) getActivity()).getDAO();
 
-        Graph graph = DAO.loadGraph(graphId);
+        GraphInfo graph = DAO.loadGraph(graphId);
         graphEntries = DAO.getEntriesByCreatedAsc(graphId);
 
         setListAdapter(

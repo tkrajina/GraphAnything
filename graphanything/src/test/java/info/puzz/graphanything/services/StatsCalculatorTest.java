@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphEntry;
 import info.puzz.graphanything.models2.GraphStats;
 import info.puzz.graphanything.models2.GraphType;
@@ -21,7 +21,7 @@ public class StatsCalculatorTest {
 
     @Test
     public void testGoal() {
-        Graph graph = new Graph();
+        GraphInfo graph = new GraphInfo();
         graph.setStatsPeriod(7);
         graph.goal = 100D;
 

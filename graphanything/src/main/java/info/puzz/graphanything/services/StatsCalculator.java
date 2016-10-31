@@ -7,7 +7,7 @@ import org.apache.commons.math3.stat.regression.SimpleRegression;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphStats;
 import info.puzz.graphanything.models2.GraphType;
 
@@ -22,12 +22,12 @@ public class StatsCalculator {
         throw new Error();
     }
 
-    public static GraphStats calculate(Graph graph, List<DataPoint> dataPoints) {
+    public static GraphStats calculate(GraphInfo graph, List<DataPoint> dataPoints) {
         GraphStats res = new GraphStats();
 
         int sampleIntervalDays = graph.getStatsPeriod();
         if (sampleIntervalDays <= 0) {
-            sampleIntervalDays = Graph.DEFAULT_STATS_SAMPLE_DAYS;
+            sampleIntervalDays = GraphInfo.DEFAULT_STATS_SAMPLE_DAYS;
         }
 
         long thisWeek = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(sampleIntervalDays);

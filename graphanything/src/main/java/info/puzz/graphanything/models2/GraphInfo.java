@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-public class Graph implements Serializable {
+public class GraphInfo implements Serializable {
 
     public static final int DEFAULT_STATS_SAMPLE_DAYS = 7;
 

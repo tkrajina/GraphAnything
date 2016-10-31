@@ -7,7 +7,7 @@ import android.view.MenuItem;
 
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.fragments.GraphValueFragment;
-import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphEntry;
 
 
@@ -16,7 +16,7 @@ public class GraphValuesActivity extends BaseActivity implements GraphValueFragm
     public static final String ARG_GRAPH_ID = "graph_id";
 
     private long graphId;
-    private Graph graph;
+    private GraphInfo graph;
 
     /**
      * Utility to start this activity from another one.

@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.models2.FormatVariant;
-import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphEntry;
 import info.puzz.graphanything.models2.GraphStats;
 import info.puzz.graphanything.models2.GraphUnitType;
@@ -49,7 +49,7 @@ public class GraphActivity extends BaseActivity {
     public static final String ARG_GRAPH_ID = "graph_id";
     public static final String ARG_GRAPH = "graph";
 
-    private Graph graph;
+    private GraphInfo graph;
     private Long graphId;
 
     private TextView timerTextView;
@@ -64,7 +64,7 @@ public class GraphActivity extends BaseActivity {
         activity.startActivity(intent);
     }
 
-    public static void start(BaseActivity activity, Graph graph) {
+    public static void start(BaseActivity activity, GraphInfo graph) {
         Intent intent = new Intent(activity, GraphActivity.class);
         intent.putExtra(GraphActivity.ARG_GRAPH, graph);
         activity.startActivity(intent);
@@ -81,7 +81,7 @@ public class GraphActivity extends BaseActivity {
         Assert.assertNotNull(timerTextView);
         Assert.assertNotNull(startStopTimerButton);
 
-        graph = (Graph) getIntent().getExtras().getSerializable(ARG_GRAPH);
+        graph = (GraphInfo) getIntent().getExtras().getSerializable(ARG_GRAPH);
         graphId = getIntent().getExtras().getLong(ARG_GRAPH_ID);
         if (graphId == null && graph == null) {
             throw new Error(getClass().getSimpleName() + " without graphId and graph");
@@ -268,7 +268,7 @@ public class GraphActivity extends BaseActivity {
             goalSeries.setTitle(getResources().getString(R.string.goal));
             graphView.addSeries(goalSeries);
 
-            // Graph estimate line:
+            // GraphInfo estimate line:
             LineGraphSeries<DataPoint> estimateSeries = new LineGraphSeries<>(new DataPoint[] {
                     new DataPoint(minX, stats.calculateGoalLineValue(minX)),
                     new DataPoint(maxX, stats.calculateGoalLineValue(maxX)),
@@ -319,7 +319,7 @@ public class GraphActivity extends BaseActivity {
         graphView.addSeries(series);
         t.time("After drawing graph");
 
-        Log.i(TAG, "Graph drawing times:" + t.toString());
+        Log.i(TAG, "GraphInfo drawing times:" + t.toString());
     }
 
     private void redrawStats(GraphUnitType graphUnitType, GraphStats stats) {
@@ -389,7 +389,7 @@ public class GraphActivity extends BaseActivity {
     }
 
     /**
-     * Starts a thread to update the timer. The thread will automatically stop when the activity pauses or the {@link Graph#timerStarted} is set to 0.
+     * Starts a thread to update the timer. The thread will automatically stop when the activity pauses or the {@link GraphInfo#timerStarted} is set to 0.
      */
     private void startTimer() {
         if (graph.timerStarted == 0) {

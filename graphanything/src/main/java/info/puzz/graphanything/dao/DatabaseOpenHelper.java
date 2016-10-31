@@ -8,7 +8,7 @@ import android.util.Log;
 import java.text.ParseException;
 import java.util.List;
 
-import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphEntry;
 import info.puzz.graphanything.models2.GraphType;
@@ -16,7 +16,6 @@ import info.puzz.graphanything.models2.GraphUnitType;
 import info.puzz.graphanything.models2.GraphValue;
 import info.puzz.graphanything.models2.format.FormatException;
 import info.puzz.graphanything.services.ExportImportUtils;
-import nl.qbusict.cupboard.Cupboard;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
@@ -30,7 +29,7 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
         cupboard().register(GraphValue.class);
 
         // New:
-        cupboard().register(Graph.class);
+        cupboard().register(GraphInfo.class);
         cupboard().register(GraphEntry.class);
         cupboard().register(GraphColumn.class);
     }
@@ -74,8 +73,8 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
      * are still stored in the database (TODO: Remove later).
      */
     private void upgradeToMulticolumn(SQLiteDatabase db) {
-        for (Graph oldGraph : cupboard().withDatabase(db).query(Graph.class).list()) {
-            Graph graph = new Graph()
+        for (GraphInfo oldGraph : cupboard().withDatabase(db).query(GraphInfo.class).list()) {
+            GraphInfo graph = new GraphInfo()
                     .setName(oldGraph.getName())
                     .setUnit(oldGraph.getUnit())
                     .setLastValue(oldGraph.getLastValue())
@@ -110,7 +109,7 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     private void importSampleGraphs(SQLiteDatabase db) throws ParseException {
         {
-            Graph graph = new Graph();
+            GraphInfo graph = new GraphInfo();
             graph.name = "EXAMPLE: My weight";
             String data = "2016-8-14T9:27:11|\t95.1\n" +
                     "2016-8-22T8:40:45|\t92.1\n" +
@@ -147,7 +146,7 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
             }
         }
         {
-            Graph graph = new Graph();
+            GraphInfo graph = new GraphInfo();
             graph.name = "EXAMPLE: Project time";
             graph.unitType = GraphUnitType.TIMER.getType();
             graph.type = GraphType.SUM_ALL_PREVIOUS.getType();
@@ -177,7 +176,7 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
         }
     }
 
-    private void importData(SQLiteDatabase db, Graph graph, String data, String columnName, String columnUnit, GraphUnitType unitType) throws FormatException {
+    private void importData(SQLiteDatabase db, GraphInfo graph, String data, String columnName, String columnUnit, GraphUnitType unitType) throws FormatException {
         cupboard().withDatabase(db).put(graph);
         cupboard().withDatabase(db).put(new GraphColumn()
                 .setGraphId(graph._id)

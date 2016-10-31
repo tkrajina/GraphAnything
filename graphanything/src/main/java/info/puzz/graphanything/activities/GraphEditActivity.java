@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import info.puzz.graphanything.R;
-import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphType;
 
@@ -36,7 +36,7 @@ public class GraphEditActivity extends BaseActivity {
     private EditText graphNameEditText;
     private LinearLayout fieldsListView;
 
-    private Graph graph;
+    private GraphInfo graph;
     private Map<Integer, GraphColumn> columnsByColumnNumbers;
 
     public static void start(BaseActivity activity, Long graphId) {
@@ -45,7 +45,7 @@ public class GraphEditActivity extends BaseActivity {
         activity.startActivity(intent);
     }
 
-    public static void start(BaseActivity activity, Graph graph, Map<Integer, GraphColumn> columns) {
+    public static void start(BaseActivity activity, GraphInfo graph, Map<Integer, GraphColumn> columns) {
         Assert.assertNotNull(graph);
         Assert.assertNotNull(columns);
 
@@ -60,11 +60,11 @@ public class GraphEditActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_edit);
 
-        graph = (Graph) getIntent().getSerializableExtra(ARG_GRAPH);
+        graph = (GraphInfo) getIntent().getSerializableExtra(ARG_GRAPH);
         if (graph == null) {
             Long graphId = (Long) getIntent().getExtras().get(ARG_GRAPH_ID);
             if (graphId == null) {
-                graph = new Graph();
+                graph = new GraphInfo();
                 graph.set_id(System.nanoTime());
                 columnsByColumnNumbers = new HashMap<Integer, GraphColumn>();
             } else {
@@ -212,7 +212,7 @@ public class GraphEditActivity extends BaseActivity {
 
         GraphActivity.start(this, graph._id);
 
-        Toast.makeText(this, "Graph saved", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "GraphInfo saved", Toast.LENGTH_SHORT).show();
     }
 
 }

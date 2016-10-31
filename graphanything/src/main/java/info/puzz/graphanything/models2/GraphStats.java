@@ -3,7 +3,7 @@ package info.puzz.graphanything.models2;
 import lombok.Data;
 
 /**
- * @see Graph#statsPeriod
+ * @see GraphInfo#statsPeriod
  */
 @Data
 public class GraphStats {

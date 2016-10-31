@@ -7,7 +7,7 @@ import java.util.List;
 
 import info.puzz.graphanything.Constants;
 import info.puzz.graphanything.models2.FormatVariant;
-import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphEntry;
 import info.puzz.graphanything.models2.GraphUnitType;
 import info.puzz.graphanything.models2.format.FormatException;
@@ -22,7 +22,7 @@ public class ExportImportUtils {
     public static final char DELIMITER = '|';
     public static final String DELIMITER_REGEX = "\\" + DELIMITER;
 
-    public static String exportGraph(Graph graph, List<GraphEntry> entry) throws Exception {
+    public static String exportGraph(GraphInfo graph, List<GraphEntry> entry) throws Exception {
         GraphUnitType graphUnitType = graph.getGraphUnitType();
         StringBuilder res = new StringBuilder();
 
@@ -39,7 +39,7 @@ public class ExportImportUtils {
         return res.toString();
     }
 
-    public static List<GraphEntry> importGraph(Graph graph, String data) throws FormatException {
+    public static List<GraphEntry> importGraph(GraphInfo graph, String data) throws FormatException {
         GraphUnitType graphUnitType = graph.getGraphUnitType();
         List<GraphEntry> res = new ArrayList<GraphEntry>();
         String[] lines = data.split("\n");
@@ -61,7 +61,7 @@ public class ExportImportUtils {
     }
 
     public static void main(String[] args) throws Exception {
-        Graph graph = new Graph();
+        GraphInfo graph = new GraphInfo();
         graph._id = 7L;
         List<GraphEntry> entries = importGraph(graph, "2016-8-14T9:27:11|\t95.1\n" +
                 "2016-8-22T8:40:45|\t92.1\n" +

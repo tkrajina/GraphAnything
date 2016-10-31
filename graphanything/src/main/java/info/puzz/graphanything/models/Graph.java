@@ -1,13 +1,14 @@
 package info.puzz.graphanything.models;
 
 import info.puzz.graphanything.models2.FormatVariant;
+import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphType;
 import info.puzz.graphanything.models2.GraphUnitType;
 import lombok.Data;
 
 /**
  * @deprecated
- * @see info.puzz.graphanything.models2.Graph
+ * @see GraphInfo
  */
 @Data
 public class Graph {

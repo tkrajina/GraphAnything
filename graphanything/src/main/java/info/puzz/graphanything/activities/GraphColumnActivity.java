@@ -19,7 +19,7 @@ import java.util.Map;
 
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.models2.FormatVariant;
-import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphUnitType;
 import info.puzz.graphanything.models2.format.FormatException;
@@ -35,12 +35,12 @@ public class GraphColumnActivity extends BaseActivity {
     private EditText goalEditText;
     private EditText columnNameEditText;
 
-    private Graph graph;
+    private GraphInfo graph;
     private int graphColumnNo;
     private Map<Integer, GraphColumn> graphColumns;
     private RadioGroup unitOfMeasurementRadioGroup;
 
-    public static void start(BaseActivity activity, Graph graph, Map<Integer, GraphColumn> columns, int column) {
+    public static void start(BaseActivity activity, GraphInfo graph, Map<Integer, GraphColumn> columns, int column) {
         Assert.assertNotNull(graph);
         Assert.assertNotNull(columns);
         Assert.assertTrue(columns.containsKey(column));
@@ -57,7 +57,7 @@ public class GraphColumnActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_column);
 
-        graph = (Graph) getIntent().getExtras().get(ARG_GRAPH);
+        graph = (GraphInfo) getIntent().getExtras().get(ARG_GRAPH);
         graphColumns = (Map<Integer, GraphColumn>) getIntent().getExtras().get(ARG_GRAPH_COLUMNS);
         Integer graphColumnNo = (Integer) getIntent().getExtras().get(ARG_GRAPH_COLUMN_NO);
 

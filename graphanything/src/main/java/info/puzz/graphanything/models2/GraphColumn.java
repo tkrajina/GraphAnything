@@ -26,7 +26,7 @@ public class GraphColumn implements Serializable {
 
     /**
      * Number of days to reach goal. It is calculated by comparing the average in the current
-     * and previous interval ({@link Graph#statsPeriod} days).
+     * and previous interval ({@link GraphInfo#statsPeriod} days).
      *
      * If it's negative then the value is diverging from the goal.
      */

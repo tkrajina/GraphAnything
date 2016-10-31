@@ -12,7 +12,7 @@ import android.widget.EditText;
 import java.util.List;
 
 import info.puzz.graphanything.R;
-import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphEntry;
 import info.puzz.graphanything.services.ExportImportUtils;
 
@@ -22,7 +22,7 @@ public class RawGraphDataActivity extends BaseActivity {
 
     public static final String ARG_GRAPH_ID = "graph_id";
 
-    private Graph graph;
+    private GraphInfo graph;
 
     EditText editText;
     private long graphId;

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphEntry;
 import nl.qbusict.cupboard.QueryResultIterable;
@@ -59,12 +59,12 @@ public class DAO {
         cupboard().withDatabase(mDb).delete(entity);
     }
 
-    public List<Graph> getGraphsByUpdatedDesc() {
-        return cupboard().withDatabase(mDb).query(Graph.class).orderBy("-lastValueCreated").list();
+    public List<GraphInfo> getGraphsByUpdatedDesc() {
+        return cupboard().withDatabase(mDb).query(GraphInfo.class).orderBy("-lastValueCreated").list();
     }
 
-    public Graph loadGraph(long id) throws SQLException {
-        return cupboard().withDatabase(mDb).get(Graph.class, id);
+    public GraphInfo loadGraph(long id) throws SQLException {
+        return cupboard().withDatabase(mDb).get(GraphInfo.class, id);
     }
 
     public void addEntry(long graphId, double value) {

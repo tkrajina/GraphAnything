@@ -21,7 +21,7 @@ import java.util.Map;
 
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.models2.FormatVariant;
-import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphEntry;
 import info.puzz.graphanything.models2.format.FormatException;
@@ -35,7 +35,7 @@ public class GraphEntryActivity extends BaseActivity {
 
     private LinearLayout columnsLinearLayout;
 
-    private Graph graph;
+    private GraphInfo graph;
     private GraphEntry graphEntry;
     private List<GraphColumn> columns;
     private Map<Integer, EditText> columnViewsByColumnNo;

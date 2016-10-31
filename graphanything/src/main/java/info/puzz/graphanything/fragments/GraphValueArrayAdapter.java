@@ -11,16 +11,16 @@ import info.puzz.graphanything.R;
 import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.activities.GraphEntryActivity;
 import info.puzz.graphanything.models2.FormatVariant;
-import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphEntry;
 import info.puzz.graphanything.utils.TimeUtils;
 
 public class GraphValueArrayAdapter extends ArrayAdapter<GraphEntry> {
     private final Context context;
     private final GraphEntry[] values;
-    private final Graph graph;
+    private final GraphInfo graph;
 
-    public GraphValueArrayAdapter(Context context, Graph graph,  GraphEntry[] values) {
+    public GraphValueArrayAdapter(Context context, GraphInfo graph, GraphEntry[] values) {
         super(context, R.layout.graph, values);
         this.context = context;
         this.graph = graph;
