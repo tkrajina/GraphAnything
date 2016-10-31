@@ -38,5 +38,6 @@
     <string name="no">No</string>
     <string name="comment_colon">Comment:</string>
     <string name="created_colon">Created:</string>
+    <string name="fields_colon">Numeric fields:</string>
 
 </resources>

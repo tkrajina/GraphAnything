@@ -11,6 +11,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import junit.framework.Assert;
 
@@ -30,8 +31,6 @@ public class GraphColumnActivity extends BaseActivity {
     private static final String ARG_GRAPH_COLUMNS = "graph_columns";
     private static final String ARG_GRAPH_COLUMN_NO = "graph_column_no";
 
-    private EditText unitOfMeasurementEditText;
-    private EditText unitOfMeasurementField;
     private EditText goalEditText;
     private EditText columnNameEditText;
 
@@ -39,6 +38,9 @@ public class GraphColumnActivity extends BaseActivity {
     private int graphColumnNo;
     private Map<Integer, GraphColumn> graphColumns;
     private RadioGroup unitOfMeasurementRadioGroup;
+    private TextView measurementTypeTextView;
+    private EditText unitOfMeasurementField;
+    private TextView unitOfMeasurementTextView;
 
     public static void start(BaseActivity activity, GraphInfo graph, Map<Integer, GraphColumn> columns, int column) {
         Assert.assertNotNull(graph);
@@ -70,17 +72,20 @@ public class GraphColumnActivity extends BaseActivity {
         Assert.assertNotNull(graphColumns);
 
         columnNameEditText = (EditText) findViewById(R.id.column_name);
+
+        measurementTypeTextView = (TextView) findViewById(R.id.measurement_type);
         unitOfMeasurementRadioGroup = (RadioGroup) findViewById(R.id.action_graph_properties_type_group);
-        unitOfMeasurementEditText = (EditText) findViewById(R.id.graph__unit_of_measurement);
-        unitOfMeasurementField = (EditText) findViewById(R.id.graph__unit_of_measurement);
+        unitOfMeasurementTextView = (TextView) findViewById(R.id.unit_of_measurement_label);
+        unitOfMeasurementField = (EditText) findViewById(R.id.unit_of_measurement);
         goalEditText = (EditText) findViewById(R.id.goal);
 
         if (graphColumnNo == 0) {
         } else {
             unitOfMeasurementRadioGroup.setVisibility(View.GONE);
+            measurementTypeTextView.setVisibility(View.GONE);
         }
 
-        unitOfMeasurementEditText.setText(getCurrentGraphColumn().unit == null ? "" : getCurrentGraphColumn().unit);
+        unitOfMeasurementField.setText(getCurrentGraphColumn().unit == null ? "" : getCurrentGraphColumn().unit);
         goalEditText.setText(getCurrentGraphColumn().calculateGoal() ? getCurrentGraphColumn().getGraphUnitType().format(getCurrentGraphColumn().goal, FormatVariant.LONG) : "");
         columnNameEditText.setText(getCurrentGraphColumn().name);
 
@@ -106,7 +111,7 @@ public class GraphColumnActivity extends BaseActivity {
     }
 
     public void onSave(MenuItem item) {
-        getCurrentGraphColumn().unit = unitOfMeasurementEditText.getText().toString();
+        getCurrentGraphColumn().unit = unitOfMeasurementField.getText().toString();
         getCurrentGraphColumn().name = columnNameEditText.getText().toString();
         String goalStr = goalEditText.getText().toString().trim();
 
@@ -156,7 +161,9 @@ public class GraphColumnActivity extends BaseActivity {
     }
 
     private void reloadUnitOfMeasurementField(int graphType) {
-        unitOfMeasurementField.setEnabled(graphType != GraphUnitType.TIMER.getType());
+        int visibility = graphType == GraphUnitType.TIMER.getType() ? View.GONE : View.VISIBLE;
+        unitOfMeasurementField.setVisibility(visibility);
+        unitOfMeasurementTextView.setVisibility(visibility);
     }
 
     public void onDeleteColumn(MenuItem item) {

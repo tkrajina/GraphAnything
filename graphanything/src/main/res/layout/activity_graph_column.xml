@@ -33,10 +33,10 @@
             android:layout_alignParentEnd="true" />
 
         <TextView
+            android:id="@+id/measurement_type"
             android:text="Measurement type:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <RadioGroup
@@ -64,7 +64,7 @@
         </RadioGroup>
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/unit_of_measurement_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -72,7 +72,7 @@
             />
 
         <EditText
-            android:id="@+id/graph__unit_of_measurement"
+            android:id="@+id/unit_of_measurement"
             android:layout_height="wrap_content"
             android:layout_width="match_parent" />
 

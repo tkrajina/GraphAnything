@@ -28,6 +28,20 @@
             android:layout_alignParentEnd="true" />
 
         <TextView
+            android:text="@string/fields_colon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
+
+        <LinearLayout
+            android:id="@+id/fields"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
             android:id="@+id/textView7"
             android:text="Graph calculation type:"
             android:layout_width="match_parent"
@@ -60,20 +74,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
         </RadioGroup>
-
-        <TextView
-            android:text="Columns:"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            />
-
-        <LinearLayout
-            android:id="@+id/fields"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
 
     </LinearLayout>
 
