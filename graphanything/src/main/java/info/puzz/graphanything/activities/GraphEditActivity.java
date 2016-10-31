@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +23,7 @@ import info.puzz.graphanything.R;
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphColumn;
 import info.puzz.graphanything.models.GraphType;
-import info.puzz.graphanything.utils.AssertUtils;
+import info.puzz.graphanything.utils.Asserts;
 
 
 public class GraphEditActivity extends BaseActivity {
@@ -46,8 +45,8 @@ public class GraphEditActivity extends BaseActivity {
     }
 
     public static void start(BaseActivity activity, Graph graph, Map<Integer, GraphColumn> columns) {
-        AssertUtils.assertNotNull(graph);
-        AssertUtils.assertNotNull(columns);
+        Asserts.assertNotNull(graph);
+        Asserts.assertNotNull(columns);
 
         Intent intent = new Intent(activity, GraphEditActivity.class);
         intent.putExtra(ARG_GRAPH, graph);
@@ -74,7 +73,7 @@ public class GraphEditActivity extends BaseActivity {
             }
         } else {
             columnsByColumnNumbers = (Map<Integer, GraphColumn>) getIntent().getExtras().getSerializable(ARG_GRAPH_COLUMNS);
-            AssertUtils.assertNotNull(columnsByColumnNumbers);
+            Asserts.assertNotNull(columnsByColumnNumbers);
         }
 
         setTitle(R.string.edit_graph);
@@ -116,7 +115,7 @@ public class GraphEditActivity extends BaseActivity {
             Button editGraphButton = (Button) graphColumnView.findViewById(R.id.edit_column);
 
             if (graphColumn == null) {
-                AssertUtils.assertNotNull(freeColumnNoFinal);
+                Asserts.assertNotNull(freeColumnNoFinal);
                 editGraphButton.setText(R.string.new_column);
                 editGraphButton.setOnClickListener(new View.OnClickListener() {
                     @Override

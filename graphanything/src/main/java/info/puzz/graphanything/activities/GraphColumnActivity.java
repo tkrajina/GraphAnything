@@ -21,13 +21,13 @@ import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphColumn;
 import info.puzz.graphanything.models.GraphUnitType;
 import info.puzz.graphanything.models.format.FormatException;
-import info.puzz.graphanything.utils.AssertUtils;
+import info.puzz.graphanything.utils.Asserts;
 
 public class GraphColumnActivity extends BaseActivity {
 
     private static final String ARG_GRAPH = "graph";
     private static final String ARG_GRAPH_COLUMNS = "graph_columns";
-    private static final String ARG_GRAPH_COLUMN_NO = "graph_column_NO";
+    private static final String ARG_GRAPH_COLUMN_NO = "graph_column_no";
 
     private EditText unitOfMeasurementEditText;
     private EditText unitOfMeasurementField;
@@ -40,9 +40,9 @@ public class GraphColumnActivity extends BaseActivity {
     private RadioGroup unitOfMeasurementRadioGroup;
 
     public static void start(BaseActivity activity, Graph graph, Map<Integer, GraphColumn> columns, int column) {
-        AssertUtils.assertNotNull(graph);
-        AssertUtils.assertNotNull(columns);
-        AssertUtils.assertTrue(columns.containsKey(column));
+        Asserts.assertNotNull(graph);
+        Asserts.assertNotNull(columns);
+        Asserts.assertTrue(columns.containsKey(column));
 
         Intent intent = new Intent(activity, GraphColumnActivity.class);
         intent.putExtra(ARG_GRAPH, graph);
@@ -60,13 +60,13 @@ public class GraphColumnActivity extends BaseActivity {
         graphColumns = (Map<Integer, GraphColumn>) getIntent().getExtras().get(ARG_GRAPH_COLUMNS);
         Integer graphColumnNo = (Integer) getIntent().getExtras().get(ARG_GRAPH_COLUMN_NO);
 
-        AssertUtils.assertNotNull(graphColumnNo);
-        AssertUtils.assertTrue(graphColumns.containsKey(graphColumnNo));
+        Asserts.assertNotNull(graphColumnNo);
+        Asserts.assertTrue(graphColumns.containsKey(graphColumnNo));
 
         this.graphColumnNo = graphColumnNo;
 
-        AssertUtils.assertNotNull(graph);
-        AssertUtils.assertNotNull(graphColumns);
+        Asserts.assertNotNull(graph);
+        Asserts.assertNotNull(graphColumns);
 
         columnNameEditText = (EditText) findViewById(R.id.column_name);
         unitOfMeasurementRadioGroup = (RadioGroup) findViewById(R.id.action_graph_properties_type_group);
@@ -163,7 +163,7 @@ public class GraphColumnActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                    AssertUtils.assertTrue(canBeRemoved());
+                    Asserts.assertTrue(canBeRemoved());
 
                     graphColumns.remove(graphColumnNo);
                     GraphEditActivity.start(GraphColumnActivity.this, graph, graphColumns);

@@ -37,7 +37,7 @@ import info.puzz.graphanything.models.GraphStats;
 import info.puzz.graphanything.models.GraphUnitType;
 import info.puzz.graphanything.models.format.FormatException;
 import info.puzz.graphanything.services.StatsCalculator;
-import info.puzz.graphanything.utils.AssertUtils;
+import info.puzz.graphanything.utils.Asserts;
 import info.puzz.graphanything.utils.Formatters;
 import info.puzz.graphanything.utils.ThreadUtils;
 import info.puzz.graphanything.utils.TimeUtils;
@@ -80,8 +80,8 @@ public class GraphActivity extends BaseActivity {
 
         timerTextView = (TextView) findViewById(R.id.timer);
         startStopTimerButton = (Button) findViewById(R.id.start_stop_timer);
-        AssertUtils.assertNotNull(timerTextView, "timer");
-        AssertUtils.assertNotNull(startStopTimerButton, "timer button");
+        Asserts.assertNotNull(timerTextView, "timer");
+        Asserts.assertNotNull(startStopTimerButton, "timer button");
 
         graph = (Graph) getIntent().getExtras().getSerializable(ARG_GRAPH);
         graphId = getIntent().getExtras().getLong(ARG_GRAPH_ID);

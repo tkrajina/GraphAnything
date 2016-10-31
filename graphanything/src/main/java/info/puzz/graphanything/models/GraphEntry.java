@@ -1,17 +1,16 @@
 package info.puzz.graphanything.models;
 
+import java.io.Serializable;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.installer.IdeFinder;
 
-/**
- * Created by puzz on 08.03.15..
- */
 @NoArgsConstructor
 @Data
 @Accessors(chain = true)
-public class GraphEntry {
+public class GraphEntry implements Serializable {
 
     public static final int COLUMNS_NO = 5;
 

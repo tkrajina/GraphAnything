@@ -85,7 +85,7 @@ public class GraphValueEditActivity extends BaseActivity implements CalendarChan
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_graph_value_properties, menu);
+        getMenuInflater().inflate(R.menu.menu_graph_edit, menu);
         return true;
     }
 

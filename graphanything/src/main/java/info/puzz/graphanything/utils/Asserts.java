@@ -6,9 +6,9 @@ import java.util.StringJoiner;
  * Created by puzz on 06/10/16.
  */
 
-public class AssertUtils {
+public class Asserts {
 
-    private AssertUtils() {
+    private Asserts() {
         throw new Error();
     }
 

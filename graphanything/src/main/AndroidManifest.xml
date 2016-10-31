@@ -41,7 +41,8 @@
         <activity
             android:name=".activities.HelpActivity"
             android:label="@string/title_activity_help" />
-        <activity android:name=".activities.GraphColumnActivity"></activity>
+        <activity android:name=".activities.GraphColumnActivity" />
+        <activity android:name=".activities.GraphEntryActivity"></activity>
     </application>
 
 </manifest>
