@@ -36,5 +36,7 @@
     <string name="delete_column">Delete column?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="comment_colon">Comment:</string>
+    <string name="created_colon">Created:</string>
 
 </resources>

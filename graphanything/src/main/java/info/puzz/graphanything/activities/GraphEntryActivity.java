@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import junit.framework.Assert;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +24,10 @@ import info.puzz.graphanything.models.FormatVariant;
 import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models.GraphColumn;
 import info.puzz.graphanything.models.GraphEntry;
+import info.puzz.graphanything.models.GraphUnitType;
 import info.puzz.graphanything.models.format.FormatException;
+import info.puzz.graphanything.utils.StringUtils;
+import info.puzz.graphanything.utils.TimeUtils;
 
 public class GraphEntryActivity extends BaseActivity {
 
@@ -35,6 +40,8 @@ public class GraphEntryActivity extends BaseActivity {
     private GraphEntry graphEntry;
     private List<GraphColumn> columns;
     private Map<Integer, EditText> columnViewsByColumnNo;
+    private EditText commentEditText;
+    private EditText createdtEditText;
 
     public static void start(BaseActivity activity, long graphId, GraphEntry entry) {
         Assert.assertNotNull(entry);
@@ -64,6 +71,10 @@ public class GraphEntryActivity extends BaseActivity {
         Assert.assertTrue(columns.size() > 0);
 
         columnsLinearLayout = (LinearLayout) findViewById(R.id.columns);
+        commentEditText = (EditText) findViewById(R.id.comment);
+        createdtEditText = (EditText) findViewById(R.id.created);
+        commentEditText.setText(graphEntry.getComment());
+        createdtEditText.setText(TimeUtils.YYYYMMDDHHMMSS_FORMATTER.format(new Timestamp(graphEntry.getCreated())));
 
         initStuff();
     }
@@ -84,10 +95,10 @@ public class GraphEntryActivity extends BaseActivity {
         for (GraphColumn column : columns) {
             View graphColumnView = getLayoutInflater().inflate(R.layout.fragment_graph_edit_column, null);
 
-            TextView columnLabelTextView = (TextView) graphColumnView.findViewById(R.id.column_label);
+            TextView columnLabelTextView = (TextView) graphColumnView.findViewById(R.id.comment_label);
             EditText columnValueTextView = (EditText) graphColumnView.findViewById(R.id.column_value);
 
-            columnLabelTextView.setText(column.getName() + ":");
+            columnLabelTextView.setText(column.getName() + (StringUtils.isEmpty(column.getUnit()) ? ":" : String.format(" [%s]", column.getUnit())));
             Double value = graphEntry.get(column.getColumnNo());
             columnValueTextView.setText(value == null ? "" : column.getGraphUnitType().format(value, FormatVariant.LONG));
 
@@ -114,6 +125,20 @@ public class GraphEntryActivity extends BaseActivity {
                         .show();
                 return;
             }
+        }
+
+        graphEntry.setComment(commentEditText.getText().toString());
+        String createdString = createdtEditText.getText().toString();
+        try {
+            graphEntry.setCreated(TimeUtils.YYYYMMDDHHMMSS_FORMATTER.parse(createdString).getTime());
+        } catch (ParseException e) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Invalid timestamp:" + createdString)
+                    .setMessage(e.getMessage())
+                    .setNeutralButton(android.R.string.ok, null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+            return;
         }
 
         getDAO().save(graphEntry);
