@@ -11,8 +11,8 @@ import java.util.List;
 import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.activities.GraphValuesActivity;
 import info.puzz.graphanything.dao.DAO;
-import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models.GraphEntry;
+import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphEntry;
 
 /**
  * A fragment representing a list of Items.

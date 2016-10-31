@@ -1,4 +1,4 @@
-package info.puzz.graphanything.models.format;
+package info.puzz.graphanything.models2.format;
 
 import java.util.concurrent.TimeUnit;
 

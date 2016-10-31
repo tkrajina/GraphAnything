@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 import info.puzz.graphanything.R;
-import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models.GraphColumn;
-import info.puzz.graphanything.models.GraphType;
+import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphColumn;
+import info.puzz.graphanything.models2.GraphType;
 
 
 public class GraphEditActivity extends BaseActivity {

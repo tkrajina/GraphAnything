@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models.GraphEntry;
-import info.puzz.graphanything.models.GraphStats;
-import info.puzz.graphanything.models.GraphType;
+import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphEntry;
+import info.puzz.graphanything.models2.GraphStats;
+import info.puzz.graphanything.models2.GraphType;
 
 /**
  * Created by puzz on 08/10/16.

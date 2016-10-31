@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,8 +12,8 @@ import android.widget.EditText;
 import java.util.List;
 
 import info.puzz.graphanything.R;
-import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models.GraphEntry;
+import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphEntry;
 import info.puzz.graphanything.services.ExportImportUtils;
 
 public class RawGraphDataActivity extends BaseActivity {

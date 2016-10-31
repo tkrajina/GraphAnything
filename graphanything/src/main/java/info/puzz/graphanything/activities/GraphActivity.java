@@ -1,7 +1,6 @@
 package info.puzz.graphanything.activities;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -12,11 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LabelFormatter;
@@ -32,12 +29,12 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import info.puzz.graphanything.R;
-import info.puzz.graphanything.models.FormatVariant;
-import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models.GraphEntry;
-import info.puzz.graphanything.models.GraphStats;
-import info.puzz.graphanything.models.GraphUnitType;
-import info.puzz.graphanything.models.format.FormatException;
+import info.puzz.graphanything.models2.FormatVariant;
+import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphEntry;
+import info.puzz.graphanything.models2.GraphStats;
+import info.puzz.graphanything.models2.GraphUnitType;
+import info.puzz.graphanything.models2.format.FormatException;
 import info.puzz.graphanything.services.StatsCalculator;
 import info.puzz.graphanything.utils.Formatters;
 import info.puzz.graphanything.utils.ThreadUtils;

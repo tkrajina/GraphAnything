@@ -20,12 +20,11 @@ import java.util.List;
 import java.util.Map;
 
 import info.puzz.graphanything.R;
-import info.puzz.graphanything.models.FormatVariant;
-import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models.GraphColumn;
-import info.puzz.graphanything.models.GraphEntry;
-import info.puzz.graphanything.models.GraphUnitType;
-import info.puzz.graphanything.models.format.FormatException;
+import info.puzz.graphanything.models2.FormatVariant;
+import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphColumn;
+import info.puzz.graphanything.models2.GraphEntry;
+import info.puzz.graphanything.models2.format.FormatException;
 import info.puzz.graphanything.utils.StringUtils;
 import info.puzz.graphanything.utils.TimeUtils;
 

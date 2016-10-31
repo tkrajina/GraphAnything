@@ -1,11 +1,10 @@
-package info.puzz.graphanything.models;
+package info.puzz.graphanything.models2;
 
 import java.io.Serializable;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import lombok.installer.IdeFinder;
 
 @NoArgsConstructor
 @Data

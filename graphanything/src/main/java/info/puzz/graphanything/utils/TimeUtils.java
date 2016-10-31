@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
 import info.puzz.graphanything.Constants;
-import info.puzz.graphanything.models.FormatVariant;
+import info.puzz.graphanything.models2.FormatVariant;
 
 /**
  * Created by puzz on 06/10/16.

@@ -1,17 +1,16 @@
 package info.puzz.graphanything.services;
 
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import info.puzz.graphanything.Constants;
-import info.puzz.graphanything.models.FormatVariant;
-import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models.GraphEntry;
-import info.puzz.graphanything.models.GraphUnitType;
-import info.puzz.graphanything.models.format.FormatException;
+import info.puzz.graphanything.models2.FormatVariant;
+import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphEntry;
+import info.puzz.graphanything.models2.GraphUnitType;
+import info.puzz.graphanything.models2.format.FormatException;
 
 /**
  * Created by puzz on 18.04.15..

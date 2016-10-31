@@ -13,9 +13,9 @@ import java.util.concurrent.TimeUnit;
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.activities.GraphActivity;
-import info.puzz.graphanything.models.FormatVariant;
-import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models.GraphUnitType;
+import info.puzz.graphanything.models2.FormatVariant;
+import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphUnitType;
 import info.puzz.graphanything.utils.TimeUtils;
 
 public class GraphArrayAdapter extends ArrayAdapter<Graph> {

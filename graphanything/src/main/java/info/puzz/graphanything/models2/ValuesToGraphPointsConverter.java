@@ -1,4 +1,4 @@
-package info.puzz.graphanything.models;
+package info.puzz.graphanything.models2;
 
 import com.jjoe64.graphview.series.DataPoint;
 

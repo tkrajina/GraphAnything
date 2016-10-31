@@ -1,9 +1,9 @@
-package info.puzz.graphanything.models;
+package info.puzz.graphanything.models2;
 
-import info.puzz.graphanything.models.format.DoubleFormatter;
-import info.puzz.graphanything.models.format.FormatException;
-import info.puzz.graphanything.models.format.FormatterParser;
-import info.puzz.graphanything.models.format.TimeFormatter;
+import info.puzz.graphanything.models2.format.DoubleFormatter;
+import info.puzz.graphanything.models2.format.FormatException;
+import info.puzz.graphanything.models2.format.FormatterParser;
+import info.puzz.graphanything.models2.format.TimeFormatter;
 import lombok.Getter;
 
 /**

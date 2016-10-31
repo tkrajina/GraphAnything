@@ -6,14 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models.GraphColumn;
-import info.puzz.graphanything.models.GraphEntry;
+import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphColumn;
+import info.puzz.graphanything.models2.GraphEntry;
 import nl.qbusict.cupboard.QueryResultIterable;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;

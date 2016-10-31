@@ -8,14 +8,15 @@ import android.util.Log;
 import java.text.ParseException;
 import java.util.List;
 
-import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models.GraphColumn;
-import info.puzz.graphanything.models.GraphEntry;
-import info.puzz.graphanything.models.GraphType;
-import info.puzz.graphanything.models.GraphUnitType;
-import info.puzz.graphanything.models.GraphValue;
-import info.puzz.graphanything.models.format.FormatException;
+import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphColumn;
+import info.puzz.graphanything.models2.GraphEntry;
+import info.puzz.graphanything.models2.GraphType;
+import info.puzz.graphanything.models2.GraphUnitType;
+import info.puzz.graphanything.models2.GraphValue;
+import info.puzz.graphanything.models2.format.FormatException;
 import info.puzz.graphanything.services.ExportImportUtils;
+import nl.qbusict.cupboard.Cupboard;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
@@ -24,10 +25,13 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = DatabaseOpenHelper.class.getSimpleName();
 
     static {
-        // register our models
+        // Deprecated:
+        cupboard().register(info.puzz.graphanything.models.Graph.class);
+        cupboard().register(GraphValue.class);
+
+        // New:
         cupboard().register(Graph.class);
         cupboard().register(GraphEntry.class);
-        cupboard().register(GraphValue.class);
         cupboard().register(GraphColumn.class);
     }
 
@@ -61,26 +65,46 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
         cupboard().withDatabase(db).upgradeTables();
 
         if (oldVersion < 7) {
-            for (Graph graph : cupboard().withDatabase(db).query(Graph.class).list()) {
-                GraphColumn column = new GraphColumn()
-                        .setGraphId(graph._id)
-                        .setColumnNo(0)
-                        .setGoal(graph.goal)
-                        .setGoalEstimateDays(graph.goalEstimateDays)
-                        .setName(graph.name)
-                        .setUnit(graph.unit)
-                        .setUnitType(graph.unitType);
-                cupboard().withDatabase(db).put(column);
-            }
+            upgradeToMulticolumn(db);
+        }
+    }
 
-            for (GraphValue graphValue : cupboard().withDatabase(db).query(GraphValue.class).list()) {
-                GraphEntry entry = new GraphEntry()
-                        .setGraphId(graphValue.graphId)
-                        .setCreated(graphValue.created)
-                        .set(0, graphValue.value);
-                cupboard().withDatabase(db).put(entry);
-                cupboard().withDatabase(db).delete(graphValue);
-            }
+    /**
+     * Note, old models are stored with {@link info.puzz.graphanything.models.Graph} but the values
+     * are still stored in the database (TODO: Remove later).
+     */
+    private void upgradeToMulticolumn(SQLiteDatabase db) {
+        for (Graph oldGraph : cupboard().withDatabase(db).query(Graph.class).list()) {
+            Graph graph = new Graph()
+                    .setName(oldGraph.getName())
+                    .setUnit(oldGraph.getUnit())
+                    .setLastValue(oldGraph.getLastValue())
+                    .setLastValueCreated(oldGraph.getLastValueCreated())
+                    .setTimerStarted(oldGraph.getTimerStarted())
+                    .setType(oldGraph.getType())
+                    .setUnitType(oldGraph.getUnitType())
+                    .setStatsPeriod(oldGraph.getStatsPeriod())
+                    .setGoal(oldGraph.getGoal())
+                    .setGoalEstimateDays(oldGraph.getGoalEstimateDays());
+            GraphColumn column = new GraphColumn()
+                    .setGraphId(oldGraph._id)
+                    .setColumnNo(0)
+                    .setGoal(oldGraph.goal)
+                    .setGoalEstimateDays(oldGraph.goalEstimateDays)
+                    .setName(oldGraph.name)
+                    .setUnit(oldGraph.unit)
+                    .setUnitType(oldGraph.unitType);
+
+            cupboard().withDatabase(db).put(graph);
+            cupboard().withDatabase(db).put(column);
+        }
+
+        for (GraphValue graphValue : cupboard().withDatabase(db).query(GraphValue.class).list()) {
+            GraphEntry entry = new GraphEntry()
+                    .setGraphId(graphValue.graphId)
+                    .setCreated(graphValue.created)
+                    .set(0, graphValue.value);
+            cupboard().withDatabase(db).put(entry);
         }
     }
 

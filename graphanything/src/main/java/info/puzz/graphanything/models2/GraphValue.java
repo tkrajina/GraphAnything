@@ -1,11 +1,11 @@
-package info.puzz.graphanything.models;
+package info.puzz.graphanything.models2;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
  * @deprecated
- * @see info.puzz.graphanything.models2.GraphEntry
+ * @see GraphEntry
  */
 @NoArgsConstructor
 @Data

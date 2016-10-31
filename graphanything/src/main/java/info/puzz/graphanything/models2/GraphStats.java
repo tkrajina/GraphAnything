@@ -1,4 +1,4 @@
-package info.puzz.graphanything.models;
+package info.puzz.graphanything.models2;
 
 import lombok.Data;
 

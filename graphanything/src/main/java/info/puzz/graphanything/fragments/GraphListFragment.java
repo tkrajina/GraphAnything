@@ -11,7 +11,7 @@ import java.util.List;
 
 import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.dao.DAO;
-import info.puzz.graphanything.models.Graph;
+import info.puzz.graphanything.models2.Graph;
 
 public class GraphListFragment extends ListFragment {
 

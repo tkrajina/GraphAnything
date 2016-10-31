@@ -1,10 +1,10 @@
-package info.puzz.graphanything.models.format;
+package info.puzz.graphanything.models2.format;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
-import info.puzz.graphanything.models.FormatVariant;
+import info.puzz.graphanything.models2.FormatVariant;
 
 /**
  * Created by puzz on 11/10/16.

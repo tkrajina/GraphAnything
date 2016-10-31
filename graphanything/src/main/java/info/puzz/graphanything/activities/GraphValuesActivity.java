@@ -7,8 +7,8 @@ import android.view.MenuItem;
 
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.fragments.GraphValueFragment;
-import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models.GraphEntry;
+import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphEntry;
 
 
 public class GraphValuesActivity extends BaseActivity implements GraphValueFragment.OnFragmentInteractionListener {

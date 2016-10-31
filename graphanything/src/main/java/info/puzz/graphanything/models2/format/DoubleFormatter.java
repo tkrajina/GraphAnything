@@ -1,4 +1,4 @@
-package info.puzz.graphanything.models.format;
+package info.puzz.graphanything.models2.format;
 
 import info.puzz.graphanything.Constants;
 import info.puzz.graphanything.models2.FormatVariant;
