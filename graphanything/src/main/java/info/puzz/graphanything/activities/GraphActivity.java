@@ -70,12 +70,6 @@ public class GraphActivity extends BaseActivity {
         activity.startActivity(intent);
     }
 
-    public static void start(BaseActivity activity, GraphInfo graph) {
-        Intent intent = new Intent(activity, GraphActivity.class);
-        intent.putExtra(GraphActivity.ARG_GRAPH, graph);
-        activity.startActivity(intent);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
