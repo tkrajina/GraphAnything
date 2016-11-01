@@ -39,5 +39,6 @@
     <string name="comment_colon">Comment:</string>
     <string name="created_colon">Created:</string>
     <string name="fields_colon">Numeric fields:</string>
+    <string name="select_field_colon">Select field:</string>
 
 </resources>

@@ -2,6 +2,7 @@ package info.puzz.graphanything.models2;
 
 import java.io.Serializable;
 
+import info.puzz.graphanything.utils.StringUtils;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -44,4 +45,7 @@ public class GraphColumn implements Serializable {
         return GraphUnitType.findByType(unitType);
     }
 
+    public String formatName() {
+        return getName() + (StringUtils.isEmpty(getUnit()) ? "" : String.format(" [%s]", getUnit()));
+    }
 }

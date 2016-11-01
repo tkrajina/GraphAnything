@@ -11,8 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
@@ -30,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.models2.FormatVariant;
+import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphEntry;
 import info.puzz.graphanything.models2.GraphStats;
@@ -49,14 +52,17 @@ public class GraphActivity extends BaseActivity {
     public static final String ARG_GRAPH_ID = "graph_id";
     public static final String ARG_GRAPH = "graph";
 
-    private GraphInfo graph;
     private Long graphId;
+    private GraphInfo graph;
+    private List<GraphColumn> graphColumns;
 
     private TextView timerTextView;
     private Button startStopTimerButton;
 
     private boolean activityActive;
     private Float graphFontSize = null;
+    private View fieldSelectorGroup;
+    private Spinner fieldSpinner;
 
     public static void start(BaseActivity activity, long graphId) {
         Intent intent = new Intent(activity, GraphActivity.class);
@@ -77,18 +83,40 @@ public class GraphActivity extends BaseActivity {
         setContentView(R.layout.activity_graph);
 
         timerTextView = (TextView) findViewById(R.id.timer);
-        startStopTimerButton = (Button) findViewById(R.id.start_stop_timer);
         Assert.assertNotNull(timerTextView);
+        startStopTimerButton = (Button) findViewById(R.id.start_stop_timer);
         Assert.assertNotNull(startStopTimerButton);
+        fieldSelectorGroup = findViewById(R.id.field_selector_group);
+        Assert.assertNotNull(fieldSelectorGroup);
+        fieldSpinner = (Spinner) findViewById(R.id.field_selector);
+        Assert.assertNotNull(fieldSpinner);
 
         graph = (GraphInfo) getIntent().getExtras().getSerializable(ARG_GRAPH);
         graphId = getIntent().getExtras().getLong(ARG_GRAPH_ID);
         if (graphId == null && graph == null) {
             throw new Error(getClass().getSimpleName() + " without graphId and graph");
         }
+        graphColumns = getDAO().getColumns(graphId);
+
+        prepareFieldSpinner();
 
         // Prevent opening the keyboard every time (since the text fiels will have the focus by default):
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    private void prepareFieldSpinner() {
+        if (graphColumns.size() <= 1) {
+            return;
+        }
+
+        String[] fieldsArr = new String[graphColumns.size()];
+        for (int i = 0; i < graphColumns.size(); i++) {
+            fieldsArr[i] = graphColumns.get(i).formatName();
+        }
+
+        fieldSelectorGroup.setVisibility(View.VISIBLE);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, fieldsArr);
+        fieldSpinner.setAdapter(adapter);
     }
 
     @Override

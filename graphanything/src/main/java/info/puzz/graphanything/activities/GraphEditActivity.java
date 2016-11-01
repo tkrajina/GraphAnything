@@ -134,7 +134,7 @@ public class GraphEditActivity extends BaseActivity {
                 });
 
                 TextView graphColumnTextView = (TextView) graphColumnView.findViewById(R.id.graph_column_description);
-                graphColumnTextView.setText(String.format("%s [%s]", graphColumn.getName(), graphColumn.getUnit()));
+                graphColumnTextView.setText(graphColumn.formatName() + ":");
                 editGraphButton.setText(R.string.change);
                 //editGraphButton.setText(R.string.enable);
             }

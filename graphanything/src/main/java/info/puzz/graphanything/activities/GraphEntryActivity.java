@@ -97,7 +97,7 @@ public class GraphEntryActivity extends BaseActivity {
             TextView columnLabelTextView = (TextView) graphColumnView.findViewById(R.id.comment_label);
             EditText columnValueTextView = (EditText) graphColumnView.findViewById(R.id.column_value);
 
-            columnLabelTextView.setText(column.getName() + (StringUtils.isEmpty(column.getUnit()) ? ":" : String.format(" [%s]", column.getUnit())));
+            columnLabelTextView.setText(column.formatName() + ":");
             Double value = graphEntry.get(column.getColumnNo());
             columnValueTextView.setText(value == null ? "" : column.getGraphUnitType().format(value, FormatVariant.LONG));
 

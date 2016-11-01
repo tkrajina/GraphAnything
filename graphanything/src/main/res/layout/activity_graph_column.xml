@@ -32,17 +32,17 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
-        <TextView
-            android:id="@+id/measurement_type"
-            android:text="Measurement type:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
         <RadioGroup
             android:id="@+id/action_graph_properties_type_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/measurement_type"
+                android:text="Measurement type:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <RadioButton
                 android:id="@+id/graph_properties__unit_type_1"

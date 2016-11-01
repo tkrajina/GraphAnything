@@ -79,11 +79,7 @@ public class GraphColumnActivity extends BaseActivity {
         unitOfMeasurementField = (EditText) findViewById(R.id.unit_of_measurement);
         goalEditText = (EditText) findViewById(R.id.goal);
 
-        if (graphColumnNo == 0) {
-        } else {
-            unitOfMeasurementRadioGroup.setVisibility(View.GONE);
-            measurementTypeTextView.setVisibility(View.GONE);
-        }
+        unitOfMeasurementRadioGroup.setVisibility(graphColumnNo == 0 ? View.VISIBLE : View.GONE);
 
         unitOfMeasurementField.setText(getCurrentGraphColumn().unit == null ? "" : getCurrentGraphColumn().unit);
         goalEditText.setText(getCurrentGraphColumn().calculateGoal() ? getCurrentGraphColumn().getGraphUnitType().format(getCurrentGraphColumn().goal, FormatVariant.LONG) : "");
