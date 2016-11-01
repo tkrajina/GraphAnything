@@ -84,7 +84,7 @@ public class RawGraphDataActivity extends BaseActivity {
                 getDAO().addEntry(entry);
             }
 
-            GraphActivity.start(this, graphId);
+            GraphActivity.start(this, graphId, 0);
         } catch (Exception e) {
             new AlertDialog.Builder(this)
                     .setTitle("Invalid value")

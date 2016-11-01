@@ -8,6 +8,7 @@ import android.util.Log;
 import java.text.ParseException;
 import java.util.List;
 
+import info.puzz.graphanything.models.Graph;
 import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphEntry;
@@ -73,19 +74,19 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
      * are still stored in the database (TODO: Remove later).
      */
     private void upgradeToMulticolumn(SQLiteDatabase db) {
-        for (GraphInfo oldGraph : cupboard().withDatabase(db).query(GraphInfo.class).list()) {
+        for (Graph oldGraph : cupboard().withDatabase(db).query(Graph.class).list()) {
             GraphInfo graph = new GraphInfo()
                     .setName(oldGraph.getName())
-                    .setUnit(oldGraph.getUnit())
+                    //.setUnit(oldGraph.getUnit())
                     .setLastValue(oldGraph.getLastValue())
                     .setLastValueCreated(oldGraph.getLastValueCreated())
                     .setTimerStarted(oldGraph.getTimerStarted())
                     .setType(oldGraph.getType())
-                    .setUnitType(oldGraph.getUnitType())
-                    .setStatsPeriod(oldGraph.getStatsPeriod())
-                    .setGoal(oldGraph.getGoal())
-                    .setGoalEstimateDays(oldGraph.getGoalEstimateDays());
-            GraphColumn column = new GraphColumn()
+                    //.setUnitType(oldGraph.getUnitType())
+                    .setStatsPeriod(oldGraph.getStatsPeriod());
+                    //.setGoal(oldGraph.getGoal())
+                    //.setGoalEstimateDays(oldGraph.getGoalEstimateDays());
+            GraphColumn firstColumn = new GraphColumn()
                     .setGraphId(oldGraph._id)
                     .setColumnNo(0)
                     .setGoal(oldGraph.goal)
@@ -95,7 +96,7 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
                     .setUnitType(oldGraph.unitType);
 
             cupboard().withDatabase(db).put(graph);
-            cupboard().withDatabase(db).put(column);
+            cupboard().withDatabase(db).put(firstColumn);
         }
 
         for (GraphValue graphValue : cupboard().withDatabase(db).query(GraphValue.class).list()) {
@@ -109,8 +110,8 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     private void importSampleGraphs(SQLiteDatabase db) throws ParseException {
         {
-            GraphInfo graph = new GraphInfo();
-            graph.name = "EXAMPLE: My weight";
+            GraphInfo graph = new GraphInfo()
+                    .setName("EXAMPLE: My weight");
             String data = "2016-8-14T9:27:11|\t95.1\n" +
                     "2016-8-22T8:40:45|\t92.1\n" +
                     "2016-8-31T8:30:12|\t91.1\n" +
@@ -146,10 +147,9 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
             }
         }
         {
-            GraphInfo graph = new GraphInfo();
-            graph.name = "EXAMPLE: Project time";
-            graph.unitType = GraphUnitType.TIMER.getType();
-            graph.type = GraphType.SUM_ALL_PREVIOUS.getType();
+            GraphInfo graph = new GraphInfo()
+                    .setName("EXAMPLE: Project time")
+                    .setType(GraphType.SUM_ALL_PREVIOUS.getType());
             String data = "2016-10-10T15:18:33|00:37:17\n" +
                     "2016-10-10T15:26:44|00:05:39\n" +
                     "2016-10-10T15:32:37|00:02:31\n" +

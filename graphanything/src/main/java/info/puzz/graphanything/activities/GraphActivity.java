@@ -34,8 +34,8 @@ import java.util.concurrent.TimeUnit;
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.models2.FormatVariant;
 import info.puzz.graphanything.models2.GraphColumn;
-import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphEntry;
+import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphStats;
 import info.puzz.graphanything.models2.GraphUnitType;
 import info.puzz.graphanything.models2.format.FormatException;
@@ -57,7 +57,7 @@ public class GraphActivity extends BaseActivity {
     private Long graphId;
     private GraphInfo graph;
     private List<GraphColumn> graphColumns;
-    private int columnNo;
+    private GraphColumn currentGraphColumn;
 
     private TextView timerTextView;
     private Button startStopTimerButton;
@@ -92,7 +92,15 @@ public class GraphActivity extends BaseActivity {
         graphId = getIntent().getExtras().getLong(ARG_GRAPH_ID);
         Assert.assertNotNull(graphId);
         graphColumns = getDAO().getColumns(graphId);
-        columnNo = getIntent().getExtras().getInt(ARG_COLUMN_NO);
+        int columnNo = getIntent().getExtras().getInt(ARG_COLUMN_NO);
+        for (GraphColumn graphColumn : graphColumns) {
+            if (graphColumn.getColumnNo() == columnNo) {
+                currentGraphColumn = graphColumn;
+            }
+        }
+        Assert.assertNotNull(currentGraphColumn);
+
+        graph = getDAO().loadGraph(graphId);
 
         prepareFieldSpinner();
 
@@ -118,7 +126,7 @@ public class GraphActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 GraphColumn selectedColumn = graphColumns.get(position);
-                if (selectedColumn.getColumnNo() != columnNo) {
+                if (selectedColumn.getColumnNo() != currentGraphColumn.getColumnNo()) {
                     Log.i(TAG, "Selected column:" + selectedColumn);
                 }
             }
@@ -140,11 +148,9 @@ public class GraphActivity extends BaseActivity {
         super.onResume();
         activityActive = true;
 
-        graph = getDAO().loadGraph(graphId);
-
         setTitle(graph.name);
 
-        boolean isTimer = graph.unitType == GraphUnitType.TIMER.getType();
+        boolean isTimer = currentGraphColumn.getGraphUnitType() == GraphUnitType.TIMER;
         findViewById(R.id.timer_value_group).setVisibility(isTimer ? View.VISIBLE : View.GONE);
         findViewById(R.id.unit_value_group).setVisibility(isTimer ? View.GONE : View.VISIBLE);
 
@@ -186,7 +192,7 @@ public class GraphActivity extends BaseActivity {
 
         double value;
         try {
-            value = graph.getGraphUnitType().parse(text);
+            value = currentGraphColumn.getGraphUnitType().parse(text);
         } catch (FormatException e) {
             new AlertDialog.Builder(this)
                     .setTitle("Invalid value")
@@ -223,7 +229,7 @@ public class GraphActivity extends BaseActivity {
 
         graphView.removeAllSeries();
 
-        final GraphUnitType graphUnitType = graph.getGraphUnitType();
+        final GraphUnitType graphUnitType = currentGraphColumn.getGraphUnitType();
         graphView.getGridLabelRenderer().setLabelFormatter(new LabelFormatter() {
             Calendar cal = Calendar.getInstance();
             @Override
@@ -265,10 +271,11 @@ public class GraphActivity extends BaseActivity {
             graph.lastValueCreated = latestValue.created;
 
         }
-        if (graph.calculateGoal() && stats.getGoalEstimateDays() != null) {
-            graph.goalEstimateDays = stats.getGoalEstimateDays();
+        if (currentGraphColumn.calculateGoal() && stats.getGoalEstimateDays() != null) {
+            currentGraphColumn.goalEstimateDays = stats.getGoalEstimateDays();
         }
         getDAO().save(graph);
+        getDAO().save(currentGraphColumn);
 
         t.time("before getting graph points");
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(dataPoints.toArray(new DataPoint[dataPoints.size()]));
@@ -279,9 +286,9 @@ public class GraphActivity extends BaseActivity {
         double minY = series.getLowestValueY();
         double maxY = series.getHighestValueY();
 
-        if (graph.calculateGoal() && showGoal) {
-            minY = Math.min(minY, graph.goal);
-            maxY = Math.max(maxY, graph.goal);
+        if (currentGraphColumn.calculateGoal() && showGoal) {
+            minY = Math.min(minY, currentGraphColumn.goal);
+            maxY = Math.max(maxY, currentGraphColumn.goal);
 
             long goalTime = stats.getGoalTime();
 
@@ -298,8 +305,8 @@ public class GraphActivity extends BaseActivity {
 
             // Goal line:
             LineGraphSeries<DataPoint> goalSeries = new LineGraphSeries<>(new DataPoint[] {
-                    new DataPoint(minX, graph.goal),
-                    new DataPoint(maxX, graph.goal),
+                    new DataPoint(minX, currentGraphColumn.goal),
+                    new DataPoint(maxX, currentGraphColumn.goal),
             });
             goalSeries.setThickness(2);
             goalSeries.setColor(0xffff9c00);
@@ -371,8 +378,8 @@ public class GraphActivity extends BaseActivity {
         ((TextView) findViewById(R.id.last_preriod_sum_value)).setText(graphUnitType.format(stats.getSumLatestPeriod(), horizontal ? FormatVariant.LONG : FormatVariant.SHORT));
         ((TextView) findViewById(R.id.previous_period_sum_value)).setText(graphUnitType.format(stats.getSumPreviousPeriod(), horizontal ? FormatVariant.LONG : FormatVariant.SHORT));
 
-        if (graph.calculateGoal()) {
-            ((TextView) findViewById(R.id.goal)).setText(graphUnitType.format(graph.goal, FormatVariant.LONG));
+        if (currentGraphColumn.calculateGoal()) {
+            ((TextView) findViewById(R.id.goal)).setText(graphUnitType.format(currentGraphColumn.goal, FormatVariant.LONG));
 
             String estimate = "n/a";
             if (stats.getGoalEstimateDays() != null && stats.getGoalEstimateDays().floatValue() >= 0) {
@@ -410,7 +417,7 @@ public class GraphActivity extends BaseActivity {
     }
 
     public void onStartStop(View view) {
-        if (graph.unitType != GraphUnitType.TIMER.getType()) {
+        if (currentGraphColumn.unitType != GraphUnitType.TIMER.getType()) {
             return;
         }
         if (graph.isTimeActive()) {

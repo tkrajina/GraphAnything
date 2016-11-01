@@ -196,8 +196,6 @@ public class GraphEditActivity extends BaseActivity {
     public void saveGraphProperties(MenuItem item) {
         graph.name = graphNameEditText.getText().toString();
 
-        graph.goal = null;
-
         Map<Integer, GraphColumn> currentColumns = getDAO().getColumnsByColumnNo(graph._id);
         for (Map.Entry<Integer, GraphColumn> e : currentColumns.entrySet()) {
             if (!columnsByColumnNumbers.containsKey(e.getKey())) {
@@ -210,7 +208,7 @@ public class GraphEditActivity extends BaseActivity {
         }
         getDAO().save(graph);
 
-        GraphActivity.start(this, graph._id);
+        GraphActivity.start(this, graph._id, 0);
 
         Toast.makeText(this, "GraphInfo saved", Toast.LENGTH_SHORT).show();
     }

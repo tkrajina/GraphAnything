@@ -17,8 +17,8 @@ public class GraphInfo implements Serializable {
     public Long _id;
     public String name;
 
-    /** @deprecated See {@link GraphColumn} */
-    public String unit;
+    ///** @deprecated See {@link GraphColumn} */
+    //public String unit;
 
     public double lastValue;
     public long lastValueCreated;
@@ -29,49 +29,49 @@ public class GraphInfo implements Serializable {
 
     public int type = GraphType.VALUES.getType();
 
-    /** @deprecated See {@link GraphColumn} */
-    public int unitType = GraphUnitType.UNIT.getType();
+    ///** @deprecated See {@link GraphColumn} */
+    //public int unitType = GraphUnitType.UNIT.getType();
 
     /**
      * Used for statistics (calculate current and last sample days) and goal calculation.
      */
     public int statsPeriod = DEFAULT_STATS_SAMPLE_DAYS;
 
-    /** @deprecated See {@link GraphColumn} */
-    public Double goal;
+    ///** @deprecated See {@link GraphColumn} */
+    //public Double goal;
 
-    /**
+/*    *//**
      * Number of days to reach goal. It is calculated by comparing the average in the current
      * and previous interval ({@link #statsPeriod} days).
      *
      * If it's negative then the value is diverging from the goal.
      *
      * @deprecated See {@link GraphColumn}
-     */
-    public float goalEstimateDays;
+     *//*
+    public float goalEstimateDays;*/
 
     @Override
     public String toString() {
         return name;
     }
 
-    @Deprecated
+/*    @Deprecated
     public boolean calculateGoal() {
         return goal != null;
-    }
+    }*/
 
     public boolean isTimeActive() {
         return timerStarted > 0;
     }
 
-    public String formatValueWithUnit(double value, FormatVariant variant) {
+/*    public String formatValueWithUnit(double value, FormatVariant variant) {
         return getGraphUnitType().format(value, variant);
-    }
+    }*/
 
-    @Deprecated
+/*    @Deprecated
     public GraphUnitType getGraphUnitType() {
         return GraphUnitType.findByType(unitType);
-    }
+    }*/
 
     public GraphType getGraphType() {
         return GraphType.findByType(type);

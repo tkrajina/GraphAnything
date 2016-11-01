@@ -143,6 +143,6 @@ public class GraphEntryActivity extends BaseActivity {
         getDAO().save(graphEntry);
 
         Toast.makeText(this, "Value added", Toast.LENGTH_SHORT).show();
-        GraphActivity.start(this, graph._id);
+        GraphActivity.start(this, graph._id, 0);
     }
 }
