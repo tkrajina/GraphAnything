@@ -7,10 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.Map;
+
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.activities.GraphEntryActivity;
 import info.puzz.graphanything.models2.FormatVariant;
+import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphEntry;
 import info.puzz.graphanything.utils.TimeUtils;
@@ -19,12 +22,14 @@ public class GraphValueArrayAdapter extends ArrayAdapter<GraphEntry> {
     private final Context context;
     private final GraphEntry[] values;
     private final GraphInfo graph;
+    private final GraphColumn column;
 
-    public GraphValueArrayAdapter(Context context, GraphInfo graph, GraphEntry[] values) {
+    public GraphValueArrayAdapter(Context context, GraphInfo graph, GraphEntry[] values, Map<Integer, GraphColumn> columns) {
         super(context, R.layout.graph, values);
         this.context = context;
         this.graph = graph;
         this.values = values;
+        this.column = columns.get(0);
     }
 
     @Override
@@ -36,7 +41,7 @@ public class GraphValueArrayAdapter extends ArrayAdapter<GraphEntry> {
         final GraphEntry graphEntry = values[position];
 
         TextView titleView = (TextView) rowView.findViewById(R.id.graph_value_title);
-        titleView.setText(graph.formatValueWithUnit(graphEntry.get(0), FormatVariant.LONG));
+        titleView.setText(column.formatValueWithUnit(graphEntry.get(0), FormatVariant.LONG));
 
         TextView valueCreatedTextView = (TextView) rowView.findViewById(R.id.graph_value_subtitle_created);
         valueCreatedTextView.setText(TimeUtils.formatTimeAgoString(graphEntry.created));

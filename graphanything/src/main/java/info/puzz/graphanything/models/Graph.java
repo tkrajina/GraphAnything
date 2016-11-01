@@ -48,7 +48,7 @@ public class Graph {
         return name;
     }
 
-    public boolean calculateGoal() {
+/*    public boolean calculateGoal() {
         return goal != null;
     }
 
@@ -58,7 +58,7 @@ public class Graph {
 
     public String formatValueWithUnit(double value, FormatVariant variant) {
         return getGraphUnitType().format(value, variant);
-    }
+    }*/
 
     public GraphUnitType getGraphUnitType() {
         for (GraphUnitType t : GraphUnitType.values()) {

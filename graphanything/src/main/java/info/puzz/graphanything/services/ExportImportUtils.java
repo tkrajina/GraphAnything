@@ -23,24 +23,24 @@ public class ExportImportUtils {
     public static final String DELIMITER_REGEX = "\\" + DELIMITER;
 
     public static String exportGraph(GraphInfo graph, List<GraphEntry> entry) throws Exception {
-        GraphUnitType graphUnitType = graph.getGraphUnitType();
-        StringBuilder res = new StringBuilder();
-
-        for (GraphEntry value : entry) {
-            if (res.length() > 0) {
-                res.append('\n');
-            }
-
-            res.append(FORMATTER.format(value.created));
-            res.append(DELIMITER);
-            res.append(graphUnitType.format(value.get(0), FormatVariant.LONG));
-        }
-
-        return res.toString();
+        return null;
+//        GraphUnitType graphUnitType = graph.getGraphUnitType();
+//        StringBuilder res = new StringBuilder();
+//
+//        for (GraphEntry value : entry) {
+//            if (res.length() > 0) {
+//                res.append('\n');
+//            }
+//
+//            res.append(FORMATTER.format(value.created));
+//            res.append(DELIMITER);
+//            res.append(graphUnitType.format(value.get(0), FormatVariant.LONG));
+//        }
+//
+//        return res.toString();
     }
 
-    public static List<GraphEntry> importGraph(GraphInfo graph, String data) throws FormatException {
-        GraphUnitType graphUnitType = graph.getGraphUnitType();
+    public static List<GraphEntry> importGraph(GraphInfo graph, String data, GraphUnitType graphUnitType) throws FormatException {
         List<GraphEntry> res = new ArrayList<GraphEntry>();
         String[] lines = data.split("\n");
         for (String line : lines) {
@@ -90,7 +90,7 @@ public class ExportImportUtils {
                 "2016-10-3T10:26:52|\t85.6\n" +
                 "2016-10-5T8:57:07|\t87.6\n" +
                 "2016-10-6T8:01:01|\t87.2\n" +
-                "2016-10-7T6:46:40|\t86.7\n");
+                "2016-10-7T6:46:40|\t86.7\n", GraphUnitType.UNIT);
         for (GraphEntry entry : entries) {
             //System.out.println((new Timestamp(entry.created) + "->" + entry.value));
         }

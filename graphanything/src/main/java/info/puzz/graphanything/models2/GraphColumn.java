@@ -48,4 +48,8 @@ public class GraphColumn implements Serializable {
     public String formatName() {
         return getName() + (StringUtils.isEmpty(getUnit()) ? "" : String.format(" [%s]", getUnit()));
     }
+
+    public String formatValueWithUnit(double value, FormatVariant variant) {
+        return getGraphUnitType().format(value, variant);
+    }
 }

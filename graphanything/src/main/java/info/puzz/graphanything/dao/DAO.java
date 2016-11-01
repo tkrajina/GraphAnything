@@ -126,4 +126,11 @@ public class DAO {
                 .orderBy("columnNo")
                 .list();
     }
+
+    public List<GraphColumn> getFirstColumns() {
+        return cupboard().withDatabase(mDb)
+                .query(GraphColumn.class)
+                .withSelection("columnNo = ?", String.valueOf(0))
+                .list();
+    }
 }

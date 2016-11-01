@@ -36,6 +36,7 @@ public class GraphColumnActivity extends BaseActivity {
 
     private GraphInfo graph;
     private int graphColumnNo;
+
     private Map<Integer, GraphColumn> graphColumns;
     private RadioGroup unitOfMeasurementRadioGroup;
     private TextView measurementTypeTextView;
@@ -113,7 +114,7 @@ public class GraphColumnActivity extends BaseActivity {
 
         if (goalStr != null && goalStr.length() > 0) {
             try {
-                getCurrentGraphColumn().goal = graph.getGraphUnitType().parse(goalStr);
+                getCurrentGraphColumn().goal = getCurrentGraphColumn().getGraphUnitType().parse(goalStr);
             } catch (FormatException e) {
                 new AlertDialog.Builder(this)
                         .setTitle("Invalid value")
@@ -141,19 +142,19 @@ public class GraphColumnActivity extends BaseActivity {
 
             unitTypeRadioButtons[i] = (RadioButton) findViewById(unitTypeRadioButtonIds[i]);
             unitTypeRadioButtons[i].setText(graphUnitType.getDescription());
-            unitTypeRadioButtons[i].setChecked(graph.unitType == graphUnitType.getType());
+            unitTypeRadioButtons[i].setChecked(getCurrentGraphColumn().unitType == graphUnitType.getType());
 
             unitTypeRadioButtons[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        graph.unitType = graphUnitType.getType();
+                        getCurrentGraphColumn().unitType = graphUnitType.getType();
                         reloadUnitOfMeasurementField(graphUnitType.getType());
                     }
                 }
             });
         }
-        reloadUnitOfMeasurementField(graph.unitType);
+        reloadUnitOfMeasurementField(getCurrentGraphColumn().unitType);
     }
 
     private void reloadUnitOfMeasurementField(int graphType) {

@@ -7,6 +7,7 @@ import org.apache.commons.math3.stat.regression.SimpleRegression;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphStats;
 import info.puzz.graphanything.models2.GraphType;
@@ -22,7 +23,7 @@ public class StatsCalculator {
         throw new Error();
     }
 
-    public static GraphStats calculate(GraphInfo graph, List<DataPoint> dataPoints) {
+    public static GraphStats calculate(GraphInfo graph, List<DataPoint> dataPoints, GraphColumn column) {
         GraphStats res = new GraphStats();
 
         int sampleIntervalDays = graph.getStatsPeriod();
@@ -72,7 +73,7 @@ public class StatsCalculator {
                 //Log.d(TAG, new Timestamp(point.created) + " older");
             }
 
-            if (graph.calculateGoal() && (isThisWeek || isLastWeek)) {
+            if (column.calculateGoal() && (isThisWeek || isLastWeek)) {
                 regression.addData(point.getX(), point.getY());
             }
         }
@@ -86,7 +87,7 @@ public class StatsCalculator {
         res.setSumPreviousPeriod(sumLastWeek);
         res.setAvgPreviousPeriod(sumLastWeek / entriesLastWeek);
 
-        if (graph.calculateGoal() && dataPoints.size() >= 3) {
+        if (column.calculateGoal() && dataPoints.size() >= 3) {
             // y = intercept + slope * x
             res.setGoalIntercept(regression.getIntercept());
             res.setGoalSlope(regression.getSlope());
@@ -94,7 +95,7 @@ public class StatsCalculator {
             //System.out.println(("intercept=" + intercept + " slope=" + slope));
 
             if (res.getGoalSlope() != 0) {
-                long goalTime = (long) ((graph.goal - res.getGoalIntercept()) / res.getGoalSlope());
+                long goalTime = (long) ((column.goal - res.getGoalIntercept()) / res.getGoalSlope());
 
                 res.setGoalEstimateDays((float) (TimeUnit.MILLISECONDS.toHours(goalTime - System.currentTimeMillis()) / 24.0));
                 res.setGoalTime(goalTime);

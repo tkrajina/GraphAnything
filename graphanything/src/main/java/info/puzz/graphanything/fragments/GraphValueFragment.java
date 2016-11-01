@@ -7,12 +7,15 @@ import android.view.View;
 import android.widget.ListView;
 
 import java.util.List;
+import java.util.Map;
 
 import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.activities.GraphValuesActivity;
 import info.puzz.graphanything.dao.DAO;
+import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphEntry;
+
 
 /**
  * A fragment representing a list of Items.
@@ -44,16 +47,19 @@ public class GraphValueFragment extends ListFragment {
         GraphValuesActivity activity = (GraphValuesActivity) getActivity();
         graphId = activity.getGraphId();
 
-        DAO DAO = ((BaseActivity) getActivity()).getDAO();
+        DAO dao = ((BaseActivity) getActivity()).getDAO();
 
-        GraphInfo graph = DAO.loadGraph(graphId);
-        graphEntries = DAO.getEntriesByCreatedAsc(graphId);
+        GraphInfo graph = dao.loadGraph(graphId);
+        graphEntries = dao.getEntriesByCreatedAsc(graphId);
+
+        Map<Integer, GraphColumn> columns = dao.getColumnsByColumnNo(graphId);
 
         setListAdapter(
                 new GraphValueArrayAdapter(
                         getActivity(),
                         graph,
-                        graphEntries.toArray(new GraphEntry[graphEntries.size()])));
+                        graphEntries.toArray(new GraphEntry[graphEntries.size()]),
+                        columns));
     }
 
 

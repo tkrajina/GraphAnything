@@ -11,6 +11,7 @@ import java.util.List;
 
 import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.dao.DAO;
+import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphInfo;
 
 public class GraphListFragment extends ListFragment {
@@ -47,13 +48,14 @@ public class GraphListFragment extends ListFragment {
 
         graphs = new ArrayList<>();
 
-        DAO DAO = ((BaseActivity) getActivity()).getDAO();
-        List<GraphInfo> cur = DAO.getGraphsByUpdatedDesc();
+        DAO dao = ((BaseActivity) getActivity()).getDAO();
+        List<GraphInfo> cur = dao.getGraphsByUpdatedDesc();
         for (GraphInfo graph : cur) {
             graphs.add(graph);
         }
+        List<GraphColumn> firstColumns = dao.getFirstColumns();
 
-        setListAdapter(new GraphArrayAdapter(getActivity(), graphs.toArray(new GraphInfo[graphs.size()])));
+        setListAdapter(new GraphArrayAdapter(getActivity(), graphs.toArray(new GraphInfo[graphs.size()]), firstColumns));
     }
 
     @Override
