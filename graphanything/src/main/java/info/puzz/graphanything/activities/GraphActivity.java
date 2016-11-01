@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,10 +52,12 @@ public class GraphActivity extends BaseActivity {
 
     public static final String ARG_GRAPH_ID = "graph_id";
     public static final String ARG_GRAPH = "graph";
+    public static final String ARG_COLUMN_NO = "column_no";
 
     private Long graphId;
     private GraphInfo graph;
     private List<GraphColumn> graphColumns;
+    private int columnNo;
 
     private TextView timerTextView;
     private Button startStopTimerButton;
@@ -64,9 +67,10 @@ public class GraphActivity extends BaseActivity {
     private View fieldSelectorGroup;
     private Spinner fieldSpinner;
 
-    public static void start(BaseActivity activity, long graphId) {
+    public static void start(BaseActivity activity, long graphId, int columnNo) {
         Intent intent = new Intent(activity, GraphActivity.class);
         intent.putExtra(GraphActivity.ARG_GRAPH_ID, graphId);
+        intent.putExtra(GraphActivity.ARG_COLUMN_NO, columnNo);
         activity.startActivity(intent);
     }
 
@@ -85,12 +89,10 @@ public class GraphActivity extends BaseActivity {
         fieldSpinner = (Spinner) findViewById(R.id.field_selector);
         Assert.assertNotNull(fieldSpinner);
 
-        graph = (GraphInfo) getIntent().getExtras().getSerializable(ARG_GRAPH);
         graphId = getIntent().getExtras().getLong(ARG_GRAPH_ID);
-        if (graphId == null && graph == null) {
-            throw new Error(getClass().getSimpleName() + " without graphId and graph");
-        }
+        Assert.assertNotNull(graphId);
         graphColumns = getDAO().getColumns(graphId);
+        columnNo = getIntent().getExtras().getInt(ARG_COLUMN_NO);
 
         prepareFieldSpinner();
 
@@ -111,6 +113,20 @@ public class GraphActivity extends BaseActivity {
         fieldSelectorGroup.setVisibility(View.VISIBLE);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, fieldsArr);
         fieldSpinner.setAdapter(adapter);
+
+        fieldSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                GraphColumn selectedColumn = graphColumns.get(position);
+                if (selectedColumn.getColumnNo() != columnNo) {
+                    Log.i(TAG, "Selected column:" + selectedColumn);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
     }
 
     @Override
