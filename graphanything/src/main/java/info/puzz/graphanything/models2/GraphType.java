@@ -34,7 +34,8 @@ public enum GraphType {
 
             double sum = 0D;
             for (GraphEntry entry : entries) {
-                sum += entry.get(columnNo);
+                Double val = entry.get(columnNo);
+                sum += val == null ? 0 : val.doubleValue();
                 res.add(new DataPoint(entry.created, sum));
             }
 
