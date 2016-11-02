@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LabelFormatter;
@@ -40,6 +41,7 @@ import info.puzz.graphanything.models2.GraphStats;
 import info.puzz.graphanything.models2.GraphUnitType;
 import info.puzz.graphanything.models2.format.FormatException;
 import info.puzz.graphanything.services.StatsCalculator;
+import info.puzz.graphanything.utils.DialogUtils;
 import info.puzz.graphanything.utils.Formatters;
 import info.puzz.graphanything.utils.ThreadUtils;
 import info.puzz.graphanything.utils.TimeUtils;
@@ -230,6 +232,7 @@ public class GraphActivity extends BaseActivity {
                 .setCreated(System.currentTimeMillis())
                 .set(0, value);
         GraphEntryActivity.start(this, graph._id, graphEntry);
+        getDAO().save(graph.setTimerStarted(0));
     }
 
     private void redrawAndUpdateGraphAndStats() {
@@ -415,26 +418,21 @@ public class GraphActivity extends BaseActivity {
     }*/
 
     public void deleteGraph(MenuItem item) {
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        DialogUtils.showYesNoButton(this, "Delete \"" + graph.name + "\"?", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == DialogInterface.BUTTON_POSITIVE) {
                     deleteGraph();
                 }
             }
-        };
-
-        new AlertDialog.Builder(this)
-                .setMessage("Delete \"" + graph.name + "\"?")
-                .setPositiveButton("Yes", dialogClickListener)
-                .setNegativeButton("No", dialogClickListener)
-                .show();
+        });
     }
 
     private void deleteGraph() {
         getDAO().deleteGraph(graph);
 
         GraphListActivity.start(this);
+        Toast.makeText(this, "Graph deleted", Toast.LENGTH_SHORT);
     }
 
     public void onStartStop(View view) {
@@ -450,8 +448,8 @@ public class GraphActivity extends BaseActivity {
 
     private void stopTimer() {
         long value = TimeUtils.timeFrom(graph.timerStarted);
-        addValue(value);
         startStopTimerButton.setText(R.string.start_timer);
+        addValue(value);
     }
 
     /**
