@@ -347,7 +347,11 @@ public class GraphActivity extends BaseActivity {
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getGridLabelRenderer().setGridColor(Color.GRAY);
 
-        graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+        LegendRenderer.LegendAlign legendAlign = LegendRenderer.LegendAlign.BOTTOM;
+        if (dataPoints.size() > 1 && dataPoints.get(0).getY() > dataPoints.get(dataPoints.size() - 1).getY()) {
+            legendAlign = LegendRenderer.LegendAlign.TOP;
+        }
+        graphView.getLegendRenderer().setAlign(legendAlign);
         graphView.getLegendRenderer().setVisible(true);
 
         graphView.getViewport().setScalable(true);
