@@ -58,14 +58,16 @@ public class GraphActivity extends BaseActivity {
     private GraphInfo graph;
     private List<GraphColumn> graphColumns;
     private GraphColumn currentGraphColumn;
+    private boolean activityActive;
+    private Float graphFontSize = null;
 
     private TextView timerTextView;
     private Button startStopTimerButton;
-
-    private boolean activityActive;
-    private Float graphFontSize = null;
     private View fieldSelectorGroup;
     private Spinner fieldSpinner;
+    private TextView goalTextView;
+    private TextView goalEstimateTextView;
+    private View goalGroup;
 
     public static void start(BaseActivity activity, long graphId, int columnNo) {
         Intent intent = new Intent(activity, GraphActivity.class);
@@ -88,6 +90,12 @@ public class GraphActivity extends BaseActivity {
         Assert.assertNotNull(fieldSelectorGroup);
         fieldSpinner = (Spinner) findViewById(R.id.field_selector);
         Assert.assertNotNull(fieldSpinner);
+        goalTextView = (TextView) findViewById(R.id.goal);
+        Assert.assertNotNull(goalTextView);
+        goalEstimateTextView = (TextView) findViewById(R.id.goal_estimate);
+        Assert.assertNotNull(goalEstimateTextView);
+        goalGroup = findViewById(R.id.goal_group);
+        Assert.assertNotNull(goalGroup);
 
         graphId = getIntent().getExtras().getLong(ARG_GRAPH_ID);
         Assert.assertNotNull(graphId);
@@ -164,7 +172,7 @@ public class GraphActivity extends BaseActivity {
             prepareTimer();
         }
 
-        redrawAndUpdateGraphAndStats(true);
+        redrawAndUpdateGraphAndStats();
 
         if (graph.isTimeActive()) {
             startTimer();
@@ -224,7 +232,7 @@ public class GraphActivity extends BaseActivity {
         GraphEntryActivity.start(this, graph._id, graphEntry);
     }
 
-    private void redrawAndUpdateGraphAndStats(boolean showGoal) {
+    private void redrawAndUpdateGraphAndStats() {
         Timer t = new Timer("redrawing graph");
 
         GraphView graphView = (GraphView) findViewById(R.id.graph);
@@ -292,7 +300,7 @@ public class GraphActivity extends BaseActivity {
         double minY = series.getLowestValueY();
         double maxY = series.getHighestValueY();
 
-        if (currentGraphColumn.calculateGoal() && showGoal) {
+        if (currentGraphColumn.calculateGoal()) {
             minY = Math.min(minY, currentGraphColumn.goal);
             maxY = Math.max(maxY, currentGraphColumn.goal);
 
@@ -389,13 +397,16 @@ public class GraphActivity extends BaseActivity {
         ((TextView) findViewById(R.id.previous_period_sum_value)).setText(graphUnitType.format(stats.getSumPreviousPeriod(), horizontal ? FormatVariant.LONG : FormatVariant.SHORT));
 
         if (currentGraphColumn.calculateGoal()) {
-            ((TextView) findViewById(R.id.goal)).setText(graphUnitType.format(currentGraphColumn.goal, FormatVariant.LONG));
+            goalGroup.setVisibility(View.VISIBLE);
+            goalTextView.setText(graphUnitType.format(currentGraphColumn.goal, FormatVariant.LONG));
 
             String estimate = "n/a";
             if (stats.getGoalEstimateDays() != null && stats.getGoalEstimateDays().floatValue() >= 0) {
                 estimate = Formatters.formatNumber(stats.getGoalEstimateDays()) + "days";
             }
-            ((TextView) findViewById(R.id.goal_estimate)).setText(estimate);
+            goalEstimateTextView.setText(estimate);
+        } else {
+            goalGroup.setVisibility(View.GONE);
         }
     }
 
