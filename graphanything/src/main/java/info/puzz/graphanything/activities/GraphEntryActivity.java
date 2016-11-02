@@ -25,6 +25,7 @@ import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphEntry;
 import info.puzz.graphanything.models2.format.FormatException;
+import info.puzz.graphanything.utils.DialogUtils;
 import info.puzz.graphanything.utils.StringUtils;
 import info.puzz.graphanything.utils.TimeUtils;
 
@@ -116,12 +117,7 @@ public class GraphEntryActivity extends BaseActivity {
             try {
                 graphEntry.set(column.columnNo, column.getGraphUnitType().parse(valueString));
             } catch (FormatException e) {
-                new AlertDialog.Builder(this)
-                        .setTitle("Invalid value:" + valueString)
-                        .setMessage(e.getMessage())
-                        .setNeutralButton(android.R.string.ok, null)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
+                DialogUtils.showWarningDialog(this, "Invalid value:" + valueString, e.getMessage());
                 return;
             }
         }
@@ -131,12 +127,7 @@ public class GraphEntryActivity extends BaseActivity {
         try {
             graphEntry.setCreated(TimeUtils.YYYYMMDDHHMMSS_FORMATTER.parse(createdString).getTime());
         } catch (ParseException e) {
-            new AlertDialog.Builder(this)
-                    .setTitle("Invalid timestamp:" + createdString)
-                    .setMessage(e.getMessage())
-                    .setNeutralButton(android.R.string.ok, null)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
+            DialogUtils.showWarningDialog(this, "Invalid timestamp:" + createdString, e.getMessage());
             return;
         }
 
