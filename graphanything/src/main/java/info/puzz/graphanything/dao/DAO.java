@@ -25,20 +25,8 @@ public class DAO {
     private DatabaseOpenHelper mDbHelper;
     private SQLiteDatabase mDb;
 
-    public void updateGraphEntry(GraphEntry graphEntry) {
-        cupboard().withDatabase(mDb).put(graphEntry);
-    }
-
     public void save(Object entity) {
         cupboard().withDatabase(mDb).put(entity);
-    }
-
-    public void deleteGraphEntry(GraphEntry graphEntry) {
-        cupboard().withDatabase(mDb).delete(graphEntry);
-    }
-
-    public void deleteGraphEntries(long graphId) throws SQLException {
-        cupboard().withDatabase(mDb).delete(GraphEntry.class, "graphId = ?", String.valueOf(graphId));
     }
 
     public DAO(Context ctx) {
@@ -67,45 +55,24 @@ public class DAO {
         return cupboard().withDatabase(mDb).get(GraphInfo.class, id);
     }
 
-    public void addEntry(long graphId, double value) {
-        GraphEntry graphValue = new GraphEntry();
-        graphValue.graphId = graphId;
-        graphValue.set(0, value);
-        graphValue.created = System.currentTimeMillis();
-
-        addEntry(graphValue);
-    }
-
     public void addEntry(GraphEntry graphEntry) {
         cupboard().withDatabase(mDb).put(graphEntry);
     }
 
-    public QueryResultIterable<GraphEntry> getEntriesByCreatedAscCursor(long graphId) {
+    public List<GraphEntry> getEntriesByCreatedAsc(long graphId) {
         return cupboard().withDatabase(mDb)
                 .query(GraphEntry.class)
                 .withSelection("graphId = ?", String.valueOf(graphId))
                 .orderBy("created")
-                .query();
+                .list();
     }
 
-    public List<GraphEntry> getEntriesByCreatedAsc(long graphId) {
-        ArrayList<GraphEntry> result = new ArrayList<>();
-
-        QueryResultIterable<GraphEntry> i = null;
-        try {
-            i = getEntriesByCreatedAscCursor(graphId);
-            for (GraphEntry graphValue : i) {
-                result.add(graphValue);
-            }
-        } finally {
-            i.close();
-        }
-
-        return result;
-    }
-
-    public GraphEntry getEntry(long graphValueId) {
-        return cupboard().withDatabase(mDb).get(GraphEntry.class, graphValueId);
+    public List<GraphEntry> getEntriesByCreatedDesc(long graphId) {
+        return cupboard().withDatabase(mDb)
+                .query(GraphEntry.class)
+                .withSelection("graphId = ?", String.valueOf(graphId))
+                .orderBy("-created")
+                .list();
     }
 
     public Map<Integer, GraphColumn> getColumnsByColumnNo(Long graphId) {
@@ -133,4 +100,5 @@ public class DAO {
                 .withSelection("columnNo = ?", String.valueOf(0))
                 .list();
     }
+
 }

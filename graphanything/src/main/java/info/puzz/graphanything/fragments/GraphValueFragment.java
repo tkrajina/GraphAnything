@@ -50,7 +50,7 @@ public class GraphValueFragment extends ListFragment {
         DAO dao = ((BaseActivity) getActivity()).getDAO();
 
         GraphInfo graph = dao.loadGraph(graphId);
-        graphEntries = dao.getEntriesByCreatedAsc(graphId);
+        graphEntries = dao.getEntriesByCreatedDesc(graphId);
 
         Map<Integer, GraphColumn> columns = dao.getColumnsByColumnNo(graphId);
 
