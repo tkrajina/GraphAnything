@@ -24,6 +24,8 @@ import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphUnitType;
 import info.puzz.graphanything.models2.format.FormatException;
+import info.puzz.graphanything.utils.DialogUtils;
+import info.puzz.graphanything.utils.StringUtils;
 
 public class GraphColumnActivity extends BaseActivity {
 
@@ -112,16 +114,13 @@ public class GraphColumnActivity extends BaseActivity {
         getCurrentGraphColumn().name = columnNameEditText.getText().toString();
         String goalStr = goalEditText.getText().toString().trim();
 
-        if (goalStr != null && goalStr.length() > 0) {
+        if (StringUtils.isEmpty(goalStr)) {
+            getCurrentGraphColumn().goal = null;
+        } else {
             try {
                 getCurrentGraphColumn().goal = getCurrentGraphColumn().getGraphUnitType().parse(goalStr);
             } catch (FormatException e) {
-                new AlertDialog.Builder(this)
-                        .setTitle("Invalid value")
-                        .setMessage(e.getMessage())
-                        .setNeutralButton(android.R.string.ok, null)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
+                DialogUtils.showWarningDialog(this, "Invalid goal value", e.getMessage());
                 return;
             }
         }
