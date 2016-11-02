@@ -128,6 +128,8 @@ public class GraphActivity extends BaseActivity {
                 GraphColumn selectedColumn = graphColumns.get(position);
                 if (selectedColumn.getColumnNo() != currentGraphColumn.getColumnNo()) {
                     Log.i(TAG, "Selected column:" + selectedColumn);
+                    currentGraphColumn = selectedColumn;
+                    redrawAll();
                 }
             }
 
@@ -150,6 +152,10 @@ public class GraphActivity extends BaseActivity {
 
         setTitle(graph.name);
 
+        redrawAll();
+    }
+
+    private void redrawAll() {
         boolean isTimer = currentGraphColumn.getGraphUnitType() == GraphUnitType.TIMER;
         findViewById(R.id.timer_value_group).setVisibility(isTimer ? View.VISIBLE : View.GONE);
         findViewById(R.id.unit_value_group).setVisibility(isTimer ? View.GONE : View.VISIBLE);
