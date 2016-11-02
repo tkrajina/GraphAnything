@@ -26,11 +26,14 @@ public class DoubleFormatter implements FormatterParser {
         if (value == null) {
             return "n/a";
         }
+        if (value.doubleValue() == value.intValue()) {
+            return String.valueOf(value.intValue());
+        }
         return String.format(Constants.LOCALE, variant == FormatVariant.SHORT ? "%.1f" : "%.2f", value);
     }
 
     public static void main(String[] args) {
-        System.out.println(new DoubleFormatter().format(2.3D, FormatVariant.SHORT));
         System.out.println(new DoubleFormatter().format(2.3D, FormatVariant.LONG));
+        System.out.println(new DoubleFormatter().format(2.0D, FormatVariant.LONG));
     }
 }
