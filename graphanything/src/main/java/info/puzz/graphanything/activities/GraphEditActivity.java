@@ -1,5 +1,6 @@
 package info.puzz.graphanything.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import info.puzz.graphanything.R;
 import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphType;
+import info.puzz.graphanything.utils.DialogUtils;
 
 
 public class GraphEditActivity extends BaseActivity {
@@ -91,6 +93,18 @@ public class GraphEditActivity extends BaseActivity {
         reloadFields();
 
         setupGraphTypeRadioButtons();
+    }
+
+    @Override
+    public void onBackPressed() {
+        DialogUtils.showYesNoButton(this, "No changes saved, leave?", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                    GraphEditActivity.super.onBackPressed();
+                }
+            }
+        });
     }
 
     private void reloadFields() {
@@ -210,7 +224,7 @@ public class GraphEditActivity extends BaseActivity {
 
         GraphActivity.start(this, graph._id, 0);
 
-        Toast.makeText(this, "GraphInfo saved", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Graph saved", Toast.LENGTH_SHORT).show();
     }
 
 }

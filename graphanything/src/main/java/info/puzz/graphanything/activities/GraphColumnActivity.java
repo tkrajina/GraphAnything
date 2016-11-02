@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import junit.framework.Assert;
 
@@ -20,8 +21,8 @@ import java.util.Map;
 
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.models2.FormatVariant;
-import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphColumn;
+import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphUnitType;
 import info.puzz.graphanything.models2.format.FormatException;
 import info.puzz.graphanything.utils.DialogUtils;
@@ -91,6 +92,18 @@ public class GraphColumnActivity extends BaseActivity {
         setupUnitTypeRadioButtons();
     }
 
+    @Override
+    public void onBackPressed() {
+        DialogUtils.showYesNoButton(this, "No changes saved, leave?", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                    GraphColumnActivity.super.onBackPressed();
+                }
+            }
+        });
+    }
+
     private GraphColumn getCurrentGraphColumn() {
         return graphColumns.get(graphColumnNo);
     }
@@ -125,6 +138,7 @@ public class GraphColumnActivity extends BaseActivity {
             }
         }
 
+        Toast.makeText(GraphColumnActivity.this, "Column changed", Toast.LENGTH_SHORT);
         GraphEditActivity.start(this, graph, graphColumns);
     }
 
@@ -171,6 +185,7 @@ public class GraphColumnActivity extends BaseActivity {
 
                     graphColumns.remove(graphColumnNo);
                     GraphEditActivity.start(GraphColumnActivity.this, graph, graphColumns);
+                    Toast.makeText(GraphColumnActivity.this, "Column deleted", Toast.LENGTH_SHORT);
                 }
             }
         };

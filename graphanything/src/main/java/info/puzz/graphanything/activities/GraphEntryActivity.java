@@ -1,6 +1,7 @@
 package info.puzz.graphanything.activities;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -80,6 +81,18 @@ public class GraphEntryActivity extends BaseActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        DialogUtils.showYesNoButton(this, "No changes saved, leave?", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                    GraphEntryActivity.super.onBackPressed();
+                }
+            }
+        });
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_graph_entry, menu);
         return true;
@@ -133,7 +146,7 @@ public class GraphEntryActivity extends BaseActivity {
 
         getDAO().save(graphEntry);
 
-        Toast.makeText(this, "Value added", Toast.LENGTH_SHORT).show();
         GraphActivity.start(this, graph._id, 0);
+        Toast.makeText(this, "Entry saved", Toast.LENGTH_SHORT).show();
     }
 }
