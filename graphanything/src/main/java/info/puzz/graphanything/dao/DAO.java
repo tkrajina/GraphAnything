@@ -23,10 +23,6 @@ public class DAO {
     private DatabaseOpenHelper mDbHelper;
     private SQLiteDatabase mDb;
 
-    public void save(Object entity) {
-        cupboard().withDatabase(mDb).put(entity);
-    }
-
     public DAO(Context ctx) {
         this.mCtx = ctx;
     }
@@ -41,7 +37,11 @@ public class DAO {
         mDbHelper.close();
     }
 
-    public void deleteGraph(Object entity) {
+    public void save(Object entity) {
+        cupboard().withDatabase(mDb).put(entity);
+    }
+
+    public void delete(Object entity) {
         cupboard().withDatabase(mDb).delete(entity);
     }
 
@@ -54,10 +54,6 @@ public class DAO {
 
     public Graph loadGraph(long id) throws SQLException {
         return cupboard().withDatabase(mDb).get(Graph.class, id);
-    }
-
-    public void addEntry(GraphEntry graphEntry) {
-        cupboard().withDatabase(mDb).put(graphEntry);
     }
 
     public List<GraphEntry> getEntriesByCreatedAsc(long graphId) {

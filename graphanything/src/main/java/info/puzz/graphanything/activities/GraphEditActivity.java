@@ -218,7 +218,7 @@ public class GraphEditActivity extends BaseActivity {
         Map<Integer, GraphColumn> currentColumns = getDAO().getColumnsByColumnNo(graph._id);
         for (Map.Entry<Integer, GraphColumn> e : currentColumns.entrySet()) {
             if (!columnsByColumnNumbers.containsKey(e.getKey())) {
-                getDAO().deleteGraph(e.getValue());
+                getDAO().delete(e.getValue());
             }
         }
         for (Map.Entry<Integer, GraphColumn> e : columnsByColumnNumbers.entrySet()) {

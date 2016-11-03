@@ -147,4 +147,10 @@ public class GraphEntryActivity extends BaseActivity {
         GraphActivity.start(this, graph._id, 0);
         Toast.makeText(this, "Entry saved", Toast.LENGTH_SHORT).show();
     }
+
+    public void onDelete(MenuItem item) {
+        getDAO().delete(graphEntry);
+        Toast.makeText(this, "Deleted", Toast.LENGTH_SHORT);
+        GraphActivity.start(this, graph._id, 0);
+    }
 }

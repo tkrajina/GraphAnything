@@ -11,4 +11,12 @@
         android:onClick="onSave"
         />
 
+    <item
+        android:id="@+id/action_delete"
+        android:title="@string/action_delete"
+        android:orderInCategory="1"
+        app:showAsAction="never"
+        android:onClick="onDelete"
+        />
+
 </menu>
