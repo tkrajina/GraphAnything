@@ -250,12 +250,19 @@ public class GraphActivity extends BaseActivity {
 
         final GraphUnitType graphUnitType = currentGraphColumn.getGraphUnitType();
         graphView.getGridLabelRenderer().setLabelFormatter(new LabelFormatter() {
+            public String lattestFormatted;
             Calendar cal = Calendar.getInstance();
             @Override
             public String formatLabel(double value, boolean isValueX) {
                 if (isValueX) {
                     cal.setTimeInMillis((long) value);
-                    return String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+                    String formatted = String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+                    if (formatted.equals(lattestFormatted)) {
+                        this.lattestFormatted = formatted;
+                        return "";
+                    }
+                    this.lattestFormatted = formatted;
+                    return formatted;
                 }
                 return graphUnitType.format(value, FormatVariant.SHORT);
             }
