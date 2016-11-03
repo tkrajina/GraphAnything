@@ -4,15 +4,13 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import info.puzz.graphanything.models2.GraphInfo;
+import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphEntry;
-import nl.qbusict.cupboard.QueryResultIterable;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
@@ -47,15 +45,15 @@ public class DAO {
         cupboard().withDatabase(mDb).delete(entity);
     }
 
-    public List<GraphInfo> getGraphsByTimerActiveAndUpdatedDesc() {
+    public List<Graph> getGraphsByTimerActiveAndUpdatedDesc() {
         return cupboard().withDatabase(mDb)
-                .query(GraphInfo.class)
+                .query(Graph.class)
                 .orderBy("-timerStarted, -lastValueCreated")
                 .list();
     }
 
-    public GraphInfo loadGraph(long id) throws SQLException {
-        return cupboard().withDatabase(mDb).get(GraphInfo.class, id);
+    public Graph loadGraph(long id) throws SQLException {
+        return cupboard().withDatabase(mDb).get(Graph.class, id);
     }
 
     public void addEntry(GraphEntry graphEntry) {

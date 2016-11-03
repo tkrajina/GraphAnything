@@ -8,8 +8,7 @@ import android.util.Log;
 import java.text.ParseException;
 import java.util.List;
 
-import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models2.GraphInfo;
+import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphEntry;
 import info.puzz.graphanything.models2.GraphType;
@@ -25,22 +24,20 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = DatabaseOpenHelper.class.getSimpleName();
 
     static {
-        // Deprecated:
-        cupboard().register(info.puzz.graphanything.models.Graph.class);
-        cupboard().register(GraphValue.class);
-
-        // New:
-        cupboard().register(GraphInfo.class);
+        cupboard().register(Graph.class);
         cupboard().register(GraphEntry.class);
         cupboard().register(GraphColumn.class);
     }
 
-    private static final String DATABASE_NAME = "graphanything2";
+    private static final String DATABASE_NAME = "graphanything.db";
 
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 1;
+
+    private final Context context;
 
     DatabaseOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -51,6 +48,10 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
+
+        OldDatabaseOpenHelper oldDbHelper = new OldDatabaseOpenHelper(this.context);
+        SQLiteDatabase oldDb = oldDbHelper.getReadableDatabase();
+        importFromOldDb(oldDb, db);
     }
 
     @Override
@@ -63,19 +64,15 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         cupboard().withDatabase(db).upgradeTables();
-
-        if (oldVersion < 8) {
-            upgradeToMulticolumn(db);
-        }
     }
 
     /**
      * Note, old models are stored with {@link info.puzz.graphanything.models.Graph} but the values
      * are still stored in the database (TODO: Remove later).
      */
-    private void upgradeToMulticolumn(SQLiteDatabase db) {
-        for (Graph oldGraph : cupboard().withDatabase(db).query(Graph.class).list()) {
-            GraphInfo graph = new GraphInfo()
+    private void importFromOldDb(SQLiteDatabase oldDb, SQLiteDatabase newDb) {
+        for (info.puzz.graphanything.models.Graph oldGraph : cupboard().withDatabase(oldDb).query(info.puzz.graphanything.models.Graph.class).list()) {
+            Graph graph = new Graph()
                     .setName(oldGraph.getName())
                     //.setUnit(oldGraph.getUnit())
                     .setLastValue(oldGraph.getLastValue())
@@ -86,7 +83,7 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
                     .setStatsPeriod(oldGraph.getStatsPeriod());
                     //.setGoal(oldGraph.getGoal())
                     //.setGoalEstimateDays(oldGraph.getGoalEstimateDays());
-            cupboard().withDatabase(db).put(graph);
+            cupboard().withDatabase(newDb).put(graph);
             GraphColumn firstColumn = new GraphColumn()
                     .setGraphId(graph._id)
                     .setColumnNo(0)
@@ -96,21 +93,21 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
                     .setUnit(oldGraph.unit)
                     .setUnitType(oldGraph.unitType);
 
-            cupboard().withDatabase(db).put(firstColumn);
+            cupboard().withDatabase(newDb).put(firstColumn);
         }
 
-        for (GraphValue graphValue : cupboard().withDatabase(db).query(GraphValue.class).list()) {
+        for (GraphValue graphValue : cupboard().withDatabase(oldDb).query(GraphValue.class).list()) {
             GraphEntry entry = new GraphEntry()
                     .setGraphId(graphValue.graphId)
                     .setCreated(graphValue.created)
                     .set(0, graphValue.value);
-            cupboard().withDatabase(db).put(entry);
+            cupboard().withDatabase(newDb).put(entry);
         }
     }
 
     private void importSampleGraphs(SQLiteDatabase db) throws ParseException {
         {
-            GraphInfo graph = new GraphInfo()
+            Graph graph = new Graph()
                     .setName("EXAMPLE: My weight");
             String data = "2016-8-14T9:27:11|\t95.1\n" +
                     "2016-8-22T8:40:45|\t92.1\n" +
@@ -147,7 +144,7 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
             }
         }
         {
-            GraphInfo graph = new GraphInfo()
+            Graph graph = new Graph()
                     .setName("EXAMPLE: Project time")
                     .setType(GraphType.SUM_ALL_PREVIOUS.getType());
             String data = "2016-10-10T15:18:33|00:37:17\n" +
@@ -176,7 +173,7 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
         }
     }
 
-    private void importData(SQLiteDatabase db, GraphInfo graph, String data, String columnName, String columnUnit, GraphUnitType unitType) throws FormatException {
+    private void importData(SQLiteDatabase db, Graph graph, String data, String columnName, String columnUnit, GraphUnitType unitType) throws FormatException {
         cupboard().withDatabase(db).put(graph);
         cupboard().withDatabase(db).put(new GraphColumn()
                 .setGraphId(graph._id)

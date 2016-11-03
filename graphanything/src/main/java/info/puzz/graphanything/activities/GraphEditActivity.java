@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import info.puzz.graphanything.R;
-import info.puzz.graphanything.models2.GraphInfo;
+import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphType;
 import info.puzz.graphanything.utils.DialogUtils;
@@ -38,7 +38,7 @@ public class GraphEditActivity extends BaseActivity {
     private EditText graphNameEditText;
     private LinearLayout fieldsListView;
 
-    private GraphInfo graph;
+    private Graph graph;
     private Map<Integer, GraphColumn> columnsByColumnNumbers;
 
     public static void start(BaseActivity activity, Long graphId) {
@@ -47,7 +47,7 @@ public class GraphEditActivity extends BaseActivity {
         activity.startActivity(intent);
     }
 
-    public static void start(BaseActivity activity, GraphInfo graph, Map<Integer, GraphColumn> columns) {
+    public static void start(BaseActivity activity, Graph graph, Map<Integer, GraphColumn> columns) {
         Assert.assertNotNull(graph);
         Assert.assertNotNull(columns);
 
@@ -62,11 +62,11 @@ public class GraphEditActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_edit);
 
-        graph = (GraphInfo) getIntent().getSerializableExtra(ARG_GRAPH);
+        graph = (Graph) getIntent().getSerializableExtra(ARG_GRAPH);
         if (graph == null) {
             Long graphId = (Long) getIntent().getExtras().get(ARG_GRAPH_ID);
             if (graphId == null) {
-                graph = new GraphInfo();
+                graph = new Graph();
                 graph.set_id(System.nanoTime());
                 columnsByColumnNumbers = new HashMap<Integer, GraphColumn>();
             } else {
@@ -207,8 +207,13 @@ public class GraphEditActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void saveGraphProperties(MenuItem item) {
+    public void onSaveGraph(MenuItem item) {
         graph.name = graphNameEditText.getText().toString();
+
+        if (!columnsByColumnNumbers.containsKey(0)) {
+            DialogUtils.showWarningDialog(this, "At least one field must be defined", "Please add one numeric field for the graph");
+            return;
+        }
 
         Map<Integer, GraphColumn> currentColumns = getDAO().getColumnsByColumnNo(graph._id);
         for (Map.Entry<Integer, GraphColumn> e : currentColumns.entrySet()) {

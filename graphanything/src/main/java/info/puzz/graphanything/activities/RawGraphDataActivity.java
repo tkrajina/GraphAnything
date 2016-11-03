@@ -12,7 +12,7 @@
 //import java.util.List;
 //
 //import info.puzz.graphanything.R;
-//import info.puzz.graphanything.models2.GraphInfo;
+//import info.puzz.graphanything.models2.Graph;
 //import info.puzz.graphanything.models2.GraphEntry;
 //import info.puzz.graphanything.services.ExportImportUtils;
 //
@@ -22,7 +22,7 @@
 //
 //    public static final String ARG_GRAPH_ID = "graph_id";
 //
-//    private GraphInfo graph;
+//    private Graph graph;
 //
 //    EditText editText;
 //    private long graphId;

@@ -13,7 +13,7 @@ import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.activities.GraphEntriesActivity;
 import info.puzz.graphanything.dao.DAO;
 import info.puzz.graphanything.models2.GraphColumn;
-import info.puzz.graphanything.models2.GraphInfo;
+import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphEntry;
 
 
@@ -49,7 +49,7 @@ public class GraphEntryFragment extends ListFragment {
 
         DAO dao = ((BaseActivity) getActivity()).getDAO();
 
-        GraphInfo graph = dao.loadGraph(graphId);
+        Graph graph = dao.loadGraph(graphId);
         graphEntries = dao.getEntriesByCreatedDesc(graphId);
 
         Map<Integer, GraphColumn> columns = dao.getColumnsByColumnNo(graphId);

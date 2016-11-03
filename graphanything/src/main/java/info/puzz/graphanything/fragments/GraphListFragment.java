@@ -11,8 +11,8 @@ import java.util.List;
 
 import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.dao.DAO;
+import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
-import info.puzz.graphanything.models2.GraphInfo;
 
 public class GraphListFragment extends ListFragment {
 
@@ -22,7 +22,7 @@ public class GraphListFragment extends ListFragment {
 
     private int mActivatedPosition = ListView.INVALID_POSITION;
 
-    private List<GraphInfo> graphs;
+    private List<Graph> graphs;
 
     public interface Callbacks {
         void onGraphSelected(long id);
@@ -49,13 +49,13 @@ public class GraphListFragment extends ListFragment {
         graphs = new ArrayList<>();
 
         DAO dao = ((BaseActivity) getActivity()).getDAO();
-        List<GraphInfo> cur = dao.getGraphsByTimerActiveAndUpdatedDesc();
-        for (GraphInfo graph : cur) {
+        List<Graph> cur = dao.getGraphsByTimerActiveAndUpdatedDesc();
+        for (Graph graph : cur) {
             graphs.add(graph);
         }
         List<GraphColumn> firstColumns = dao.getFirstColumns();
 
-        setListAdapter(new GraphArrayAdapter(getActivity(), graphs.toArray(new GraphInfo[graphs.size()]), firstColumns));
+        setListAdapter(new GraphArrayAdapter(getActivity(), graphs.toArray(new Graph[graphs.size()]), firstColumns));
     }
 
     @Override

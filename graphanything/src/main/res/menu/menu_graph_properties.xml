@@ -9,6 +9,6 @@
         android:title="@string/action_save"
         android:orderInCategory="1"
         app:showAsAction="always"
-        android:onClick="saveGraphProperties" />
+        android:onClick="onSaveGraph" />
 
 </menu>

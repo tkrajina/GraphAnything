@@ -36,7 +36,7 @@ import info.puzz.graphanything.R;
 import info.puzz.graphanything.models2.FormatVariant;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphEntry;
-import info.puzz.graphanything.models2.GraphInfo;
+import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphStats;
 import info.puzz.graphanything.models2.GraphUnitType;
 import info.puzz.graphanything.models2.format.FormatException;
@@ -57,7 +57,7 @@ public class GraphActivity extends BaseActivity {
     public static final String ARG_COLUMN_NO = "column_no";
 
     private Long graphId;
-    private GraphInfo graph;
+    private Graph graph;
     private List<GraphColumn> graphColumns;
     private GraphColumn currentGraphColumn;
     private boolean activityActive;
@@ -340,7 +340,7 @@ public class GraphActivity extends BaseActivity {
             goalSeries.setTitle(getResources().getString(R.string.goal));
             graphView.addSeries(goalSeries);
 
-            // GraphInfo estimate line:
+            // Graph estimate line:
             LineGraphSeries<DataPoint> estimateSeries = new LineGraphSeries<>(new DataPoint[] {
                     new DataPoint(minX, stats.calculateGoalLineValue(minX)),
                     new DataPoint(maxX, stats.calculateGoalLineValue(maxX)),
@@ -395,7 +395,7 @@ public class GraphActivity extends BaseActivity {
         graphView.addSeries(series);
         t.time("After drawing graph");
 
-        Log.i(TAG, "GraphInfo drawing times:" + t.toString());
+        Log.i(TAG, "Graph drawing times:" + t.toString());
     }
 
     private void redrawStats(GraphUnitType graphUnitType, GraphStats stats) {
@@ -468,7 +468,7 @@ public class GraphActivity extends BaseActivity {
     }
 
     /**
-     * Starts a thread to update the timer. The thread will automatically stop when the activity pauses or the {@link GraphInfo#timerStarted} is set to 0.
+     * Starts a thread to update the timer. The thread will automatically stop when the activity pauses or the {@link Graph#timerStarted} is set to 0.
      */
     private void startTimer() {
         if (graph.timerStarted == 0) {

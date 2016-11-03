@@ -14,8 +14,8 @@ import info.puzz.graphanything.R;
 import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.activities.GraphEntryActivity;
 import info.puzz.graphanything.models2.FormatVariant;
+import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
-import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphEntry;
 import info.puzz.graphanything.utils.StringUtils;
 import info.puzz.graphanything.utils.TimeUtils;
@@ -23,10 +23,10 @@ import info.puzz.graphanything.utils.TimeUtils;
 public class GraphEntriesArrayAdapter extends ArrayAdapter<GraphEntry> {
     private final Context context;
     private final GraphEntry[] values;
-    private final GraphInfo graph;
+    private final Graph graph;
     private final GraphColumn column;
 
-    public GraphEntriesArrayAdapter(Context context, GraphInfo graph, GraphEntry[] values, Map<Integer, GraphColumn> columns) {
+    public GraphEntriesArrayAdapter(Context context, Graph graph, GraphEntry[] values, Map<Integer, GraphColumn> columns) {
         super(context, R.layout.graph, values);
         this.context = context;
         this.graph = graph;

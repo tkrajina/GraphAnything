@@ -1,6 +1,5 @@
 package info.puzz.graphanything.activities;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,12 +21,11 @@ import java.util.Map;
 
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.models2.FormatVariant;
-import info.puzz.graphanything.models2.GraphInfo;
+import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphEntry;
 import info.puzz.graphanything.models2.format.FormatException;
 import info.puzz.graphanything.utils.DialogUtils;
-import info.puzz.graphanything.utils.StringUtils;
 import info.puzz.graphanything.utils.TimeUtils;
 
 public class GraphEntryActivity extends BaseActivity {
@@ -37,7 +35,7 @@ public class GraphEntryActivity extends BaseActivity {
 
     private LinearLayout columnsLinearLayout;
 
-    private GraphInfo graph;
+    private Graph graph;
     private GraphEntry graphEntry;
     private List<GraphColumn> columns;
     private Map<Integer, EditText> columnViewsByColumnNo;

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import info.puzz.graphanything.models2.GraphColumn;
-import info.puzz.graphanything.models2.GraphInfo;
+import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphStats;
 import info.puzz.graphanything.models2.GraphType;
 
@@ -23,12 +23,12 @@ public class StatsCalculator {
         throw new Error();
     }
 
-    public static GraphStats calculate(GraphInfo graph, List<DataPoint> dataPoints, GraphColumn column) {
+    public static GraphStats calculate(Graph graph, List<DataPoint> dataPoints, GraphColumn column) {
         GraphStats res = new GraphStats();
 
         int sampleIntervalDays = graph.getStatsPeriod();
         if (sampleIntervalDays <= 0) {
-            sampleIntervalDays = GraphInfo.DEFAULT_STATS_SAMPLE_DAYS;
+            sampleIntervalDays = Graph.DEFAULT_STATS_SAMPLE_DAYS;
         }
 
         long thisWeek = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(sampleIntervalDays);

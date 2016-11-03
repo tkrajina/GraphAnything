@@ -19,18 +19,18 @@ import info.puzz.graphanything.R;
 import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.activities.GraphActivity;
 import info.puzz.graphanything.models2.FormatVariant;
+import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
-import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphUnitType;
 import info.puzz.graphanything.utils.TimeUtils;
 
-public class GraphArrayAdapter extends ArrayAdapter<GraphInfo> {
+public class GraphArrayAdapter extends ArrayAdapter<Graph> {
     private final Context context;
-    private final GraphInfo[] values;
+    private final Graph[] values;
 
     private Map<Long, GraphColumn> firstColumns;
 
-    public GraphArrayAdapter(Context context, GraphInfo[] values, List<GraphColumn> firstColumns) {
+    public GraphArrayAdapter(Context context, Graph[] values, List<GraphColumn> firstColumns) {
         super(context, R.layout.graph, values);
         this.context = context;
         this.values = values;
@@ -47,16 +47,17 @@ public class GraphArrayAdapter extends ArrayAdapter<GraphInfo> {
 
         View rowView = inflater.inflate(R.layout.graph, parent, false);
 
-        final GraphInfo graph = values[position];
+        final Graph graph = values[position];
         GraphColumn column = firstColumns.get(graph._id);
+        Assert.assertNotNull(String.format("No columns for graph %d", graph._id), column);
 
         ImageView iconTextView = (ImageView) rowView.findViewById(R.id.icon);
         if (column.getGraphUnitType() == GraphUnitType.TIMER && graph.timerStarted > 0) {
             iconTextView.setImageResource(R.drawable.ic_timer);
-        } else if (TimeUtils.timeFrom(graph.lastValueCreated) > TimeUnit.DAYS.toMillis(GraphInfo.DEFAULT_STATS_SAMPLE_DAYS / 2)) {
+        } else if (TimeUtils.timeFrom(graph.lastValueCreated) > TimeUnit.DAYS.toMillis(Graph.DEFAULT_STATS_SAMPLE_DAYS / 2)) {
             iconTextView.setImageResource(R.drawable.ic_zzz_bell);
         } else if (column.calculateGoal()) {
-            if (- GraphInfo.DEFAULT_STATS_SAMPLE_DAYS / 2 < column.goalEstimateDays && column.goalEstimateDays < GraphInfo.DEFAULT_STATS_SAMPLE_DAYS * 50) {
+            if (- Graph.DEFAULT_STATS_SAMPLE_DAYS / 2 < column.goalEstimateDays && column.goalEstimateDays < Graph.DEFAULT_STATS_SAMPLE_DAYS * 50) {
                 iconTextView.setImageResource(R.drawable.ic_smile);
             } else {
                 iconTextView.setImageResource(R.drawable.ic_sad);
