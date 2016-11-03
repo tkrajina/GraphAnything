@@ -6,7 +6,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
@@ -71,8 +73,9 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
      * are still stored in the database (TODO: Remove later).
      */
     private void importFromOldDb(SQLiteDatabase oldDb, SQLiteDatabase newDb) {
+        Map<Long, Long> newDbIdsByOldDbIds = new HashMap<>();
         for (info.puzz.graphanything.models.Graph oldGraph : cupboard().withDatabase(oldDb).query(info.puzz.graphanything.models.Graph.class).list()) {
-            Graph graph = new Graph()
+            Graph newGraph = new Graph()
                     .setName(oldGraph.getName())
                     //.setUnit(oldGraph.getUnit())
                     .setLastValue(oldGraph.getLastValue())
@@ -83,9 +86,9 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
                     .setStatsPeriod(oldGraph.getStatsPeriod());
                     //.setGoal(oldGraph.getGoal())
                     //.setGoalEstimateDays(oldGraph.getGoalEstimateDays());
-            cupboard().withDatabase(newDb).put(graph);
+            cupboard().withDatabase(newDb).put(newGraph);
             GraphColumn firstColumn = new GraphColumn()
-                    .setGraphId(graph._id)
+                    .setGraphId(newGraph._id)
                     .setColumnNo(0)
                     .setGoal(oldGraph.goal)
                     .setGoalEstimateDays(oldGraph.goalEstimateDays)
@@ -93,15 +96,22 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
                     .setUnit(oldGraph.unit)
                     .setUnitType(oldGraph.unitType);
 
+            newDbIdsByOldDbIds.put(oldGraph._id, newGraph._id);
+
             cupboard().withDatabase(newDb).put(firstColumn);
         }
 
         for (GraphValue graphValue : cupboard().withDatabase(oldDb).query(GraphValue.class).list()) {
-            GraphEntry entry = new GraphEntry()
-                    .setGraphId(graphValue.graphId)
-                    .setCreated(graphValue.created)
-                    .set(0, graphValue.value);
-            cupboard().withDatabase(newDb).put(entry);
+            Long graphid = newDbIdsByOldDbIds.get(graphValue.graphId);
+            if (graphid == null) {
+                Log.e(TAG, "No new graphId for " + graphValue.graphId);
+            } else {
+                GraphEntry entry = new GraphEntry()
+                        .setGraphId(graphid)
+                        .setCreated(graphValue.created)
+                        .set(0, graphValue.value);
+                cupboard().withDatabase(newDb).put(entry);
+            }
         }
     }
 
