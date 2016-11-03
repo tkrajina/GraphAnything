@@ -47,8 +47,11 @@ public class DAO {
         cupboard().withDatabase(mDb).delete(entity);
     }
 
-    public List<GraphInfo> getGraphsByUpdatedDesc() {
-        return cupboard().withDatabase(mDb).query(GraphInfo.class).orderBy("-lastValueCreated").list();
+    public List<GraphInfo> getGraphsByTimerActiveAndUpdatedDesc() {
+        return cupboard().withDatabase(mDb)
+                .query(GraphInfo.class)
+                .orderBy("-timerStarted, -lastValueCreated")
+                .list();
     }
 
     public GraphInfo loadGraph(long id) throws SQLException {

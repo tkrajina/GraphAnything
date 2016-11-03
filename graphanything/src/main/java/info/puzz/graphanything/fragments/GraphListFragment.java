@@ -49,7 +49,7 @@ public class GraphListFragment extends ListFragment {
         graphs = new ArrayList<>();
 
         DAO dao = ((BaseActivity) getActivity()).getDAO();
-        List<GraphInfo> cur = dao.getGraphsByUpdatedDesc();
+        List<GraphInfo> cur = dao.getGraphsByTimerActiveAndUpdatedDesc();
         for (GraphInfo graph : cur) {
             graphs.add(graph);
         }
