@@ -200,7 +200,7 @@ public class GraphActivity extends BaseActivity {
     }
 
     public void onShowValues(MenuItem item) {
-        GraphValuesActivity.start(this, graph._id);
+        GraphEntriesActivity.start(this, graph._id);
     }
 
     public void onSaveValue(View view) {

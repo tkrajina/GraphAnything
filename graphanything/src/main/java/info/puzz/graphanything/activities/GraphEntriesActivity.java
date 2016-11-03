@@ -6,12 +6,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import info.puzz.graphanything.R;
-import info.puzz.graphanything.fragments.GraphValueFragment;
+import info.puzz.graphanything.fragments.GraphEntryFragment;
 import info.puzz.graphanything.models2.GraphInfo;
 import info.puzz.graphanything.models2.GraphEntry;
 
 
-public class GraphValuesActivity extends BaseActivity implements GraphValueFragment.OnFragmentInteractionListener {
+public class GraphEntriesActivity extends BaseActivity implements GraphEntryFragment.OnFragmentInteractionListener {
 
     public static final String ARG_GRAPH_ID = "graph_id";
 
@@ -22,7 +22,7 @@ public class GraphValuesActivity extends BaseActivity implements GraphValueFragm
      * Utility to start this activity from another one.
      */
     public static void start(BaseActivity activity, long graphId) {
-        Intent intent = new Intent(activity, GraphValuesActivity.class);
+        Intent intent = new Intent(activity, GraphEntriesActivity.class);
         intent.putExtra(GraphActivity.ARG_GRAPH_ID, graphId);
         activity.startActivity(intent);
     }

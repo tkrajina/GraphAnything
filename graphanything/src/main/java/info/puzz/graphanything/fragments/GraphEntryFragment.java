@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import info.puzz.graphanything.activities.BaseActivity;
-import info.puzz.graphanything.activities.GraphValuesActivity;
+import info.puzz.graphanything.activities.GraphEntriesActivity;
 import info.puzz.graphanything.dao.DAO;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphInfo;
@@ -24,7 +24,7 @@ import info.puzz.graphanything.models2.GraphEntry;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class GraphValueFragment extends ListFragment {
+public class GraphEntryFragment extends ListFragment {
 
     private OnFragmentInteractionListener mListener;
     private long graphId;
@@ -34,7 +34,7 @@ public class GraphValueFragment extends ListFragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public GraphValueFragment() {
+    public GraphEntryFragment() {
     }
 
     @Override
@@ -44,7 +44,7 @@ public class GraphValueFragment extends ListFragment {
         if (getArguments() != null) {
         }
 
-        GraphValuesActivity activity = (GraphValuesActivity) getActivity();
+        GraphEntriesActivity activity = (GraphEntriesActivity) getActivity();
         graphId = activity.getGraphId();
 
         DAO dao = ((BaseActivity) getActivity()).getDAO();
@@ -55,7 +55,7 @@ public class GraphValueFragment extends ListFragment {
         Map<Integer, GraphColumn> columns = dao.getColumnsByColumnNo(graphId);
 
         setListAdapter(
-                new GraphValueArrayAdapter(
+                new GraphEntriesArrayAdapter(
                         getActivity(),
                         graph,
                         graphEntries.toArray(new GraphEntry[graphEntries.size()]),
