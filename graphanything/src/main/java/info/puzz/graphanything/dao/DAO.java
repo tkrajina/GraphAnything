@@ -78,6 +78,19 @@ public class DAO {
                 .list();
     }
 
+    public GraphEntry getLatestEntry(long graphId) {
+        List<GraphEntry> res = cupboard().withDatabase(mDb)
+                .query(GraphEntry.class)
+                .withSelection("graphId = ?", String.valueOf(graphId))
+                .orderBy("-created")
+                .limit(1)
+                .list();
+        if (res == null || res.size() == 0) {
+            return null;
+        }
+        return res.get(0);
+    }
+
     public Map<Integer, GraphColumn> getColumnsByColumnNo(Long graphId) {
         HashMap<Integer, GraphColumn> result = new HashMap<>();
         List<GraphColumn> columns = getColumns(graphId);

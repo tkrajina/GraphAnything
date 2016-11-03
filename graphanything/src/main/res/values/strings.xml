@@ -40,5 +40,6 @@
     <string name="created_colon">Created:</string>
     <string name="fields_colon">Numeric fields:</string>
     <string name="select_field_colon">Select field:</string>
+    <string name="action_edit_latest_entry">Edit latest entry</string>
 
 </resources>

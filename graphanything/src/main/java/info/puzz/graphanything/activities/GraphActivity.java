@@ -70,6 +70,7 @@ public class GraphActivity extends BaseActivity {
     private TextView goalTextView;
     private TextView goalEstimateTextView;
     private View goalGroup;
+    private List<GraphEntry> values;
 
     public static void start(BaseActivity activity, long graphId, int columnNo) {
         Intent intent = new Intent(activity, GraphActivity.class);
@@ -185,6 +186,7 @@ public class GraphActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_graph, menu);
+        menu.findItem(R.id.action_edit_latest_entry).setVisible(values.size() > 0);
         return true;
     }
 
@@ -193,11 +195,11 @@ public class GraphActivity extends BaseActivity {
         startStopTimerButton.setText(R.string.start_timer);
     }
 
-    public void editGraph(MenuItem item) {
+    public void onEditGraph(MenuItem item) {
         GraphEditActivity.start(this, graph._id);
     }
 
-    public void showValues(MenuItem item) {
+    public void onShowValues(MenuItem item) {
         GraphValuesActivity.start(this, graph._id);
     }
 
@@ -272,7 +274,8 @@ public class GraphActivity extends BaseActivity {
             graphView.getGridLabelRenderer().setNumHorizontalLabels(10);
         }
 
-        List<GraphEntry> values = getDAO().getEntriesByCreatedAsc(graph._id);
+        values = getDAO().getEntriesByCreatedAsc(graph._id);
+
         GraphEntry latestValue = values.size() == 0 ? null : values.get(values.size() - 1);
         List<DataPoint> dataPoints = graph.getGraphType().convert(values, currentGraphColumn.getColumnNo());
 
@@ -417,18 +420,18 @@ public class GraphActivity extends BaseActivity {
         RawGraphDataActivity.start(this, graph._id);
     }*/
 
-    public void deleteGraph(MenuItem item) {
+    public void onDeleteGraph(MenuItem item) {
         DialogUtils.showYesNoButton(this, "Delete \"" + graph.name + "\"?", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                    deleteGraph();
+                    onDeleteGraph();
                 }
             }
         });
     }
 
-    private void deleteGraph() {
+    private void onDeleteGraph() {
         getDAO().deleteGraph(graph);
 
         GraphListActivity.start(this);
@@ -444,6 +447,11 @@ public class GraphActivity extends BaseActivity {
         } else {
             startTimer();
         }
+    }
+
+    public void onEditLatestEntry(MenuItem item) {
+        GraphEntry entry = getDAO().getLatestEntry(graph._id);
+        GraphEntryActivity.start(this, graph._id, entry);
     }
 
     private void stopTimer() {
@@ -480,4 +488,5 @@ public class GraphActivity extends BaseActivity {
             }
         }.start();
     }
+
 }
