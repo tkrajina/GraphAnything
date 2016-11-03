@@ -86,8 +86,9 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
                     .setStatsPeriod(oldGraph.getStatsPeriod());
                     //.setGoal(oldGraph.getGoal())
                     //.setGoalEstimateDays(oldGraph.getGoalEstimateDays());
+            cupboard().withDatabase(db).put(graph);
             GraphColumn firstColumn = new GraphColumn()
-                    .setGraphId(oldGraph._id)
+                    .setGraphId(graph._id)
                     .setColumnNo(0)
                     .setGoal(oldGraph.goal)
                     .setGoalEstimateDays(oldGraph.goalEstimateDays)
@@ -95,7 +96,6 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
                     .setUnit(oldGraph.unit)
                     .setUnitType(oldGraph.unitType);
 
-            cupboard().withDatabase(db).put(graph);
             cupboard().withDatabase(db).put(firstColumn);
         }
 
