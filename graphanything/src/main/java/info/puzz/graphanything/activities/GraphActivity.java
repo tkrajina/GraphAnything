@@ -109,7 +109,7 @@ public class GraphActivity extends BaseActivity {
                 currentGraphColumn = graphColumn;
             }
         }
-        Assert.assertNotNull(currentGraphColumn);
+        Assert.assertNotNull(String.format("columnNo=%d, currentGraphColumn=%s", columnNo, currentGraphColumn), currentGraphColumn);
 
         graph = getDAO().loadGraph(graphId);
 
