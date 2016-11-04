@@ -129,7 +129,7 @@ public class GraphEditActivity extends BaseActivity {
 
             if (graphColumn == null) {
                 Assert.assertNotNull(freeColumnNoFinal);
-                editGraphButton.setText(R.string.new_column);
+                editGraphButton.setText(R.string.add_new_column);
                 editGraphButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -146,7 +146,7 @@ public class GraphEditActivity extends BaseActivity {
                 });
 
                 TextView graphColumnTextView = (TextView) graphColumnView.findViewById(R.id.graph_column_description);
-                graphColumnTextView.setText(graphColumn.formatName() + ":");
+                graphColumnTextView.setText(graphColumn.formatName());
                 editGraphButton.setText(R.string.change);
                 //editGraphButton.setText(R.string.enable);
             }
