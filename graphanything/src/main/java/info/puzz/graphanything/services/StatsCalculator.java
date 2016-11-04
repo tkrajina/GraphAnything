@@ -48,7 +48,7 @@ public class StatsCalculator {
             DataPoint point = dataPoints.get(i);
 
             double y = point.getY();
-            if (graph.getGraphType() == GraphType.SUM_ALL_PREVIOUS && i > 0) {
+            if (column.getGraphType() == GraphType.SUM_ALL_PREVIOUS && i > 0) {
                 y -= dataPoints.get(i - 1).getY();
             }
 

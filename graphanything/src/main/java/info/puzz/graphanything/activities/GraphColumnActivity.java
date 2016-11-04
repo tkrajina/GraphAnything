@@ -23,6 +23,7 @@ import info.puzz.graphanything.R;
 import info.puzz.graphanything.models2.FormatVariant;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphType;
 import info.puzz.graphanything.models2.GraphUnitType;
 import info.puzz.graphanything.models2.format.FormatException;
 import info.puzz.graphanything.utils.DialogUtils;
@@ -90,6 +91,7 @@ public class GraphColumnActivity extends BaseActivity {
         columnNameEditText.setText(getCurrentGraphColumn().name);
 
         setupUnitTypeRadioButtons();
+        setupGraphTypeRadioButtons();
     }
 
     @Override
@@ -116,6 +118,34 @@ public class GraphColumnActivity extends BaseActivity {
         menu.findItem(R.id.action_delete).setEnabled(canBeRemoved());
 
         return true;
+    }
+
+    private void setupGraphTypeRadioButtons() {
+        int[] graphTypeRadioButtonIds = new int[]{
+                R.id.graph_properties__graph_type_1,
+                R.id.graph_properties__graph_type_2,
+                R.id.graph_properties__graph_type_3,
+        };
+        RadioButton[] graphTypeRadioButtons = new RadioButton[graphTypeRadioButtonIds.length];
+        if (graphTypeRadioButtonIds.length != GraphType.values().length) {
+            throw new Error("Invalid # of radio buttons");
+        }
+        for (int i = 0; i < GraphType.values().length; i++) {
+            final GraphType graphType = GraphType.values()[i];
+
+            graphTypeRadioButtons[i] = (RadioButton) findViewById(graphTypeRadioButtonIds[i]);
+            graphTypeRadioButtons[i].setText(graphType.getDescription());
+            graphTypeRadioButtons[i].setChecked(getCurrentGraphColumn().getGraphType() == graphType);
+
+            graphTypeRadioButtons[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        getCurrentGraphColumn().type = graphType.getType();
+                    }
+                }
+            });
+        }
     }
 
     private boolean canBeRemoved() {

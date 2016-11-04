@@ -33,7 +33,7 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "graphanything.db";
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private final Context context;
 
@@ -77,15 +77,10 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
         for (info.puzz.graphanything.models.Graph oldGraph : cupboard().withDatabase(oldDb).query(info.puzz.graphanything.models.Graph.class).list()) {
             Graph newGraph = new Graph()
                     .setName(oldGraph.getName())
-                    //.setUnit(oldGraph.getUnit())
                     .setLastValue(oldGraph.getLastValue())
                     .setLastValueCreated(oldGraph.getLastValueCreated())
                     .setTimerStarted(oldGraph.getTimerStarted())
-                    .setType(oldGraph.getType())
-                    //.setUnitType(oldGraph.getUnitType())
                     .setStatsPeriod(oldGraph.getStatsPeriod());
-                    //.setGoal(oldGraph.getGoal())
-                    //.setGoalEstimateDays(oldGraph.getGoalEstimateDays());
             cupboard().withDatabase(newDb).put(newGraph);
             GraphColumn firstColumn = new GraphColumn()
                     .setGraphId(newGraph._id)
@@ -94,6 +89,7 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
                     .setGoalEstimateDays(oldGraph.goalEstimateDays)
                     .setName(oldGraph.name)
                     .setUnit(oldGraph.unit)
+                    .setType(oldGraph.getType())
                     .setUnitType(oldGraph.unitType);
 
             newDbIdsByOldDbIds.put(oldGraph._id, newGraph._id);
@@ -148,15 +144,14 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
                     "2016-10-6T8:01:01|\t87.2\n" +
                     "2016-10-7T6:46:40|\t86.7\n";
             try {
-                importData(db, graph, data, "Weight", "kg", GraphUnitType.UNIT);
+                importData(db, graph, data, "Weight", "kg", GraphType.VALUES, GraphUnitType.UNIT);
             } catch (FormatException e) {
                 Log.e(TAG, e.getMessage(), e);
             }
         }
         {
             Graph graph = new Graph()
-                    .setName("EXAMPLE: Project time")
-                    .setType(GraphType.SUM_ALL_PREVIOUS.getType());
+                    .setName("EXAMPLE: Project time");
             String data = "2016-10-10T15:18:33|00:37:17\n" +
                     "2016-10-10T15:26:44|00:05:39\n" +
                     "2016-10-10T15:32:37|00:02:31\n" +
@@ -176,19 +171,20 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
                     "2016-10-12T14:57:17|00:52:24\n" +
                     "2016-10-12T18:43:16|00:45:10\n";
             try {
-                importData(db, graph, data, "Time", "", GraphUnitType.TIMER);
+                importData(db, graph, data, "Time", "", GraphType.SUM_ALL_PREVIOUS, GraphUnitType.TIMER);
             } catch (FormatException e) {
                 Log.e(TAG, e.getMessage(), e);
             }
         }
     }
 
-    private void importData(SQLiteDatabase db, Graph graph, String data, String columnName, String columnUnit, GraphUnitType unitType) throws FormatException {
+    private void importData(SQLiteDatabase db, Graph graph, String data, String columnName, String columnUnit, GraphType type, GraphUnitType unitType) throws FormatException {
         cupboard().withDatabase(db).put(graph);
         cupboard().withDatabase(db).put(new GraphColumn()
                 .setGraphId(graph._id)
                 .setName(columnName)
                 .setUnit(columnUnit)
+                .setType(type.getType())
                 .setUnitType(unitType.getType()));
 
         List<GraphEntry> entries = ExportImportUtils.importGraph(graph, data, unitType);

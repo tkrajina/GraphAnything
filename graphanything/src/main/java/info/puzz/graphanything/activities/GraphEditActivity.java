@@ -91,8 +91,6 @@ public class GraphEditActivity extends BaseActivity {
         graphNameEditText.setText(graph.name == null ? "" : graph.name);
 
         reloadFields();
-
-        setupGraphTypeRadioButtons();
     }
 
     @Override
@@ -162,34 +160,6 @@ public class GraphEditActivity extends BaseActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_graph_properties, menu);
         return true;
-    }
-
-    private void setupGraphTypeRadioButtons() {
-        int[] graphTypeRadioButtonIds = new int[]{
-                R.id.graph_properties__graph_type_1,
-                R.id.graph_properties__graph_type_2,
-                R.id.graph_properties__graph_type_3,
-        };
-        RadioButton[] graphTypeRadioButtons = new RadioButton[graphTypeRadioButtonIds.length];
-        if (graphTypeRadioButtonIds.length != GraphType.values().length) {
-            throw new Error("Invalid # of radio buttons");
-        }
-        for (int i = 0; i < GraphType.values().length; i++) {
-            final GraphType graphType = GraphType.values()[i];
-
-            graphTypeRadioButtons[i] = (RadioButton) findViewById(graphTypeRadioButtonIds[i]);
-            graphTypeRadioButtons[i].setText(graphType.getDescription());
-            graphTypeRadioButtons[i].setChecked(graph.type == graphType.getType());
-
-            graphTypeRadioButtons[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        graph.type = graphType.getType();
-                    }
-                }
-            });
-        }
     }
 
     @Override

@@ -35,6 +35,8 @@ public class GraphColumn implements Serializable {
 
     public int unitType = GraphUnitType.UNIT.getType();
 
+    public int type = GraphType.VALUES.getType();
+
     public String unit;
 
     public boolean calculateGoal() {
@@ -43,6 +45,10 @@ public class GraphColumn implements Serializable {
 
     public GraphUnitType getGraphUnitType() {
         return GraphUnitType.findByType(unitType);
+    }
+
+    public GraphType getGraphType() {
+        return GraphType.findByType(type);
     }
 
     public String formatName() {

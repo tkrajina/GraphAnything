@@ -27,7 +27,7 @@ public class Graph implements Serializable {
      */
     public long timerStarted;
 
-    public int type = GraphType.VALUES.getType();
+//    public int type = GraphType.VALUES.getType();
 
     ///** @deprecated See {@link GraphColumn} */
     //public int unitType = GraphUnitType.UNIT.getType();
@@ -73,9 +73,9 @@ public class Graph implements Serializable {
         return GraphUnitType.findByType(unitType);
     }*/
 
-    public GraphType getGraphType() {
+/*    public GraphType getGraphType() {
         return GraphType.findByType(type);
-    }
+    }*/
 
     public static void main(String[] args) {
         System.out.println(String.format("%.2f", 2.3D));
