@@ -21,7 +21,8 @@ public enum GraphType {
             ArrayList<DataPoint> res = new ArrayList<>();
 
             for (GraphEntry entry : entries) {
-                res.add(new DataPoint(entry.created, entry.get(columnNo)));
+                Double value = entry.get(columnNo);
+                res.add(new DataPoint(entry.created, value == null ? 0D : value.doubleValue()));
             }
 
             return res;
