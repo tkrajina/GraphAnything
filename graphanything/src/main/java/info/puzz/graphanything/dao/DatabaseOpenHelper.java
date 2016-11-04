@@ -51,9 +51,13 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
             Log.e(TAG, e.getMessage(), e);
         }
 
-        OldDatabaseOpenHelper oldDbHelper = new OldDatabaseOpenHelper(this.context);
-        SQLiteDatabase oldDb = oldDbHelper.getReadableDatabase();
-        importFromOldDb(oldDb, db);
+        try {
+            OldDatabaseOpenHelper oldDbHelper = new OldDatabaseOpenHelper(this.context);
+            SQLiteDatabase oldDb = oldDbHelper.getReadableDatabase();
+            importFromOldDb(oldDb, db);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
     }
 
     @Override
