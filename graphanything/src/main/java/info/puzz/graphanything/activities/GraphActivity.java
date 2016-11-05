@@ -43,6 +43,7 @@ import info.puzz.graphanything.models2.format.FormatException;
 import info.puzz.graphanything.services.StatsCalculator;
 import info.puzz.graphanything.utils.DialogUtils;
 import info.puzz.graphanything.utils.Formatters;
+import info.puzz.graphanything.utils.StringUtils;
 import info.puzz.graphanything.utils.ThreadUtils;
 import info.puzz.graphanything.utils.TimeUtils;
 import info.puzz.graphanything.utils.Timer;
@@ -71,6 +72,7 @@ public class GraphActivity extends BaseActivity {
     private TextView goalEstimateTextView;
     private View goalGroup;
     private List<GraphEntry> values;
+    private TextView valueTextView;
 
     public static void start(BaseActivity activity, long graphId, int columnNo) {
         Intent intent = new Intent(activity, GraphActivity.class);
@@ -85,23 +87,16 @@ public class GraphActivity extends BaseActivity {
 
         setContentView(R.layout.activity_graph);
 
-        timerTextView = (TextView) findViewById(R.id.timer);
-        Assert.assertNotNull(timerTextView);
-        startStopTimerButton = (Button) findViewById(R.id.start_stop_timer);
-        Assert.assertNotNull(startStopTimerButton);
-        fieldSelectorGroup = findViewById(R.id.field_selector_group);
-        Assert.assertNotNull(fieldSelectorGroup);
-        fieldSpinner = (Spinner) findViewById(R.id.field_selector);
-        Assert.assertNotNull(fieldSpinner);
-        goalTextView = (TextView) findViewById(R.id.goal);
-        Assert.assertNotNull(goalTextView);
-        goalEstimateTextView = (TextView) findViewById(R.id.goal_estimate);
-        Assert.assertNotNull(goalEstimateTextView);
-        goalGroup = findViewById(R.id.goal_group);
-        Assert.assertNotNull(goalGroup);
+        Assert.assertNotNull(timerTextView = (TextView) findViewById(R.id.timer));
+        Assert.assertNotNull(startStopTimerButton = (Button) findViewById(R.id.start_stop_timer));
+        Assert.assertNotNull(fieldSelectorGroup = findViewById(R.id.field_selector_group));
+        Assert.assertNotNull(fieldSpinner = (Spinner) findViewById(R.id.field_selector));
+        Assert.assertNotNull(goalTextView = (TextView) findViewById(R.id.goal));
+        Assert.assertNotNull(goalEstimateTextView = (TextView) findViewById(R.id.goal_estimate));
+        Assert.assertNotNull(goalGroup = findViewById(R.id.goal_group));
+        Assert.assertNotNull(valueTextView = (TextView) findViewById(R.id.value));
 
-        graphId = getIntent().getExtras().getLong(ARG_GRAPH_ID);
-        Assert.assertNotNull(graphId);
+        Assert.assertNotNull(graphId = getIntent().getExtras().getLong(ARG_GRAPH_ID));
         graphColumns = getDAO().getColumns(graphId);
         int columnNo = getIntent().getExtras().getInt(ARG_COLUMN_NO);
         for (GraphColumn graphColumn : graphColumns) {
@@ -173,6 +168,8 @@ public class GraphActivity extends BaseActivity {
 
         if (isTimer) {
             prepareTimer();
+        } else {
+            valueTextView.setText(StringUtils.ellipses(graphColumns.get(0).getName() + ":", 15));
         }
 
         redrawAndUpdateGraphAndStats();

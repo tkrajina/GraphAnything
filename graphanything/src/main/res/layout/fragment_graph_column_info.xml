@@ -17,12 +17,13 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/fakeView"
         android:layout_toEndOf="@+id/fakeView"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp" />
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        />
 
     <TextView
         android:id="@+id/graph_column_description"
-        android:text=""
+        android:text="…"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
