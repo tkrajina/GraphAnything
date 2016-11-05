@@ -52,7 +52,11 @@ public class GraphColumn implements Serializable {
     }
 
     public String formatName() {
-        return getName() + (StringUtils.isEmpty(getUnit()) ? "" : String.format(" [%s]", getUnit()));
+        String unit = getUnit();
+        if (getGraphUnitType() == GraphUnitType.TIMER) {
+            unit = "time";
+        }
+        return getName() + (StringUtils.isEmpty(unit) ? "" : String.format(" [%s]", unit));
     }
 
     public String formatValueWithUnit(double value, FormatVariant variant) {
