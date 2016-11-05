@@ -49,7 +49,7 @@ public class GraphEntriesArrayAdapter extends ArrayAdapter<GraphEntry> {
         valueCreatedTextView.setText(TimeUtils.YYYYMMDDHHMMSS_FORMATTER.format(new Timestamp(graphEntry.created)));
 
         TextView commentTextView = (TextView) rowView.findViewById(R.id.entry_comment);
-        commentTextView.setText(StringUtils.isEmpty(graphEntry.getComment()) ? "..." : graphEntry.getComment());
+        commentTextView.setText(StringUtils.firstLine(graphEntry.getComment()));
 
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
