@@ -11,9 +11,6 @@ import info.puzz.graphanything.fragments.GraphListFragment;
 
 public class GraphListActivity extends BaseActivity implements GraphListFragment.Callbacks {
 
-    /**
-     * Utility to start this activity from another one.
-     */
     public static void start(BaseActivity activity) {
         Intent intent = new Intent(activity, GraphListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -56,5 +53,9 @@ public class GraphListActivity extends BaseActivity implements GraphListFragment
 
     public void showInfo(MenuItem item) {
         AboutActivity.start(this);
+    }
+
+    public void onShowSettings(MenuItem item) {
+        SettingsActivity.start(this);
     }
 }

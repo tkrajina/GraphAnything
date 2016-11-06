@@ -13,6 +13,13 @@
         android:onClick="newGraph" />
 
     <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="110"
+        app:showAsAction="never"
+        android:onClick="onShowSettings" />
+
+    <item
         android:id="@+id/action_info"
         android:title="@string/action_info"
         android:icon="@drawable/ic_question_mark"
