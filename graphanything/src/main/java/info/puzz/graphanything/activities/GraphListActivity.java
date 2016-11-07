@@ -1,11 +1,16 @@
 package info.puzz.graphanything.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import info.puzz.graphanything.R;
+import info.puzz.graphanything.broadcast.TimerSoundPlayer;
 import info.puzz.graphanything.fragments.GraphListFragment;
 
 
@@ -30,6 +35,12 @@ public class GraphListActivity extends BaseActivity implements GraphListFragment
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(false);
+
+        AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, TimerSoundPlayer.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+        alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 15 * 1000, alarmIntent);
     }
 
     @Override

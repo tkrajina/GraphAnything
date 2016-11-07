@@ -37,6 +37,12 @@
             android:label="@string/title_activity_help" />
         <activity android:name=".activities.GraphColumnActivity" />
         <activity android:name=".activities.GraphEntryActivity"></activity>
+
+        <receiver android:name=".broadcast.TimerSoundPlayer">
+            <intent-filter>
+                <action android:name=".broadcast.Permission.PLAY_TIMER_SOUND"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
