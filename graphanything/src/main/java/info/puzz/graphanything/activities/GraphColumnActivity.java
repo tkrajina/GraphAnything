@@ -46,6 +46,9 @@ public class GraphColumnActivity extends BaseActivity {
     private TextView measurementTypeTextView;
     private EditText unitOfMeasurementField;
     private TextView unitOfMeasurementTextView;
+    private View timerGroupView;
+    private EditText reminderSoundEditText;
+    private EditText finalSoundEditText;
 
     public static void start(BaseActivity activity, Graph graph, Map<Integer, GraphColumn> columns, int column) {
         Assert.assertNotNull(graph);
@@ -76,19 +79,24 @@ public class GraphColumnActivity extends BaseActivity {
         Assert.assertNotNull(graph);
         Assert.assertNotNull(graphColumns);
 
-        columnNameEditText = (EditText) findViewById(R.id.column_name);
-
-        measurementTypeTextView = (TextView) findViewById(R.id.measurement_type);
-        unitOfMeasurementRadioGroup = (RadioGroup) findViewById(R.id.action_graph_properties_type_group);
-        unitOfMeasurementTextView = (TextView) findViewById(R.id.unit_of_measurement_label);
-        unitOfMeasurementField = (EditText) findViewById(R.id.unit_of_measurement);
-        goalEditText = (EditText) findViewById(R.id.goal);
+        Assert.assertNotNull(columnNameEditText = (EditText) findViewById(R.id.column_name));
+        Assert.assertNotNull(measurementTypeTextView = (TextView) findViewById(R.id.measurement_type));
+        Assert.assertNotNull(unitOfMeasurementRadioGroup = (RadioGroup) findViewById(R.id.action_graph_properties_type_group));
+        Assert.assertNotNull(unitOfMeasurementTextView = (TextView) findViewById(R.id.unit_of_measurement_label));
+        Assert.assertNotNull(unitOfMeasurementField = (EditText) findViewById(R.id.unit_of_measurement));
+        Assert.assertNotNull(goalEditText = (EditText) findViewById(R.id.goal));
+        Assert.assertNotNull(timerGroupView = findViewById(R.id.timer_sounds_group));
+        Assert.assertNotNull(reminderSoundEditText = (EditText) findViewById(R.id.reminder_sound));
+        Assert.assertNotNull(finalSoundEditText = (EditText) findViewById(R.id.final_sound));
 
         unitOfMeasurementRadioGroup.setVisibility(graphColumnNo == 0 ? View.VISIBLE : View.GONE);
+        timerGroupView.setVisibility(getCurrentGraphColumn().getGraphUnitType() == GraphUnitType.TIMER ? View.VISIBLE : View.GONE);
 
         unitOfMeasurementField.setText(getCurrentGraphColumn().unit == null ? "" : getCurrentGraphColumn().unit);
         goalEditText.setText(getCurrentGraphColumn().calculateGoal() ? getCurrentGraphColumn().getGraphUnitType().format(getCurrentGraphColumn().goal, FormatVariant.LONG) : "");
         columnNameEditText.setText(getCurrentGraphColumn().name);
+        reminderSoundEditText.setText(getCurrentGraphColumn().getReminderTimerSound());
+        finalSoundEditText.setText(getCurrentGraphColumn().getFinalTimerSound());
 
         setupUnitTypeRadioButtons();
         setupGraphTypeRadioButtons();
@@ -165,6 +173,28 @@ public class GraphColumnActivity extends BaseActivity {
             } catch (FormatException e) {
                 DialogUtils.showWarningDialog(this, "Invalid goal value", e.getMessage());
                 return;
+            }
+        }
+
+        String reminderTimeStr = reminderSoundEditText.getText().toString();
+        if (StringUtils.isEmpty(reminderTimeStr)) {
+            getCurrentGraphColumn().setReminderTimerSound(0);
+        } else {
+            try {
+                getCurrentGraphColumn().setReminderTimerSound(Integer.parseInt(reminderTimeStr));
+            } catch (Exception e) {
+                DialogUtils.showWarningDialog(this, "Invalid reminder sound time value", e.getMessage());
+            }
+        }
+
+        String finalTimeStr = finalSoundEditText.getText().toString();
+        if (StringUtils.isEmpty(finalTimeStr)) {
+            getCurrentGraphColumn().setFinalTimerSound(0);
+        } else {
+            try {
+                getCurrentGraphColumn().setReminderTimerSound(Integer.parseInt(finalTimeStr));
+            } catch (Exception e) {
+                DialogUtils.showWarningDialog(this, "Invalid sound time value", e.getMessage());
             }
         }
 

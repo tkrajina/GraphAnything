@@ -7,10 +7,6 @@ import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.util.Log;
 
-/**
- * Created by puzz on 07/11/2016.
- */
-
 public class TimerSoundPlayer extends BroadcastReceiver {
 
     private static final String TAG = TimerSoundPlayer.class.getSimpleName();
