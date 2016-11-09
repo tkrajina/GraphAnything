@@ -69,10 +69,20 @@
                 android:layout_weight="0.50" />
 
             <Button
+                android:id="@+id/pause_resume_timer"
+                android:text="@string/pause"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:onClick="onPauseResume"
+                />
+
+            <Button
                 android:id="@+id/start_stop_timer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.51"
+                android:layout_weight="0.25"
                 android:onClick="onStartStop"
                 />
 

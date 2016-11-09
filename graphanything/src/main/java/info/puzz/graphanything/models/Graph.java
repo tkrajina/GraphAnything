@@ -19,10 +19,16 @@ public class Graph {
 
     public double lastValue;
     public long lastValueCreated;
+
     /**
      * Used when this graph timer is active.
      */
     public long timerStarted;
+    /**
+     * If <code>&gt;0</code> then it's paused.
+     * @see #isPaused()
+     */
+    public long timerPaused;
 
     public int unitType = GraphUnitType.UNIT.getType();
     public int type = GraphType.VALUES.getType();
@@ -46,34 +52,8 @@ public class Graph {
         return name;
     }
 
-/*    public boolean calculateGoal() {
-        return goal != null;
-    }
-
-    public boolean isTimeActive() {
-        return timerStarted > 0;
-    }
-
-    public String formatValueWithUnit(double value, FormatVariant variant) {
-        return getGraphUnitType().format(value, variant);
-    }*/
-
-    public GraphUnitType getGraphUnitType() {
-        for (GraphUnitType t : GraphUnitType.values()) {
-            if (t.getType() == unitType) {
-                return t;
-            }
-        }
-        return GraphUnitType.UNIT;
-    }
-
-    public GraphType getGraphType() {
-        for (GraphType graphType : GraphType.values()) {
-            if (graphType.getType() == type) {
-                return graphType;
-            }
-        }
-        return GraphType.VALUES;
+    public boolean isPaused() {
+        return timerStarted > 0 && timerPaused > timerStarted;
     }
 
     public static void main(String[] args) {
