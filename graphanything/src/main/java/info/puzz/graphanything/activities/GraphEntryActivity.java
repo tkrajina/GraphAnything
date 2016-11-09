@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import junit.framework.Assert;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -152,5 +153,9 @@ public class GraphEntryActivity extends BaseActivity {
         getDAO().delete(graphEntry);
         Toast.makeText(this, "Deleted", Toast.LENGTH_SHORT);
         GraphActivity.start(this, graph._id, 0);
+    }
+
+    public void onNow(View view) {
+        createdtEditText.setText(TimeUtils.YYYYMMDDHHMMSS_FORMATTER.format(new Time(System.currentTimeMillis())));
     }
 }

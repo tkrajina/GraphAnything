@@ -42,5 +42,6 @@
     <string name="select_field_colon">Select field:</string>
     <string name="action_edit_latest_entry">Edit latest entry</string>
     <string name="add_new_column">Add new field</string>
+    <string name="now">Now</string>
 
 </resources>

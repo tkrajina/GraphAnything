@@ -42,11 +42,31 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             />
 
-        <EditText
-            android:id="@+id/created"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/created"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/now_button"
+                android:layout_toLeftOf="@+id/now_button" />
+
+            <Button
+                android:id="@+id/now_button"
+                android:text="@string/now"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:onClick="onNow"
+                />
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 
