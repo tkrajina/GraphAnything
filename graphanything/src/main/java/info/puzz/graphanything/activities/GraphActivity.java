@@ -169,16 +169,13 @@ public class GraphActivity extends BaseActivity {
         findViewById(R.id.unit_value_group).setVisibility(isTimer ? View.GONE : View.VISIBLE);
 
         if (isTimer) {
-            prepareTimer();
+            restartTimerElements();
         } else {
             valueTextView.setText(StringUtils.ellipses(graphColumns.get(0).getName() + ":", 15));
         }
 
         redrawAndUpdateGraphAndStats();
 
-        if (graph.isTimeActive()) {
-            startTimer();
-        }
     }
 
     @Override
@@ -187,11 +184,6 @@ public class GraphActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.menu_graph, menu);
         menu.findItem(R.id.action_edit_latest_entry).setVisible(values.size() > 0);
         return true;
-    }
-
-    private void prepareTimer() {
-        timerTextView.setText("00:00:00");
-        startStopTimerButton.setText(R.string.start_timer);
     }
 
     public void onEditGraph(MenuItem item) {
@@ -448,7 +440,7 @@ public class GraphActivity extends BaseActivity {
         if (currentGraphColumn.unitType != GraphUnitType.TIMER.getType()) {
             return;
         }
-        if (graph.isTimeActive()) {
+        if (graph.isTimerActive()) {
             stopTimer();
         } else {
             startTimer();
@@ -486,12 +478,13 @@ public class GraphActivity extends BaseActivity {
             getDAO().save(graph);
         }
         startStopTimerButton.setText(R.string.stop_timer);
+        pauseResumeButton.setVisibility(View.VISIBLE);
 
         new Thread() {
             @Override
             public void run() {
                 Log.i(TAG, "Starting timer update thread");
-                while (activityActive && graph.isTimeActive()) {
+                while (activityActive && graph.isTimerActive() && !graph.isPaused()) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -508,14 +501,46 @@ public class GraphActivity extends BaseActivity {
 
     private void pauseTimer() {
         graph.setTimerPaused(System.currentTimeMillis());
-        pauseResumeButton.setText(R.string.resume);
+        getDAO().save(graph);
+        restartTimerElements();
+        Assert.assertTrue(graph.isPaused());
+        Assert.assertTrue(graph.isTimerActive());
     }
 
     private void resumeTimer() {
         long timeRunning = graph.getTimerPaused() - graph.getTimerStarted();
         graph.setTimerStarted(System.currentTimeMillis() - timeRunning);
         graph.setTimerPaused(0);
-        pauseResumeButton.setText(R.string.pause);
+        getDAO().save(graph);
+        restartTimerElements();
+        Assert.assertFalse(graph.isPaused());
+        Assert.assertTrue(graph.isTimerActive());
+    }
+
+    private void restartTimerElements() {
+        if (graph.isTimerActive()) {
+            if (graph.isPaused()) {
+                long time = graph.getTimerPaused() - graph.getTimerStarted();
+                timerTextView.setText(GraphUnitType.TIMER.format((double) time, FormatVariant.LONG));
+
+                pauseResumeButton.setVisibility(View.VISIBLE);
+                pauseResumeButton.setText(R.string.resume);
+                startStopTimerButton.setVisibility(View.GONE);
+            } else {
+                long time = System.currentTimeMillis() - graph.getTimerStarted();
+                timerTextView.setText(GraphUnitType.TIMER.format((double) time, FormatVariant.LONG));
+
+                pauseResumeButton.setVisibility(View.VISIBLE);
+                pauseResumeButton.setText(R.string.pause);
+                startStopTimerButton.setVisibility(View.VISIBLE);
+                startStopTimerButton.setText(R.string.stop_timer);
+                startTimer();
+            }
+        } else {
+            pauseResumeButton.setVisibility(View.GONE);
+            startStopTimerButton.setVisibility(View.VISIBLE);
+            startStopTimerButton.setText(R.string.start_timer);
+        }
     }
 
 }

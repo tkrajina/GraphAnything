@@ -43,7 +43,10 @@ public class Graph implements Serializable {
         return timerStarted > 0 && timerPaused > timerStarted;
     }
 
-    public boolean isTimeActive() {
+    /**
+     * Keep in mind that it can be paused.
+     */
+    public boolean isTimerActive() {
         return timerStarted > 0;
     }
 
