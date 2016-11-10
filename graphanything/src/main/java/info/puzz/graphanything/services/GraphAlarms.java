@@ -46,6 +46,9 @@ public final class GraphAlarms {
             if (column.getFinalTimerSound() > 0) {
                 maxTimeMinutes = column.getFinalTimerSound() - 1;
             }
+            if (column.getFinalTimerSound() > 0 && column.getFinalTimerSound() < maxTimeMinutes) {
+                maxTimeMinutes = column.getFinalTimerSound();
+            }
 
             for (int minutes = column.getReminderTimerSound(); minutes < maxTimeMinutes; minutes += column.getReminderTimerSound()) {
                 Intent intent = new Intent(activity, TimerSoundPlayer.class);
