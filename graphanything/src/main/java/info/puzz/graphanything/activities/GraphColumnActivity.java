@@ -95,8 +95,8 @@ public class GraphColumnActivity extends BaseActivity {
         unitOfMeasurementField.setText(getCurrentGraphColumn().unit == null ? "" : getCurrentGraphColumn().unit);
         goalEditText.setText(getCurrentGraphColumn().calculateGoal() ? getCurrentGraphColumn().getGraphUnitType().format(getCurrentGraphColumn().goal, FormatVariant.LONG) : "");
         columnNameEditText.setText(getCurrentGraphColumn().name);
-        reminderSoundEditText.setText(getCurrentGraphColumn().getReminderTimerSound());
-        finalSoundEditText.setText(getCurrentGraphColumn().getFinalTimerSound());
+        reminderSoundEditText.setText(getCurrentGraphColumn().getReminderTimerSound() <= 0 ? "" : String.valueOf(getCurrentGraphColumn().getReminderTimerSound()));
+        finalSoundEditText.setText(getCurrentGraphColumn().getFinalTimerSound() <= 0 ? "" : String.valueOf(getCurrentGraphColumn().getFinalTimerSound()));
 
         setupUnitTypeRadioButtons();
         setupGraphTypeRadioButtons();

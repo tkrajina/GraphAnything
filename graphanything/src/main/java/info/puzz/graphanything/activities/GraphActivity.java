@@ -40,6 +40,7 @@ import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphStats;
 import info.puzz.graphanything.models2.GraphUnitType;
 import info.puzz.graphanything.models2.format.FormatException;
+import info.puzz.graphanything.services.GraphAlarms;
 import info.puzz.graphanything.services.StatsCalculator;
 import info.puzz.graphanything.utils.DialogUtils;
 import info.puzz.graphanything.utils.Formatters;
@@ -497,6 +498,8 @@ public class GraphActivity extends BaseActivity {
                 Log.i(TAG, "Timer stopped");
             }
         }.start();
+
+        GraphAlarms.resetAlarms(this, currentGraphColumn);
     }
 
     private void pauseTimer() {
@@ -513,6 +516,8 @@ public class GraphActivity extends BaseActivity {
         graph.setTimerPaused(0);
         getDAO().save(graph);
         restartTimerElements();
+        GraphAlarms.resetAlarms(this, currentGraphColumn);
+
         Assert.assertFalse(graph.isPaused());
         Assert.assertTrue(graph.isTimerActive());
     }

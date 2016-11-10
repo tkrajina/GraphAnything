@@ -9,6 +9,8 @@ import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.concurrent.TimeUnit;
+
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.broadcast.TimerSoundPlayer;
 import info.puzz.graphanything.fragments.GraphListFragment;
@@ -35,12 +37,6 @@ public class GraphListActivity extends BaseActivity implements GraphListFragment
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(false);
-
-        AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, TimerSoundPlayer.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-
-        alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 15 * 1000, alarmIntent);
     }
 
     @Override
