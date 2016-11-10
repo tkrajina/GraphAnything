@@ -12,9 +12,17 @@
         />
 
     <item
+        android:id="@+id/clone_entry"
+        android:title="@string/clone_entry"
+        android:orderInCategory="10"
+        app:showAsAction="never"
+        android:onClick="onClone"
+        />
+
+    <item
         android:id="@+id/action_delete"
         android:title="@string/action_delete"
-        android:orderInCategory="1"
+        android:orderInCategory="20"
         app:showAsAction="never"
         android:onClick="onDelete"
         />
