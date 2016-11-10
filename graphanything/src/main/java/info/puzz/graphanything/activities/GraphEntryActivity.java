@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import junit.framework.Assert;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -60,6 +61,7 @@ public class GraphEntryActivity extends BaseActivity {
 
         Long graphId = getIntent().getExtras().getLong(ARG_GRAPH_ID);
         graphEntry = (GraphEntry) getIntent().getExtras().getSerializable(ARG_GRAPH_ENTRY);
+
         Assert.assertNotNull(graphId);
         Assert.assertNotNull(graphEntry);
 
@@ -69,13 +71,18 @@ public class GraphEntryActivity extends BaseActivity {
         Assert.assertNotNull(columns);
         Assert.assertTrue(columns.size() > 0);
 
-        columnsLinearLayout = (LinearLayout) findViewById(R.id.columns);
-        commentEditText = (EditText) findViewById(R.id.comment);
-        createdtEditText = (EditText) findViewById(R.id.created);
+        Assert.assertNotNull(columnsLinearLayout = (LinearLayout) findViewById(R.id.columns));
+        Assert.assertNotNull(commentEditText = (EditText) findViewById(R.id.comment));
+        Assert.assertNotNull(createdtEditText = (EditText) findViewById(R.id.created));
         commentEditText.setText(graphEntry.getComment());
         createdtEditText.setText(TimeUtils.YYYYMMDDHHMMSS_FORMATTER.format(new Timestamp(graphEntry.getCreated())));
 
         initStuff();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -93,6 +100,10 @@ public class GraphEntryActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_graph_entry, menu);
+
+        menu.findItem(R.id.clone_entry).setVisible(graphEntry._id != null);
+        menu.findItem(R.id.action_delete).setVisible(graphEntry._id != null);
+
         return true;
     }
 
@@ -152,5 +163,21 @@ public class GraphEntryActivity extends BaseActivity {
         getDAO().delete(graphEntry);
         Toast.makeText(this, "Deleted", Toast.LENGTH_SHORT);
         GraphActivity.start(this, graph._id, 0);
+    }
+
+    public void onNow(View view) {
+        createdtEditText.setText(TimeUtils.YYYYMMDDHHMMSS_FORMATTER.format(new Time(System.currentTimeMillis())));
+    }
+
+    public void onClone(MenuItem item) {
+        GraphEntry newEntry = new GraphEntry();
+        newEntry.setCreated(System.currentTimeMillis());
+        newEntry.setGraphId(graph._id);
+        newEntry.setComment(graphEntry.getComment());
+        for (int columnNo = 0; columnNo < GraphEntry.COLUMNS_NO; columnNo++) {
+            newEntry.set(columnNo, graphEntry.get(columnNo));
+        }
+        GraphEntryActivity.start(this, graph._id, newEntry);
+        Toast.makeText(this, "Entry cloned", Toast.LENGTH_LONG).show();
     }
 }
