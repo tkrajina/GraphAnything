@@ -17,6 +17,7 @@ import info.puzz.graphanything.broadcast.TimerSoundPlayer;
 import info.puzz.graphanything.dao.DAO;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
+import info.puzz.graphanything.models2.GraphUnitType;
 
 
 public final class GraphAlarms {
@@ -42,14 +43,17 @@ public final class GraphAlarms {
             Log.i(TAG, "Graph paused");
             return;
         }
+        if (column.getGraphUnitType() != GraphUnitType.TIMER) {
+            return;
+        }
 
         Log.i(TAG, TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - graph.timerStarted) + " from timer start");
         long elapsedTimeOnTimerStart = SystemClock.elapsedRealtime() - (System.currentTimeMillis() - graph.timerStarted);
 
         AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        if (column.finalTimerSound > 0) {
-            long time = elapsedTimeOnTimerStart + TimeUnit.MINUTES.toMillis(column.finalTimerSound);
+        if (graph.finalTimerSound > 0) {
+            long time = elapsedTimeOnTimerStart + TimeUnit.MINUTES.toMillis(graph.finalTimerSound);
             if (time > SystemClock.elapsedRealtime()) {
                 Intent finalAlarmIntent = new Intent(context, TimerSoundPlayer.class);
                 finalAlarmIntent.putExtra(GRAPH_ID, graph._id);
@@ -60,8 +64,8 @@ public final class GraphAlarms {
             }
         }
 
-        if (column.reminderTimerSound > 0) {
-            for (int minutes = 1; minutes < Math.min(60, column.finalTimerSound - 1); minutes += column.reminderTimerSound) {
+        if (graph.reminderTimerSound > 0) {
+            for (int minutes = 1; minutes < Math.min(60, graph.finalTimerSound - 1); minutes += graph.reminderTimerSound) {
                 long time = elapsedTimeOnTimerStart + TimeUnit.MINUTES.toMillis(minutes);
                 if (time > SystemClock.elapsedRealtime()) {
                     Log.i(TAG, String.format("Alarm in %d minutes", TimeUnit.MILLISECONDS.toMinutes(time - SystemClock.elapsedRealtime())));

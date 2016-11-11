@@ -34,6 +34,17 @@ public class Graph implements Serializable {
      */
     public int statsPeriod = DEFAULT_STATS_SAMPLE_DAYS;
 
+    /**
+     * If {@link GraphColumn#unitType} is {@link GraphUnitType#TIMER} and this field is <code>>0</code> then
+     * a beep sound will be played every this amount of minutes until {@link #finalTimerSound}.
+     */
+    public int reminderTimerSound;
+
+    /**
+     * @see #reminderTimerSound
+     */
+    public int finalTimerSound;
+
     @Override
     public String toString() {
         return name;

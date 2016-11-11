@@ -39,16 +39,6 @@ public class GraphColumn implements Serializable {
 
     public String unit;
 
-    /**
-     * If {@link #unitType} is {@link GraphUnitType#TIMER} and this field is <code>>0</code> then
-     * a beep sound will be played every this amount of minutes until {@link #finalTimerSound}.
-     */
-    public int reminderTimerSound;
-    /**
-     * @see #reminderTimerSound
-     */
-    public int finalTimerSound;
-
     public boolean calculateGoal() {
         return goal != null;
     }

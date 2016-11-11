@@ -26,7 +26,9 @@ import info.puzz.graphanything.R;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphType;
+import info.puzz.graphanything.models2.GraphUnitType;
 import info.puzz.graphanything.utils.DialogUtils;
+import info.puzz.graphanything.utils.StringUtils;
 
 
 public class GraphEditActivity extends BaseActivity {
@@ -37,6 +39,9 @@ public class GraphEditActivity extends BaseActivity {
 
     private EditText graphNameEditText;
     private LinearLayout fieldsListView;
+    private EditText reminderSoundEditText;
+    private EditText finalSoundEditText;
+    private View timerGroupView;
 
     private Graph graph;
     private Map<Integer, GraphColumn> columnsByColumnNumbers;
@@ -85,10 +90,18 @@ public class GraphEditActivity extends BaseActivity {
             columnsByColumnNumbers = getDAO().getColumnsByColumnNo(graph._id);
         }
 
-        graphNameEditText = (EditText) findViewById(R.id.graphName);
-        fieldsListView = (LinearLayout) findViewById(R.id.fields);
+        GraphColumn firstColumn = getDAO().getColumnsByColumnNo(graph._id).get(0);
+
+        Assert.assertNotNull(graphNameEditText = (EditText) findViewById(R.id.graphName));
+        Assert.assertNotNull(fieldsListView = (LinearLayout) findViewById(R.id.fields));
+        Assert.assertNotNull(timerGroupView = findViewById(R.id.timer_sounds_group));
+        Assert.assertNotNull(reminderSoundEditText = (EditText) findViewById(R.id.reminder_sound));
+        Assert.assertNotNull(finalSoundEditText = (EditText) findViewById(R.id.final_sound));
 
         graphNameEditText.setText(graph.name == null ? "" : graph.name);
+        timerGroupView.setVisibility(firstColumn.getGraphUnitType() == GraphUnitType.TIMER ? View.VISIBLE : View.GONE);
+        reminderSoundEditText.setText(graph.getReminderTimerSound() <= 0 ? "" : String.valueOf(graph.getReminderTimerSound()));
+        finalSoundEditText.setText(graph.getFinalTimerSound() <= 0 ? "" : String.valueOf(graph.getFinalTimerSound()));
 
         reloadFields();
     }
@@ -195,6 +208,29 @@ public class GraphEditActivity extends BaseActivity {
             e.getValue().setGraphId(graph._id);
             getDAO().save(e.getValue());
         }
+
+        String reminderTimeStr = reminderSoundEditText.getText().toString();
+        if (StringUtils.isEmpty(reminderTimeStr)) {
+            graph.setReminderTimerSound(0);
+        } else {
+            try {
+                graph.setReminderTimerSound(Integer.parseInt(reminderTimeStr));
+            } catch (Exception e) {
+                DialogUtils.showWarningDialog(this, "Invalid reminder sound time value", e.getMessage());
+            }
+        }
+
+        String finalTimeStr = finalSoundEditText.getText().toString();
+        if (StringUtils.isEmpty(finalTimeStr)) {
+            graph.setFinalTimerSound(0);
+        } else {
+            try {
+                graph.setFinalTimerSound(Integer.parseInt(finalTimeStr));
+            } catch (Exception e) {
+                DialogUtils.showWarningDialog(this, "Invalid sound time value", e.getMessage());
+            }
+        }
+
         getDAO().save(graph);
 
         GraphActivity.start(this, graph._id, 0);
