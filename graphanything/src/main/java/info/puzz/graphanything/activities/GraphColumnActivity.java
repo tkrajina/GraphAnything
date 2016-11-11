@@ -192,7 +192,7 @@ public class GraphColumnActivity extends BaseActivity {
             getCurrentGraphColumn().setFinalTimerSound(0);
         } else {
             try {
-                getCurrentGraphColumn().setReminderTimerSound(Integer.parseInt(finalTimeStr));
+                getCurrentGraphColumn().setFinalTimerSound(Integer.parseInt(finalTimeStr));
             } catch (Exception e) {
                 DialogUtils.showWarningDialog(this, "Invalid sound time value", e.getMessage());
             }

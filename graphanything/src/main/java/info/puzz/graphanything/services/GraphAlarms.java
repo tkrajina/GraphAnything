@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.os.SystemClock;
 import android.util.Log;
+
+import junit.framework.Assert;
 
 import java.util.concurrent.TimeUnit;
 
-import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.broadcast.TimerSoundPlayer;
 import info.puzz.graphanything.dao.DAO;
 import info.puzz.graphanything.models2.Graph;
@@ -28,8 +30,10 @@ public final class GraphAlarms {
         throw new Exception();
     }
 
-    public static void resetAlarms(BaseActivity activity, GraphColumn column) {
-        Graph graph = activity.getDAO().loadGraph(column.getGraphId());
+    public static void resetNextTimerAlarm(Context context, Graph graph) {
+        DAO dao = new DAO(context).open();
+
+        GraphColumn column = dao.getColumnsByColumnNo(graph._id).get(0);
         if (!graph.isTimerActive()) {
             Log.i(TAG, "Timer not active");
             return;
@@ -39,49 +43,50 @@ public final class GraphAlarms {
             return;
         }
 
-        AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
+        Log.i(TAG, TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - graph.timerStarted) + " from timer start");
+        long elapsedTimeOnTimerStart = SystemClock.elapsedRealtime() - (System.currentTimeMillis() - graph.timerStarted);
 
-        if (column.getReminderTimerSound() > 0) {
-            int maxTimeMinutes = 60;
-            if (column.getFinalTimerSound() > 0) {
-                maxTimeMinutes = column.getFinalTimerSound() - 1;
-            }
-            if (column.getFinalTimerSound() > 0 && column.getFinalTimerSound() < maxTimeMinutes) {
-                maxTimeMinutes = column.getFinalTimerSound();
-            }
+        AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-            for (int minutes = column.getReminderTimerSound(); minutes < maxTimeMinutes; minutes += column.getReminderTimerSound()) {
-                Intent intent = new Intent(activity, TimerSoundPlayer.class);
-                intent.putExtra(FINAL, false);
-                intent.putExtra(GRAPH_ID, graph._id);
-                PendingIntent alarmIntent = PendingIntent.getBroadcast(activity, minutes, intent, 0);
-                alarmManager.cancel(alarmIntent);
-                long time = graph.getTimerStarted() + TimeUnit.MINUTES.toMillis(minutes);
-                if (time > System.currentTimeMillis()) {
-                    alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, time, alarmIntent);
-                }
+        if (column.finalTimerSound > 0) {
+            long time = elapsedTimeOnTimerStart + TimeUnit.MINUTES.toMillis(column.finalTimerSound);
+            if (time > SystemClock.elapsedRealtime()) {
+                Intent finalAlarmIntent = new Intent(context, TimerSoundPlayer.class);
+                finalAlarmIntent.putExtra(GRAPH_ID, graph._id);
+                finalAlarmIntent.putExtra(FINAL, true);
+                PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, finalAlarmIntent, 0);
+                alarmMgr.cancel(alarmIntent);
+                alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, time, alarmIntent);
             }
         }
-        if (column.getFinalTimerSound() > 0) {
-            Intent intent = new Intent(activity, TimerSoundPlayer.class);
-            intent.putExtra(FINAL, true);
-            intent.putExtra(GRAPH_ID, graph._id);
-            PendingIntent alarmIntent = PendingIntent.getBroadcast(activity, 27389789, intent, 0);
-            alarmManager.cancel(alarmIntent);
-            long time = graph.getTimerStarted() + TimeUnit.MINUTES.toMillis(column.getFinalTimerSound());
-            if (time > System.currentTimeMillis()) {
-                alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, time, alarmIntent);
+
+        if (column.reminderTimerSound > 0) {
+            for (int minutes = 1; minutes < Math.min(60, column.finalTimerSound - 1); minutes += column.reminderTimerSound) {
+                long time = elapsedTimeOnTimerStart + TimeUnit.MINUTES.toMillis(minutes);
+                if (time > SystemClock.elapsedRealtime()) {
+                    Log.i(TAG, String.format("Alarm in %d minutes", TimeUnit.MILLISECONDS.toMinutes(time - SystemClock.elapsedRealtime())));
+                    Intent intent = new Intent(context, TimerSoundPlayer.class);
+                    intent.putExtra(GRAPH_ID, graph._id);
+                    intent.putExtra(FINAL, false);
+                    PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+                    alarmMgr.cancel(alarmIntent);
+                    alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, time, alarmIntent);
+                    return;
+                }
             }
         }
     }
 
     public static void alarm(Context context, Intent intent) {
-        DAO dao = new DAO(context);
+        DAO dao = new DAO(context).open();
 
         boolean isFinal = intent.getBooleanExtra(FINAL, false);
-        int graphID = intent.getIntExtra(GRAPH_ID, 0);
+        Long graphID = intent.getLongExtra(GRAPH_ID, 0);
+        Assert.assertNotNull(graphID);
+        Assert.assertTrue(graphID.longValue() > 0);
 
         Graph graph = dao.loadGraph(graphID);
+        Assert.assertNotNull(graph);
 
         if (!graph.isTimerActive()) {
             Log.i(TAG, "Timer not active");
@@ -97,7 +102,9 @@ public final class GraphAlarms {
             toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
         } else {
             ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 50);
-            toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 500);
+            toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 1000);
         }
+        
+        resetNextTimerAlarm(context, graph);
     }
 }

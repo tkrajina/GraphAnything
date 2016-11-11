@@ -499,7 +499,7 @@ public class GraphActivity extends BaseActivity {
             }
         }.start();
 
-        GraphAlarms.resetAlarms(this, currentGraphColumn);
+        GraphAlarms.resetNextTimerAlarm(this, graph);
     }
 
     private void pauseTimer() {
@@ -516,7 +516,7 @@ public class GraphActivity extends BaseActivity {
         graph.setTimerPaused(0);
         getDAO().save(graph);
         restartTimerElements();
-        GraphAlarms.resetAlarms(this, currentGraphColumn);
+        GraphAlarms.resetNextTimerAlarm(this, graph);
 
         Assert.assertFalse(graph.isPaused());
         Assert.assertTrue(graph.isTimerActive());
