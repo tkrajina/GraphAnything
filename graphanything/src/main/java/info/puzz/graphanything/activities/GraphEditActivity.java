@@ -91,6 +91,7 @@ public class GraphEditActivity extends BaseActivity {
         }
 
         GraphColumn firstColumn = getDAO().getColumnsByColumnNo(graph._id).get(0);
+        Assert.assertNotNull(firstColumn);
 
         Assert.assertNotNull(graphNameEditText = (EditText) findViewById(R.id.graphName));
         Assert.assertNotNull(fieldsListView = (LinearLayout) findViewById(R.id.fields));
