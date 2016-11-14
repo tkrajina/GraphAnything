@@ -43,6 +43,10 @@ public class GraphColumn implements Serializable {
         return goal != null;
     }
 
+    public boolean isTimer() {
+        return getGraphUnitType() == GraphUnitType.TIMER;
+    }
+
     public GraphUnitType getGraphUnitType() {
         return GraphUnitType.findByType(unitType);
     }

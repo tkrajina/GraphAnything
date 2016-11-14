@@ -2,15 +2,13 @@ package info.puzz.graphanything.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,12 +21,13 @@ import java.util.List;
 import java.util.Map;
 
 import info.puzz.graphanything.R;
+import info.puzz.graphanything.databinding.ActivityGraphEditBinding;
+import info.puzz.graphanything.models.format.FormatException;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
-import info.puzz.graphanything.models2.GraphType;
 import info.puzz.graphanything.models2.GraphUnitType;
 import info.puzz.graphanything.utils.DialogUtils;
-import info.puzz.graphanything.utils.StringUtils;
+import info.puzz.graphanything.utils.ParserUtils;
 
 
 public class GraphEditActivity extends BaseActivity {
@@ -37,13 +36,8 @@ public class GraphEditActivity extends BaseActivity {
     private static final String ARG_GRAPH = "graph";
     private static final String ARG_GRAPH_COLUMNS = "graph_columns";
 
-    private EditText graphNameEditText;
-    private LinearLayout fieldsListView;
-    private EditText reminderSoundEditText;
-    private EditText finalSoundEditText;
-    private View timerGroupView;
+    ActivityGraphEditBinding binding;
 
-    private Graph graph;
     private Map<Integer, GraphColumn> columnsByColumnNumbers;
 
     public static void start(BaseActivity activity, Long graphId) {
@@ -65,9 +59,10 @@ public class GraphEditActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph_edit);
 
-        graph = (Graph) getIntent().getSerializableExtra(ARG_GRAPH);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_graph_edit);
+
+        Graph graph = (Graph) getIntent().getSerializableExtra(ARG_GRAPH);
         if (graph == null) {
             Long graphId = (Long) getIntent().getExtras().get(ARG_GRAPH_ID);
             if (graphId == null) {
@@ -83,6 +78,8 @@ public class GraphEditActivity extends BaseActivity {
             columnsByColumnNumbers = (Map<Integer, GraphColumn>) getIntent().getExtras().getSerializable(ARG_GRAPH_COLUMNS);
             Assert.assertNotNull(columnsByColumnNumbers);
         }
+        binding.setGraph(graph);
+        binding.setFirstColumn(columnsByColumnNumbers.get(0));
 
         setTitle(R.string.edit_graph);
 
@@ -93,16 +90,7 @@ public class GraphEditActivity extends BaseActivity {
         GraphColumn firstColumn = getDAO().getColumnsByColumnNo(graph._id).get(0);
         Assert.assertNotNull(firstColumn);
 
-        Assert.assertNotNull(graphNameEditText = (EditText) findViewById(R.id.graphName));
-        Assert.assertNotNull(fieldsListView = (LinearLayout) findViewById(R.id.fields));
-        Assert.assertNotNull(timerGroupView = findViewById(R.id.timer_sounds_group));
-        Assert.assertNotNull(reminderSoundEditText = (EditText) findViewById(R.id.reminder_sound));
-        Assert.assertNotNull(finalSoundEditText = (EditText) findViewById(R.id.final_sound));
-
-        graphNameEditText.setText(graph.name == null ? "" : graph.name);
-        timerGroupView.setVisibility(firstColumn.getGraphUnitType() == GraphUnitType.TIMER ? View.VISIBLE : View.GONE);
-        reminderSoundEditText.setText(graph.getReminderTimerSound() <= 0 ? "" : String.valueOf(graph.getReminderTimerSound()));
-        finalSoundEditText.setText(graph.getFinalTimerSound() <= 0 ? "" : String.valueOf(graph.getFinalTimerSound()));
+        binding.timerSoundsGroup.setVisibility(firstColumn.getGraphUnitType() == GraphUnitType.TIMER ? View.VISIBLE : View.GONE);
 
         reloadFields();
     }
@@ -148,14 +136,22 @@ public class GraphEditActivity extends BaseActivity {
                     @Override
                     public void onClick(View view) {
                         columnsByColumnNumbers.put(freeColumnNoFinal, new GraphColumn().setColumnNo(freeColumnNoFinal));
-                        GraphColumnActivity.start(GraphEditActivity.this, graph, columnsByColumnNumbers, freeColumnNoFinal);
+                        try {
+                            GraphColumnActivity.start(GraphEditActivity.this, getFormGraph(), columnsByColumnNumbers, freeColumnNoFinal);
+                        } catch (FormatException e) {
+                            DialogUtils.showWarningDialog(GraphEditActivity.this, "Error", e.getMessage());
+                        }
                     }
                 });
             } else {
                 editGraphButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        GraphColumnActivity.start(GraphEditActivity.this, graph, columnsByColumnNumbers, graphColumn.getColumnNo());
+                        try {
+                            GraphColumnActivity.start(GraphEditActivity.this, getFormGraph(), columnsByColumnNumbers, graphColumn.getColumnNo());
+                        } catch (FormatException e) {
+                            DialogUtils.showWarningDialog(GraphEditActivity.this, "Error", e.getMessage());
+                        }
                     }
                 });
 
@@ -165,7 +161,7 @@ public class GraphEditActivity extends BaseActivity {
                 //editGraphButton.setText(R.string.enable);
             }
 
-            fieldsListView.addView(graphColumnView);
+            binding.fields.addView(graphColumnView);
         }
     }
 
@@ -192,7 +188,13 @@ public class GraphEditActivity extends BaseActivity {
     }
 
     public void onSaveGraph(MenuItem item) {
-        graph.name = graphNameEditText.getText().toString();
+        Graph graph = null;
+        try {
+            graph = getFormGraph();
+        } catch (FormatException e) {
+            DialogUtils.showWarningDialog(this, "Invalid field", e.getMessage());
+            return;
+        }
 
         if (!columnsByColumnNumbers.containsKey(0)) {
             DialogUtils.showWarningDialog(this, "At least one field must be defined", "Please add one numeric field for the graph");
@@ -210,33 +212,22 @@ public class GraphEditActivity extends BaseActivity {
             getDAO().save(e.getValue());
         }
 
-        String reminderTimeStr = reminderSoundEditText.getText().toString();
-        if (StringUtils.isEmpty(reminderTimeStr)) {
-            graph.setReminderTimerSound(0);
-        } else {
-            try {
-                graph.setReminderTimerSound(Integer.parseInt(reminderTimeStr));
-            } catch (Exception e) {
-                DialogUtils.showWarningDialog(this, "Invalid reminder sound time value", e.getMessage());
-            }
-        }
-
-        String finalTimeStr = finalSoundEditText.getText().toString();
-        if (StringUtils.isEmpty(finalTimeStr)) {
-            graph.setFinalTimerSound(0);
-        } else {
-            try {
-                graph.setFinalTimerSound(Integer.parseInt(finalTimeStr));
-            } catch (Exception e) {
-                DialogUtils.showWarningDialog(this, "Invalid sound time value", e.getMessage());
-            }
-        }
-
         getDAO().save(graph);
 
         GraphActivity.start(this, graph._id, 0);
 
         Toast.makeText(this, "Graph saved", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Graph updated with form values.
+     */
+    private Graph getFormGraph() throws FormatException {
+        Graph graph = binding.getGraph();
+        graph.name = binding.graphName.getText().toString();
+        graph.setReminderTimerSound(ParserUtils.parseInteger(binding.reminderSound.getText().toString(), 0));
+        graph.setFinalTimerSound(ParserUtils.parseInteger(binding.finalSound.getText().toString(), 0));
+        return graph;
     }
 
 }
