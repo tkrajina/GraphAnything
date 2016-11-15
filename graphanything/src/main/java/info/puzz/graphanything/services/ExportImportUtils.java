@@ -8,7 +8,7 @@ import java.util.List;
 import info.puzz.graphanything.Constants;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphEntry;
-import info.puzz.graphanything.models2.GraphUnitType;
+import info.puzz.graphanything.models2.enums.GraphUnitType;
 import info.puzz.graphanything.models2.format.FormatException;
 
 /**

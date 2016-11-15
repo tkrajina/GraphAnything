@@ -2,6 +2,8 @@ package info.puzz.graphanything.models2;
 
 import java.io.Serializable;
 
+import info.puzz.graphanything.models2.enums.GraphType;
+import info.puzz.graphanything.models2.enums.GraphUnitType;
 import info.puzz.graphanything.utils.StringUtils;
 import lombok.Data;
 import lombok.experimental.Accessors;

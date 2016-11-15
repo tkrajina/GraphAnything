@@ -25,7 +25,7 @@ import info.puzz.graphanything.databinding.ActivityGraphEditBinding;
 import info.puzz.graphanything.models.format.FormatException;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
-import info.puzz.graphanything.models2.GraphUnitType;
+import info.puzz.graphanything.models2.enums.GraphUnitType;
 import info.puzz.graphanything.utils.DialogUtils;
 import info.puzz.graphanything.utils.ParserUtils;
 
@@ -65,29 +65,21 @@ public class GraphEditActivity extends BaseActivity {
         Graph graph = (Graph) getIntent().getSerializableExtra(ARG_GRAPH);
         if (graph == null) {
             Long graphId = (Long) getIntent().getExtras().get(ARG_GRAPH_ID);
-            if (graphId == null) {
-                graph = new Graph();
-                graph.set_id(System.nanoTime());
-                columnsByColumnNumbers = new HashMap<Integer, GraphColumn>();
-            } else {
-                graph = getDAO().loadGraph(graphId);
-                columnsByColumnNumbers = getDAO().getColumnsByColumnNo(graphId);
-                setTitle(R.string.action_edit);
-            }
+            Assert.assertNotNull(graphId);
+            graph = getDAO().loadGraph(graphId);
+            columnsByColumnNumbers = getDAO().getColumnsByColumnNo(graphId);
+            setTitle(R.string.action_edit);
         } else {
             columnsByColumnNumbers = (Map<Integer, GraphColumn>) getIntent().getExtras().getSerializable(ARG_GRAPH_COLUMNS);
             Assert.assertNotNull(columnsByColumnNumbers);
+            Assert.assertTrue(columnsByColumnNumbers.containsKey(0));
         }
         binding.setGraph(graph);
         binding.setFirstColumn(columnsByColumnNumbers.get(0));
 
         setTitle(R.string.edit_graph);
 
-        if (columnsByColumnNumbers == null || columnsByColumnNumbers.size() == 0) {
-            columnsByColumnNumbers = getDAO().getColumnsByColumnNo(graph._id);
-        }
-
-        GraphColumn firstColumn = getDAO().getColumnsByColumnNo(graph._id).get(0);
+        GraphColumn firstColumn = columnsByColumnNumbers.get(0);
         Assert.assertNotNull(firstColumn);
 
         binding.timerSoundsGroup.setVisibility(firstColumn.getGraphUnitType() == GraphUnitType.TIMER ? View.VISIBLE : View.GONE);
@@ -201,6 +193,8 @@ public class GraphEditActivity extends BaseActivity {
             return;
         }
 
+        getDAO().save(graph);
+
         Map<Integer, GraphColumn> currentColumns = getDAO().getColumnsByColumnNo(graph._id);
         for (Map.Entry<Integer, GraphColumn> e : currentColumns.entrySet()) {
             if (!columnsByColumnNumbers.containsKey(e.getKey())) {
@@ -211,8 +205,6 @@ public class GraphEditActivity extends BaseActivity {
             e.getValue().setGraphId(graph._id);
             getDAO().save(e.getValue());
         }
-
-        getDAO().save(graph);
 
         GraphActivity.start(this, graph._id, 0);
 

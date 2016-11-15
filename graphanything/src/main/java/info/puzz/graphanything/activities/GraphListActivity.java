@@ -1,19 +1,20 @@
 package info.puzz.graphanything.activities;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.concurrent.TimeUnit;
+import java.util.HashMap;
+import java.util.Map;
 
 import info.puzz.graphanything.R;
-import info.puzz.graphanything.broadcast.TimerSoundPlayer;
 import info.puzz.graphanything.fragments.GraphListFragment;
+import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphColumn;
+import info.puzz.graphanything.models2.enums.GraphUnitType;
 
 
 public class GraphListActivity extends BaseActivity implements GraphListFragment.Callbacks {
@@ -47,7 +48,43 @@ public class GraphListActivity extends BaseActivity implements GraphListFragment
     }
 
     public void newGraph(MenuItem item) {
-        GraphEditActivity.start(this, null);
+        CharSequence[] options = new CharSequence[GraphUnitType.values().length];
+        for (int i = 0; i < GraphUnitType.values().length; i++) {
+            options[i] = GraphUnitType.values()[i].getDescription();
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle("Value type")
+                .setNegativeButton(R.string.cancel, null)
+                .setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startGraph(GraphUnitType.values()[which]);
+                    }
+                })
+                .show();
+    }
+
+    private void startGraph(GraphUnitType graphUnitType) {
+        Graph graph = new Graph();
+        GraphColumn column = new GraphColumn();
+
+        column.columnNo = 0;
+        column.unitType = graphUnitType.getType();
+        if (graphUnitType == GraphUnitType.TIMER) {
+            graph.reminderTimerSound = 5;
+            graph.finalTimerSound = 30;
+            column.name = "Time";
+            column.unit = "Time";
+        } else {
+            column.name = "Value";
+            column.unit = "";
+        }
+
+        Map<Integer,GraphColumn> columns = new HashMap<>();
+        columns.put(0, column);
+
+        GraphEditActivity.start(this, graph, columns);
     }
 
     /**

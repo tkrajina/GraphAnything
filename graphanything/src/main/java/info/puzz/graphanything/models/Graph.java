@@ -1,7 +1,7 @@
 package info.puzz.graphanything.models;
 
-import info.puzz.graphanything.models2.GraphType;
-import info.puzz.graphanything.models2.GraphUnitType;
+import info.puzz.graphanything.models2.enums.GraphType;
+import info.puzz.graphanything.models2.enums.GraphUnitType;
 import lombok.Data;
 
 /**

@@ -38,13 +38,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
 
-            <TextView
-                android:text="@string/fields_colon"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                />
-
             <LinearLayout
                 android:id="@+id/timer_sounds_group"
                 android:orientation="vertical"
@@ -78,6 +71,13 @@
                     />
 
             </LinearLayout>
+
+            <TextView
+                android:text="@string/fields_colon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                />
 
             <LinearLayout
                 android:id="@+id/fields"

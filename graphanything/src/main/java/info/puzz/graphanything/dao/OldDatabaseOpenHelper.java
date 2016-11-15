@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import info.puzz.graphanything.models.Graph;
-import info.puzz.graphanything.models2.GraphValue;
+import info.puzz.graphanything.models.GraphValue;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 

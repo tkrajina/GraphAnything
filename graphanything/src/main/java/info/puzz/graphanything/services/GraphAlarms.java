@@ -17,7 +17,7 @@ import info.puzz.graphanything.broadcast.TimerSoundPlayer;
 import info.puzz.graphanything.dao.DAO;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
-import info.puzz.graphanything.models2.GraphUnitType;
+import info.puzz.graphanything.models2.enums.GraphUnitType;
 
 
 public final class GraphAlarms {

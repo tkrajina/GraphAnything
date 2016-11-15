@@ -1,5 +1,6 @@
-package info.puzz.graphanything.models2;
+package info.puzz.graphanything.models2.enums;
 
+import info.puzz.graphanything.models2.FormatVariant;
 import info.puzz.graphanything.models2.format.DoubleFormatter;
 import info.puzz.graphanything.models2.format.FormatException;
 import info.puzz.graphanything.models2.format.FormatterParser;
@@ -11,7 +12,7 @@ import lombok.Getter;
  */
 public enum GraphUnitType {
 
-    UNIT(1, "Any unit", new DoubleFormatter()),
+    UNIT(1, "Numeric value", new DoubleFormatter()),
     TIMER(2, "Time (with timer)", new TimeFormatter()),
 
     ;

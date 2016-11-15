@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphStats;
-import info.puzz.graphanything.models2.GraphType;
+import info.puzz.graphanything.models2.enums.GraphType;
 
 /**
  * Created by puzz on 08/10/16.

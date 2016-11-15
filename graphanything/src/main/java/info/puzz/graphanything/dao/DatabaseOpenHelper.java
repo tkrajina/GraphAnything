@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import info.puzz.graphanything.models.GraphValue;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphEntry;
-import info.puzz.graphanything.models2.GraphType;
-import info.puzz.graphanything.models2.GraphUnitType;
-import info.puzz.graphanything.models2.GraphValue;
+import info.puzz.graphanything.models2.enums.GraphType;
+import info.puzz.graphanything.models2.enums.GraphUnitType;
 import info.puzz.graphanything.models2.format.FormatException;
 import info.puzz.graphanything.services.ExportImportUtils;
 

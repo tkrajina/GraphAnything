@@ -1,4 +1,4 @@
-package info.puzz.graphanything.models2;
+package info.puzz.graphanything.models2.enums;
 
 import com.jjoe64.graphview.series.DataPoint;
 
@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import info.puzz.graphanything.models2.GraphEntry;
+import info.puzz.graphanything.models2.ValuesToGraphPointsConverter;
 import info.puzz.graphanything.utils.TimeUtils;
 import lombok.Getter;
 

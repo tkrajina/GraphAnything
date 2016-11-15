@@ -21,7 +21,7 @@ import info.puzz.graphanything.activities.GraphActivity;
 import info.puzz.graphanything.models2.FormatVariant;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
-import info.puzz.graphanything.models2.GraphUnitType;
+import info.puzz.graphanything.models2.enums.GraphUnitType;
 import info.puzz.graphanything.utils.TimeUtils;
 
 public class GraphArrayAdapter extends ArrayAdapter<Graph> {

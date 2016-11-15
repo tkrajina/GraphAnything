@@ -38,7 +38,7 @@ import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphEntry;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphStats;
-import info.puzz.graphanything.models2.GraphUnitType;
+import info.puzz.graphanything.models2.enums.GraphUnitType;
 import info.puzz.graphanything.models2.format.FormatException;
 import info.puzz.graphanything.services.GraphAlarms;
 import info.puzz.graphanything.services.StatsCalculator;
@@ -55,7 +55,6 @@ public class GraphActivity extends BaseActivity {
     private static final String TAG = GraphActivity.class.getSimpleName();
 
     public static final String ARG_GRAPH_ID = "graph_id";
-    public static final String ARG_GRAPH = "graph";
     public static final String ARG_COLUMN_NO = "column_no";
 
     private Long graphId;
