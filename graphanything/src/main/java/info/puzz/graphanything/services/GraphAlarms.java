@@ -102,11 +102,9 @@ public final class GraphAlarms {
         }
 
         if (isFinal) {
-            ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 50);
-            toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
+            new ToneGenerator(AudioManager.STREAM_ALARM, 150).startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 2000);
         } else {
-            ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 50);
-            toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 1000);
+            new ToneGenerator(AudioManager.STREAM_ALARM, 50).startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
         }
         
         resetNextTimerAlarm(context, graph);
