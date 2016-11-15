@@ -77,6 +77,8 @@ public class GraphEntryActivity extends BaseActivity {
         commentEditText.setText(graphEntry.getComment());
         createdtEditText.setText(TimeUtils.YYYYMMDDHHMMSS_FORMATTER.format(new Timestamp(graphEntry.getCreated())));
 
+        setTitle(graph.name);
+
         initStuff();
     }
 
