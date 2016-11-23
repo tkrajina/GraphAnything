@@ -35,9 +35,6 @@ public class GraphListActivity extends BaseActivity implements GraphListFragment
         setContentView(R.layout.activity_graph_list);
 
         setTitle(R.string.graph_list);
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(false);
-        actionBar.setDisplayHomeAsUpEnabled(false);
     }
 
     @Override
