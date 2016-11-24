@@ -10,12 +10,15 @@
                 />
             <item
                 android:id="@+id/nav_about"
+                android:icon="@drawable/ic_info"
                 android:title="@string/about" />
             <item
                 android:id="@+id/nav_help"
+                android:icon="@drawable/ic_help"
                 android:title="@string/help" />
             <item
                 android:id="@+id/nav_code"
+                android:icon="@drawable/ic_code"
                 android:title="@string/code" />
         </menu>
     </item>
