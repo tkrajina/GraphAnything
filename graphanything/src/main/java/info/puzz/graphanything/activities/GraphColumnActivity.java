@@ -3,6 +3,7 @@ package info.puzz.graphanything.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,7 +59,7 @@ public class GraphColumnActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph_column);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_graph_column);
 
         graph = (Graph) getIntent().getExtras().get(ARG_GRAPH);
         graphColumns = (Map<Integer, GraphColumn>) getIntent().getExtras().get(ARG_GRAPH_COLUMNS);
