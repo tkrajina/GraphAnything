@@ -2,6 +2,7 @@ package info.puzz.graphanything.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import info.puzz.graphanything.R;
+import info.puzz.graphanything.databinding.ActivityGraphEntryBinding;
 import info.puzz.graphanything.models2.FormatVariant;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
@@ -34,14 +36,12 @@ public class GraphEntryActivity extends BaseActivity {
     private static final String ARG_GRAPH_ID = "graph_id";
     private static final String ARG_GRAPH_ENTRY = "graph_entry";
 
-    private LinearLayout columnsLinearLayout;
-
     private Graph graph;
     private GraphEntry graphEntry;
     private List<GraphColumn> columns;
     private Map<Integer, EditText> columnViewsByColumnNo;
-    private EditText commentEditText;
-    private EditText createdtEditText;
+
+    ActivityGraphEntryBinding binding;
 
     public static void start(BaseActivity activity, long graphId, GraphEntry entry) {
         Assert.assertNotNull(entry);
@@ -57,7 +57,8 @@ public class GraphEntryActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph_entry);
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_graph_entry);
 
         Long graphId = getIntent().getExtras().getLong(ARG_GRAPH_ID);
         graphEntry = (GraphEntry) getIntent().getExtras().getSerializable(ARG_GRAPH_ENTRY);
@@ -71,11 +72,8 @@ public class GraphEntryActivity extends BaseActivity {
         Assert.assertNotNull(columns);
         Assert.assertTrue(columns.size() > 0);
 
-        Assert.assertNotNull(columnsLinearLayout = (LinearLayout) findViewById(R.id.columns));
-        Assert.assertNotNull(commentEditText = (EditText) findViewById(R.id.comment));
-        Assert.assertNotNull(createdtEditText = (EditText) findViewById(R.id.created));
-        commentEditText.setText(graphEntry.getComment());
-        createdtEditText.setText(TimeUtils.YYYYMMDDHHMMSS_FORMATTER.format(new Timestamp(graphEntry.getCreated())));
+        binding.comment.setText(graphEntry.getComment());
+        binding.created.setText(TimeUtils.YYYYMMDDHHMMSS_FORMATTER.format(new Timestamp(graphEntry.getCreated())));
 
         setTitle(graph.name);
 
@@ -110,7 +108,6 @@ public class GraphEntryActivity extends BaseActivity {
     }
 
     private void initStuff() {
-        Assert.assertNotNull(columnsLinearLayout);
         Assert.assertNotNull(columns);
         Assert.assertTrue(columns.size() > 0);
 
@@ -128,7 +125,7 @@ public class GraphEntryActivity extends BaseActivity {
 
             columnViewsByColumnNo.put(column.getColumnNo(), columnValueTextView);
 
-            columnsLinearLayout.addView(graphColumnView);
+            binding.columns.addView(graphColumnView);
         }
     }
 
@@ -146,8 +143,8 @@ public class GraphEntryActivity extends BaseActivity {
             }
         }
 
-        graphEntry.setComment(commentEditText.getText().toString());
-        String createdString = createdtEditText.getText().toString();
+        graphEntry.setComment(binding.comment.getText().toString());
+        String createdString = binding.created.getText().toString();
         try {
             graphEntry.setCreated(TimeUtils.YYYYMMDDHHMMSS_FORMATTER.parse(createdString).getTime());
         } catch (ParseException e) {
@@ -168,7 +165,7 @@ public class GraphEntryActivity extends BaseActivity {
     }
 
     public void onNow(View view) {
-        createdtEditText.setText(TimeUtils.YYYYMMDDHHMMSS_FORMATTER.format(new Time(System.currentTimeMillis())));
+        binding.created.setText(TimeUtils.YYYYMMDDHHMMSS_FORMATTER.format(new Time(System.currentTimeMillis())));
     }
 
     public void onClone(MenuItem item) {

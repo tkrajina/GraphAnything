@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,9 +14,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,10 +31,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import info.puzz.graphanything.R;
+import info.puzz.graphanything.databinding.ActivityGraphBinding;
 import info.puzz.graphanything.models2.FormatVariant;
+import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphEntry;
-import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphStats;
 import info.puzz.graphanything.models2.enums.GraphUnitType;
 import info.puzz.graphanything.models2.format.FormatException;
@@ -64,16 +63,8 @@ public class GraphActivity extends BaseActivity {
     private boolean activityActive;
     private Float graphFontSize = null;
 
-    private TextView timerTextView;
-    private Button startStopTimerButton;
-    private View fieldSelectorGroup;
-    private Spinner fieldSpinner;
-    private TextView goalTextView;
-    private TextView goalEstimateTextView;
-    private View goalGroup;
+    private ActivityGraphBinding binding;
     private List<GraphEntry> values;
-    private TextView valueTextView;
-    private Button pauseResumeButton;
 
     public static void start(BaseActivity activity, long graphId, int columnNo) {
         Intent intent = new Intent(activity, GraphActivity.class);
@@ -86,17 +77,7 @@ public class GraphActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_graph);
-
-        Assert.assertNotNull(timerTextView = (TextView) findViewById(R.id.timer));
-        Assert.assertNotNull(startStopTimerButton = (Button) findViewById(R.id.start_stop_timer));
-        Assert.assertNotNull(fieldSelectorGroup = findViewById(R.id.field_selector_group));
-        Assert.assertNotNull(fieldSpinner = (Spinner) findViewById(R.id.field_selector));
-        Assert.assertNotNull(goalTextView = (TextView) findViewById(R.id.goal));
-        Assert.assertNotNull(goalEstimateTextView = (TextView) findViewById(R.id.goal_estimate));
-        Assert.assertNotNull(goalGroup = findViewById(R.id.goal_group));
-        Assert.assertNotNull(valueTextView = (TextView) findViewById(R.id.value));
-        Assert.assertNotNull(pauseResumeButton = (Button) findViewById(R.id.pause_resume_timer));
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_graph);
 
         Assert.assertNotNull(graphId = getIntent().getExtras().getLong(ARG_GRAPH_ID));
         graphColumns = getDAO().getColumns(graphId);
@@ -126,11 +107,11 @@ public class GraphActivity extends BaseActivity {
             fieldsArr[i] = graphColumns.get(i).formatName();
         }
 
-        fieldSelectorGroup.setVisibility(View.VISIBLE);
+        binding.fieldSelectorGroup.setVisibility(View.VISIBLE);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, fieldsArr);
-        fieldSpinner.setAdapter(adapter);
+        binding.fieldSelector.setAdapter(adapter);
 
-        fieldSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.fieldSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 GraphColumn selectedColumn = graphColumns.get(position);
@@ -165,13 +146,14 @@ public class GraphActivity extends BaseActivity {
 
     private void redrawAll() {
         boolean isTimer = currentGraphColumn.getGraphUnitType() == GraphUnitType.TIMER;
-        findViewById(R.id.timer_value_group).setVisibility(isTimer ? View.VISIBLE : View.GONE);
-        findViewById(R.id.unit_value_group).setVisibility(isTimer ? View.GONE : View.VISIBLE);
+
+        binding.timerValueGroup.setVisibility(isTimer ? View.VISIBLE : View.GONE);
+        binding.unitValueGroup.setVisibility(isTimer ? View.GONE : View.VISIBLE);
 
         if (isTimer) {
             restartTimerElements();
         } else {
-            valueTextView.setText(StringUtils.ellipses(graphColumns.get(0).getName() + ":", 15));
+            binding.value.setText(StringUtils.ellipses(graphColumns.get(0).getName() + ":", 15));
         }
 
         redrawAndUpdateGraphAndStats();
@@ -195,9 +177,7 @@ public class GraphActivity extends BaseActivity {
     }
 
     public void onSaveValue(View view) {
-        final EditText numberField = (EditText) findViewById(R.id.number_field);
-        String text = numberField.getText().toString().trim();
-
+        String text = binding.numberField.getText().toString().trim();
 
         double value;
         try {
@@ -208,7 +188,7 @@ public class GraphActivity extends BaseActivity {
                     .setMessage(e.getMessage())
                     .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            numberField.setText("", TextView.BufferType.EDITABLE);
+                            binding.numberField.setText("", TextView.BufferType.EDITABLE);
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -231,7 +211,7 @@ public class GraphActivity extends BaseActivity {
     private void redrawAndUpdateGraphAndStats() {
         Timer t = new Timer("redrawing graph");
 
-        GraphView graphView = (GraphView) findViewById(R.id.graph);
+        GraphView graphView = binding.graph;
 
         if (graphFontSize == null) {
             graphFontSize = graphView.getGridLabelRenderer().getTextSize();
@@ -392,25 +372,25 @@ public class GraphActivity extends BaseActivity {
     private void redrawStats(GraphUnitType graphUnitType, GraphStats stats) {
         boolean horizontal = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 
-        ((TextView) findViewById(R.id.total_avg)).setText(graphUnitType.format(stats.getAvg(), FormatVariant.LONG));
-        ((TextView) findViewById(R.id.last_preriod_avg_value)).setText(graphUnitType.format(stats.getAvgLatestPeriod(), horizontal ? FormatVariant.LONG : FormatVariant.SHORT));
-        ((TextView) findViewById(R.id.previous_preriod_avg_value)).setText(graphUnitType.format(stats.getAvgPreviousPeriod(), horizontal ? FormatVariant.LONG : FormatVariant.SHORT));
+        binding.totalAvg.setText(graphUnitType.format(stats.getAvg(), FormatVariant.LONG));
+        binding.lastPreriodAvgValue.setText(graphUnitType.format(stats.getAvgLatestPeriod(), horizontal ? FormatVariant.LONG : FormatVariant.SHORT));
+        binding.previousPreriodAvgValue.setText(graphUnitType.format(stats.getAvgPreviousPeriod(), horizontal ? FormatVariant.LONG : FormatVariant.SHORT));
 
-        ((TextView) findViewById(R.id.total_sum)).setText(graphUnitType.format(stats.getSum(), FormatVariant.LONG));
-        ((TextView) findViewById(R.id.last_preriod_sum_value)).setText(graphUnitType.format(stats.getSumLatestPeriod(), horizontal ? FormatVariant.LONG : FormatVariant.SHORT));
-        ((TextView) findViewById(R.id.previous_period_sum_value)).setText(graphUnitType.format(stats.getSumPreviousPeriod(), horizontal ? FormatVariant.LONG : FormatVariant.SHORT));
+        binding.totalSum.setText(graphUnitType.format(stats.getSum(), FormatVariant.LONG));
+        binding.lastPreriodSumValue.setText(graphUnitType.format(stats.getSumLatestPeriod(), horizontal ? FormatVariant.LONG : FormatVariant.SHORT));
+        binding.previousPeriodSumValue.setText(graphUnitType.format(stats.getSumPreviousPeriod(), horizontal ? FormatVariant.LONG : FormatVariant.SHORT));
 
         if (currentGraphColumn.calculateGoal()) {
-            goalGroup.setVisibility(View.VISIBLE);
-            goalTextView.setText(graphUnitType.format(currentGraphColumn.goal, FormatVariant.LONG));
+            binding.goalGroup.setVisibility(View.VISIBLE);
+            binding.goal.setText(graphUnitType.format(currentGraphColumn.goal, FormatVariant.LONG));
 
             String estimate = "n/a";
             if (stats.getGoalEstimateDays() != null && stats.getGoalEstimateDays().floatValue() >= 0) {
                 estimate = Formatters.formatNumber(stats.getGoalEstimateDays()) + "days";
             }
-            goalEstimateTextView.setText(estimate);
+            binding.goalEstimate.setText(estimate);
         } else {
-            goalGroup.setVisibility(View.GONE);
+            binding.goalGroup.setVisibility(View.GONE);
         }
     }
 
@@ -465,7 +445,7 @@ public class GraphActivity extends BaseActivity {
 
     private void stopTimer() {
         long value = TimeUtils.timeFrom(graph.timerStarted);
-        startStopTimerButton.setText(R.string.start_timer);
+        binding.startStopTimer.setText(R.string.start_timer);
         addValue(value);
     }
 
@@ -477,8 +457,8 @@ public class GraphActivity extends BaseActivity {
             graph.timerStarted = System.currentTimeMillis();
             getDAO().save(graph);
         }
-        startStopTimerButton.setText(R.string.stop_timer);
-        pauseResumeButton.setVisibility(View.VISIBLE);
+        binding.startStopTimer.setText(R.string.stop_timer);
+        binding.pauseResumeTimer.setVisibility(View.VISIBLE);
 
         new Thread() {
             @Override
@@ -488,7 +468,7 @@ public class GraphActivity extends BaseActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            timerTextView.setText(TimeUtils.formatDurationToHHMMSS(System.currentTimeMillis() - graph.timerStarted, FormatVariant.LONG));
+                            binding.timer.setText(TimeUtils.formatDurationToHHMMSS(System.currentTimeMillis() - graph.timerStarted, FormatVariant.LONG));
                         }
                     });
 
@@ -525,25 +505,25 @@ public class GraphActivity extends BaseActivity {
         if (graph.isTimerActive()) {
             if (graph.isPaused()) {
                 long time = graph.getTimerPaused() - graph.getTimerStarted();
-                timerTextView.setText(GraphUnitType.TIMER.format((double) time, FormatVariant.LONG));
+                binding.timer.setText(GraphUnitType.TIMER.format((double) time, FormatVariant.LONG));
 
-                pauseResumeButton.setVisibility(View.VISIBLE);
-                pauseResumeButton.setText(R.string.resume);
-                startStopTimerButton.setVisibility(View.GONE);
+                binding.pauseResumeTimer.setVisibility(View.VISIBLE);
+                binding.pauseResumeTimer.setText(R.string.resume);
+                binding.startStopTimer.setVisibility(View.GONE);
             } else {
                 long time = System.currentTimeMillis() - graph.getTimerStarted();
-                timerTextView.setText(GraphUnitType.TIMER.format((double) time, FormatVariant.LONG));
+                binding.timer.setText(GraphUnitType.TIMER.format((double) time, FormatVariant.LONG));
 
-                pauseResumeButton.setVisibility(View.VISIBLE);
-                pauseResumeButton.setText(R.string.pause);
-                startStopTimerButton.setVisibility(View.VISIBLE);
-                startStopTimerButton.setText(R.string.stop_timer);
+                binding.pauseResumeTimer.setVisibility(View.VISIBLE);
+                binding.pauseResumeTimer.setText(R.string.pause);
+                binding.startStopTimer.setVisibility(View.VISIBLE);
+                binding.startStopTimer.setText(R.string.stop_timer);
                 startTimer();
             }
         } else {
-            pauseResumeButton.setVisibility(View.GONE);
-            startStopTimerButton.setVisibility(View.VISIBLE);
-            startStopTimerButton.setText(R.string.start_timer);
+            binding.pauseResumeTimer.setVisibility(View.GONE);
+            binding.startStopTimer.setVisibility(View.VISIBLE);
+            binding.startStopTimer.setText(R.string.start_timer);
         }
     }
 

@@ -36,7 +36,7 @@ public class GraphEntriesActivity extends BaseActivity implements GraphEntryFrag
         super.onCreate(savedInstanceState);
 
         if (getIntent().getExtras() == null || !getIntent().getExtras().containsKey(ARG_GRAPH_ID)) {
-            throw new Error(getClass().getSimpleName() + " withour graphId!");
+            throw new Error(getClass().getSimpleName() + " without graphId!"); // TODO
         }
 
         graphId = getIntent().getExtras().getLong(ARG_GRAPH_ID);

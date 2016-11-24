@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 import info.puzz.graphanything.R;
+import info.puzz.graphanything.databinding.ActivityGraphColumnBinding;
 import info.puzz.graphanything.models2.FormatVariant;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.Graph;
@@ -35,17 +36,12 @@ public class GraphColumnActivity extends BaseActivity {
     private static final String ARG_GRAPH_COLUMNS = "graph_columns";
     private static final String ARG_GRAPH_COLUMN_NO = "graph_column_no";
 
-    private EditText goalEditText;
-    private EditText columnNameEditText;
-
     private Graph graph;
     private int graphColumnNo;
 
     private Map<Integer, GraphColumn> graphColumns;
-    private RadioGroup unitOfMeasurementRadioGroup;
-    private TextView measurementTypeTextView;
-    private EditText unitOfMeasurementField;
-    private TextView unitOfMeasurementTextView;
+    ActivityGraphColumnBinding binding;
+
 
     public static void start(BaseActivity activity, Graph graph, Map<Integer, GraphColumn> columns, int column) {
         Assert.assertNotNull(graph);
@@ -73,21 +69,14 @@ public class GraphColumnActivity extends BaseActivity {
 
         this.graphColumnNo = graphColumnNo;
 
-        Assert.assertNotNull(graph);
+        Assert.assertNotNull(graph); // TODO
         Assert.assertNotNull(graphColumns);
 
-        Assert.assertNotNull(columnNameEditText = (EditText) findViewById(R.id.column_name));
-        Assert.assertNotNull(measurementTypeTextView = (TextView) findViewById(R.id.measurement_type));
-        Assert.assertNotNull(unitOfMeasurementRadioGroup = (RadioGroup) findViewById(R.id.action_graph_properties_type_group));
-        Assert.assertNotNull(unitOfMeasurementTextView = (TextView) findViewById(R.id.unit_of_measurement_label));
-        Assert.assertNotNull(unitOfMeasurementField = (EditText) findViewById(R.id.unit_of_measurement));
-        Assert.assertNotNull(goalEditText = (EditText) findViewById(R.id.goal));
+        binding.actionGraphPropertiesTypeGroup.setVisibility(graphColumnNo == 0 ? View.VISIBLE : View.GONE);
 
-        unitOfMeasurementRadioGroup.setVisibility(graphColumnNo == 0 ? View.VISIBLE : View.GONE);
-
-        unitOfMeasurementField.setText(getCurrentGraphColumn().unit == null ? "" : getCurrentGraphColumn().unit);
-        goalEditText.setText(getCurrentGraphColumn().calculateGoal() ? getCurrentGraphColumn().getGraphUnitType().format(getCurrentGraphColumn().goal, FormatVariant.LONG) : "");
-        columnNameEditText.setText(getCurrentGraphColumn().name);
+        binding.unitOfMeasurement.setText(getCurrentGraphColumn().unit == null ? "" : getCurrentGraphColumn().unit);
+        binding.goal.setText(getCurrentGraphColumn().calculateGoal() ? getCurrentGraphColumn().getGraphUnitType().format(getCurrentGraphColumn().goal, FormatVariant.LONG) : "");
+        binding.columnName.setText(getCurrentGraphColumn().name);
 
         setupUnitTypeRadioButtons();
         setupGraphTypeRadioButtons();
@@ -152,9 +141,9 @@ public class GraphColumnActivity extends BaseActivity {
     }
 
     public void onSave(MenuItem item) {
-        getCurrentGraphColumn().unit = unitOfMeasurementField.getText().toString();
-        getCurrentGraphColumn().name = columnNameEditText.getText().toString();
-        String goalStr = goalEditText.getText().toString().trim();
+        getCurrentGraphColumn().unit = binding.unitOfMeasurement.getText().toString();
+        getCurrentGraphColumn().name = binding.columnName.getText().toString();
+        String goalStr = binding.goal.getText().toString().trim();
 
         if (StringUtils.isEmpty(goalStr)) {
             getCurrentGraphColumn().goal = null;
@@ -201,8 +190,8 @@ public class GraphColumnActivity extends BaseActivity {
 
     private void reloadUnitOfMeasurementField(int graphType) {
         int visibility = graphType == GraphUnitType.TIMER.getType() ? View.GONE : View.VISIBLE;
-        unitOfMeasurementField.setVisibility(visibility);
-        unitOfMeasurementTextView.setVisibility(visibility);
+        binding.unitOfMeasurement.setVisibility(visibility);
+        binding.unitOfMeasurementLabel.setVisibility(visibility);
     }
 
     public void onDeleteColumn(MenuItem item) {

@@ -1,12 +1,14 @@
 package info.puzz.graphanything.activities;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
 import info.puzz.graphanything.R;
+import info.puzz.graphanything.databinding.ActivityHelpBinding;
 
 public class HelpActivity extends BaseActivity {
 
@@ -24,15 +26,14 @@ public class HelpActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_help);
+
+        ActivityHelpBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_help);
 
         String title = getIntent().getStringExtra(ARG_TITLE);
         String html = getIntent().getStringExtra(ARG_HTML);
 
-        webView = (WebView) findViewById(R.id.help_viewer);
-
         setTitle(title);
-        webView.loadData(html, "text/html", null);
+        binding.helpViewer.loadData(html, "text/html", null);
     }
 
     @Override

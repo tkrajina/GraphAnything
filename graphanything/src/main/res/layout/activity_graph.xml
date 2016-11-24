@@ -1,294 +1,323 @@
-<ScrollView
+<?xml version="1.0" encoding="utf-8"?>
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="info.puzz.graphanything.activities.GraphActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <data></data>
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:openDrawer="start">
 
-        <LinearLayout
-            android:id="@+id/field_selector_group"
+        <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true">
 
-            <TextView
-                android:text="@string/select_field_colon"
-                android:gravity="right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+            <include layout="@layout/toolbar" />
 
-            <Spinner
-                android:id="@+id/field_selector"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="182dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
-
-            <com.jjoe64.graphview.GraphView
+            <!-- body... -->
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/graph"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" >
 
-        </LinearLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/timer_value_group"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+                    <LinearLayout
+                        android:id="@+id/field_selector_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
-            <TextView
-                android:id="@+id/timer"
-                android:text="00:00:00"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal|center_vertical"
-                android:layout_weight="0.50" />
+                        <TextView
+                            android:text="@string/select_field_colon"
+                            android:gravity="right"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
 
-            <Button
-                android:id="@+id/pause_resume_timer"
-                android:text="@string/pause"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:onClick="onPauseResume"
-                />
+                        <Spinner
+                            android:id="@+id/field_selector"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
 
-            <Button
-                android:id="@+id/start_stop_timer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:onClick="onStartStop"
-                />
+                    </LinearLayout>
 
-        </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="182dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true">
 
-        <LinearLayout
-            android:id="@+id/unit_value_group"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1">
+                        <com.jjoe64.graphview.GraphView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/graph"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true" />
 
-            <TextView
-                android:id="@+id/value"
-                android:layout_weight="0.40"
-                android:gravity="right|center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                    </LinearLayout>
 
-            <EditText
-                android:id="@+id/number_field"
-                android:layout_weight="0.30"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:inputType="numberSigned|numberDecimal"
-                android:gravity="left|bottom" />
+                    <LinearLayout
+                        android:id="@+id/timer_value_group"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
 
-            <Button
-                android:id="@+id/save_button"
-                android:layout_weight="0.30"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/action_save"
-                android:onClick="onSaveValue"
-                android:textSize="12dp"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                />
-        </LinearLayout>
+                        <TextView
+                            android:id="@+id/timer"
+                            android:text="00:00:00"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:layout_weight="0.50" />
+
+                        <Button
+                            android:id="@+id/pause_resume_timer"
+                            android:text="@string/pause"
+                            android:visibility="gone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.25"
+                            android:onClick="onPauseResume"
+                            />
+
+                        <Button
+                            android:id="@+id/start_stop_timer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.25"
+                            android:onClick="onStartStop"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/unit_value_group"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/value"
+                            android:layout_weight="0.40"
+                            android:gravity="right|center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <EditText
+                            android:id="@+id/number_field"
+                            android:layout_weight="0.30"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:inputType="numberSigned|numberDecimal"
+                            android:gravity="left|bottom" />
+
+                        <Button
+                            android:id="@+id/save_button"
+                            android:layout_weight="0.30"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/action_save"
+                            android:onClick="onSaveValue"
+                            android:textSize="12dp"
+                            android:minHeight="0dp"
+                            android:minWidth="0dp"
+                            />
+                    </LinearLayout>
 
 
-        <LinearLayout
-            android:id="@+id/goal_group"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                    <LinearLayout
+                        android:id="@+id/goal_group"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_margin="10dp"
-                android:background="@android:color/darker_gray"/>
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="1dp"
+                            android:layout_margin="10dp"
+                            android:background="@android:color/darker_gray"/>
 
-            <TextView
-                android:text="Goal:"
-                android:layout_width="match_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView4" />
+                        <TextView
+                            android:text="Goal:"
+                            android:layout_width="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textView4" />
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/goal"
-                    android:text="TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_weight="1"
-                    android:textStyle="normal|bold" />
+                            <TextView
+                                android:id="@+id/goal"
+                                android:text="TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:layout_weight="1"
+                                android:textStyle="normal|bold" />
 
-                <TextView
-                    android:id="@+id/textView9"
-                    android:text="Estimated time: "
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:layout_weight="1" />
+                            <TextView
+                                android:id="@+id/textView9"
+                                android:text="Estimated time: "
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:layout_weight="1" />
 
-                <TextView
-                    android:text="TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/goal_estimate"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_weight="1"
-                    android:textStyle="normal|bold" />
-            </LinearLayout>
-        </LinearLayout>
+                            <TextView
+                                android:text="TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/goal_estimate"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:layout_weight="1"
+                                android:textStyle="normal|bold" />
+                        </LinearLayout>
+                    </LinearLayout>
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_margin="10dp"
-            android:background="@android:color/darker_gray"/>
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_margin="10dp"
+                        android:background="@android:color/darker_gray"/>
 
-        <TextView
-            android:text="Average:"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            />
+                    <TextView
+                        android:text="Average:"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/total_avg"
-                android:text="TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_weight="1"
-                android:textStyle="normal|bold" />
+                        <TextView
+                            android:id="@+id/total_avg"
+                            android:text="TextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_weight="1"
+                            android:textStyle="normal|bold" />
 
-            <TextView
-                android:id="@+id/last_period_avg_label"
-                android:text="Last 7d: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:layout_weight="1" />
+                        <TextView
+                            android:id="@+id/last_period_avg_label"
+                            android:text="Last 7d: "
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/last_preriod_avg_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textStyle="normal|bold" />
+                        <TextView
+                            android:id="@+id/last_preriod_avg_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textStyle="normal|bold" />
 
-            <TextView
-                android:id="@+id/previous_preriod_avg_label"
-                android:text="Previous 7d: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:layout_weight="1" />
+                        <TextView
+                            android:id="@+id/previous_preriod_avg_label"
+                            android:text="Previous 7d: "
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/previous_preriod_avg_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textStyle="normal|bold" />
+                        <TextView
+                            android:id="@+id/previous_preriod_avg_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textStyle="normal|bold" />
 
-        </LinearLayout>
+                    </LinearLayout>
 
-        <TextView
-            android:text="Sum:"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            />
+                    <TextView
+                        android:text="Sum:"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/total_sum"
-                android:text="TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_weight="1"
-                android:textStyle="normal|bold" />
+                        <TextView
+                            android:id="@+id/total_sum"
+                            android:text="TextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_weight="1"
+                            android:textStyle="normal|bold" />
 
-            <TextView
-                android:id="@+id/last_preriod_sum_label"
-                android:text="Last 7d: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:layout_weight="1" />
+                        <TextView
+                            android:id="@+id/last_preriod_sum_label"
+                            android:text="Last 7d: "
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/last_preriod_sum_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textStyle="normal|bold" />
+                        <TextView
+                            android:id="@+id/last_preriod_sum_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textStyle="normal|bold" />
 
-            <TextView
-                android:id="@+id/previous_preriod_sum_label"
-                android:text="Previous 7d: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:layout_weight="1" />
+                        <TextView
+                            android:id="@+id/previous_preriod_sum_label"
+                            android:text="Previous 7d: "
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/previous_period_sum_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textStyle="normal|bold" />
+                        <TextView
+                            android:id="@+id/previous_period_sum_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textStyle="normal|bold" />
 
-        </LinearLayout>
+                    </LinearLayout>
 
-    </LinearLayout>
-</ScrollView>
+                </LinearLayout>
+            </ScrollView>
+            <!-- ...body -->
+
+        </android.support.design.widget.CoordinatorLayout>
+
+        <include layout="@layout/navigation" />
+
+    </android.support.v4.widget.DrawerLayout>
+</layout>
