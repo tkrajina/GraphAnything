@@ -1,7 +1,11 @@
 package info.puzz.graphanything.models2;
 
 import java.io.Serializable;
+import java.util.concurrent.TimeUnit;
 
+import info.puzz.graphanything.R;
+import info.puzz.graphanything.models2.enums.GraphUnitType;
+import info.puzz.graphanything.utils.TimeUtils;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -63,5 +67,21 @@ public class Graph implements Serializable {
 
     public static void main(String[] args) {
         System.out.println(String.format("%.2f", 2.3D));
+    }
+
+    public int getActivityIcon(GraphColumn column) {
+        if (column.getGraphUnitType() == GraphUnitType.TIMER && timerStarted > 0) {
+            return R.drawable.ic_timer;
+        } else if (TimeUtils.timeFrom(lastValueCreated) > TimeUnit.DAYS.toMillis(Graph.DEFAULT_STATS_SAMPLE_DAYS / 2)) {
+            return R.drawable.ic_zzz_bell;
+        } else if (column.calculateGoal()) {
+            if (- Graph.DEFAULT_STATS_SAMPLE_DAYS / 2 < column.goalEstimateDays && column.goalEstimateDays < Graph.DEFAULT_STATS_SAMPLE_DAYS * 50) {
+                return R.drawable.ic_smile;
+            } else {
+                return R.drawable.ic_sad;
+            }
+        } else {
+            return R.drawable.ic_smile;
+        }
     }
 }

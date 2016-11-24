@@ -1,6 +1,7 @@
 package info.puzz.graphanything.fragments;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.activities.GraphActivity;
+import info.puzz.graphanything.databinding.GraphBinding;
 import info.puzz.graphanything.models2.FormatVariant;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
@@ -45,44 +47,30 @@ public class GraphArrayAdapter extends ArrayAdapter<Graph> {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View rowView = inflater.inflate(R.layout.graph, parent, false);
+        GraphBinding binding;
+        if (convertView == null) {
+            binding = DataBindingUtil.inflate(inflater, R.layout.graph, parent, false);
+        } else {
+            binding = DataBindingUtil.getBinding(convertView);
+        }
 
         final Graph graph = values[position];
+        binding.setGraph(graph);
         GraphColumn column = firstColumns.get(graph._id);
         Assert.assertNotNull(String.format("No columns for graph %d", graph._id), column);
 
-        ImageView iconTextView = (ImageView) rowView.findViewById(R.id.icon);
-        if (column.getGraphUnitType() == GraphUnitType.TIMER && graph.timerStarted > 0) {
-            iconTextView.setImageResource(R.drawable.ic_timer);
-        } else if (TimeUtils.timeFrom(graph.lastValueCreated) > TimeUnit.DAYS.toMillis(Graph.DEFAULT_STATS_SAMPLE_DAYS / 2)) {
-            iconTextView.setImageResource(R.drawable.ic_zzz_bell);
-        } else if (column.calculateGoal()) {
-            if (- Graph.DEFAULT_STATS_SAMPLE_DAYS / 2 < column.goalEstimateDays && column.goalEstimateDays < Graph.DEFAULT_STATS_SAMPLE_DAYS * 50) {
-                iconTextView.setImageResource(R.drawable.ic_smile);
-            } else {
-                iconTextView.setImageResource(R.drawable.ic_sad);
-            }
-        } else {
-            iconTextView.setImageResource(R.drawable.ic_smile);
-        }
+        binding.icon.setImageResource(graph.getActivityIcon(column));
+        binding.graphSubtitleLastValue.setText(column.formatValueWithUnit(graph.lastValue, FormatVariant.SHORT));
+        binding.graphSubtitleLastValueCreated.setText(TimeUtils.formatTimeAgoString(graph.lastValueCreated));
 
-        TextView titleView = (TextView) rowView.findViewById(R.id.graph_title);
-        titleView.setText(graph.name);
-
-        TextView lastValueTextView = (TextView) rowView.findViewById(R.id.graph_subtitle_last_value);
-        lastValueTextView.setText(column.formatValueWithUnit(graph.lastValue, FormatVariant.SHORT));
-
-        TextView lastValueCreatedTextView = (TextView) rowView.findViewById(R.id.graph_subtitle_last_value_created);
-        lastValueCreatedTextView.setText(TimeUtils.formatTimeAgoString(graph.lastValueCreated));
-
-        rowView.setOnClickListener(new View.OnClickListener() {
+        binding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GraphActivity.start((BaseActivity) context, graph._id, 0);
             }
         });
 
-        return rowView;
+        return binding.getRoot();
     }
 }
 
