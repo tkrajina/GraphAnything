@@ -111,4 +111,12 @@ public class DAO {
                 .list();
     }
 
+    public Map<Long, GraphColumn> getFirstColumnsByGraphId() {
+        HashMap<Long, GraphColumn> res = new HashMap<>();
+        for (GraphColumn column : getFirstColumns()) {
+            res.put(column.graphId, column);
+        }
+        return res;
+    }
+
 }

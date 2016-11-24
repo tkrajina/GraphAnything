@@ -70,6 +70,10 @@ public class Graph implements Serializable {
     }
 
     public int getActivityIcon(GraphColumn column) {
+        if (column == null) {
+            return R.drawable.ic_smile;
+        }
+
         if (column.getGraphUnitType() == GraphUnitType.TIMER && timerStarted > 0) {
             return R.drawable.ic_timer;
         } else if (TimeUtils.timeFrom(lastValueCreated) > TimeUnit.DAYS.toMillis(Graph.DEFAULT_STATS_SAMPLE_DAYS / 2)) {
@@ -80,8 +84,8 @@ public class Graph implements Serializable {
             } else {
                 return R.drawable.ic_sad;
             }
-        } else {
-            return R.drawable.ic_smile;
         }
+
+        return R.drawable.ic_smile;
     }
 }

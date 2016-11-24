@@ -14,10 +14,12 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 
 import java.util.List;
+import java.util.Map;
 
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.dao.DAO;
 import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphColumn;
 
 public abstract class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -72,6 +74,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
         if (id == R.id.nav_about) {
             AboutActivity.start(this);
+        } else if (id == R.id.nav_graphs) {
+            GraphListActivity.start(this);
         } else if (id == R.id.nav_code) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/tkrajina/GraphAnything")));
         } else if (id == R.id.nav_help) {
@@ -102,11 +106,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
+        Map<Long, GraphColumn> firstColumns = getDAO().getFirstColumnsByGraphId();
         List<Graph> graphs = getDAO().getGraphsByTimerActiveAndUpdatedDesc();
         if (graphs.size() > 0 && !this.getClass().equals(GraphListActivity.class)) {
             SubMenu submenu = navigationView.getMenu().addSubMenu(R.string.graphs);
             for (final Graph graph : graphs) {
-                MenuItem menu = submenu.add(graph.name);
+                MenuItem menu = submenu.add(graph.name).setIcon(graph.getActivityIcon(firstColumns.get(graph._id)));
                 menu.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {

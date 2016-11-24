@@ -3,14 +3,17 @@ package info.puzz.graphanything.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import info.puzz.graphanything.R;
+import info.puzz.graphanything.databinding.ActivityGraphListBinding;
 import info.puzz.graphanything.fragments.GraphListFragment;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
@@ -18,6 +21,8 @@ import info.puzz.graphanything.models2.enums.GraphUnitType;
 
 
 public class GraphListActivity extends BaseActivity implements GraphListFragment.Callbacks {
+
+    ActivityGraphListBinding binding;
 
     /**
      * Utility to start this activity from another one.
@@ -32,19 +37,19 @@ public class GraphListActivity extends BaseActivity implements GraphListFragment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_graph_list);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_graph_list);
 
         setTitle(R.string.graph_list);
+
+        binding.newGraph.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                newGraph();
+            }
+        });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    public void newGraph(MenuItem item) {
+    public void newGraph() {
         CharSequence[] options = new CharSequence[GraphUnitType.values().length];
         for (int i = 0; i < GraphUnitType.values().length; i++) {
             options[i] = GraphUnitType.values()[i].getDescription();
