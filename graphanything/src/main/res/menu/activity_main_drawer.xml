@@ -19,7 +19,7 @@
             <item
                 android:id="@+id/nav_code"
                 android:icon="@drawable/ic_code"
-                android:title="@string/code" />
+                android:title="@string/source_code" />
         </menu>
     </item>
 

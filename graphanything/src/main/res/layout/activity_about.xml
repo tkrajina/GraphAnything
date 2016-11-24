@@ -40,7 +40,7 @@
                     android:autoLink="web"
                     android:gravity="center"
                     android:inputType="textMultiLine"
-                    android:text="@string/source_code" />
+                    android:text="@string/source_code_with_link" />
 
                 <View
                     android:layout_width="fill_parent"
