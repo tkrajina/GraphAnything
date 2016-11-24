@@ -56,6 +56,7 @@ public class GraphEditActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        disallowWalkAway(R.string.no_changes_saved_message);
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_graph_edit);
@@ -83,18 +84,6 @@ public class GraphEditActivity extends BaseActivity {
         binding.timerSoundsGroup.setVisibility(firstColumn.getGraphUnitType() == GraphUnitType.TIMER ? View.VISIBLE : View.GONE);
 
         reloadFields();
-    }
-
-    @Override
-    public void onBackPressed() {
-        DialogUtils.showYesNoButton(this, "No changes saved, leave?", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-                if (which == DialogInterface.BUTTON_POSITIVE) {
-                    GraphEditActivity.super.onBackPressed();
-                }
-            }
-        });
     }
 
     private void reloadFields() {
@@ -189,6 +178,7 @@ public class GraphEditActivity extends BaseActivity {
             getDAO().save(e.getValue());
         }
 
+        allowWalkAway();
         GraphActivity.start(this, graph._id, 0);
 
         Toast.makeText(this, "Graph saved", Toast.LENGTH_SHORT).show();

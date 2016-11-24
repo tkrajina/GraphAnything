@@ -1,5 +1,7 @@
 package info.puzz.graphanything.activities;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import info.puzz.graphanything.R;
 import info.puzz.graphanything.dao.DAO;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
+import info.puzz.graphanything.utils.DialogUtils;
 
 public abstract class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -28,6 +31,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     DAO dao;
 
     private boolean navigationSet;
+
+    private boolean walkAwayAllowed = true;
+    private String walkAwayMessage = "";
 
     public DAO getDAO() {
         if (this.dao == null) {
@@ -66,6 +72,15 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         return super.onOptionsItemSelected(item);
     }
 
+    protected void disallowWalkAway(int res) {
+        this.walkAwayAllowed = false;
+        this.walkAwayMessage = this.getString(res);
+    }
+
+    protected void allowWalkAway() {
+        this.walkAwayAllowed = true;
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -85,6 +100,38 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void startActivity(final Intent intent) {
+        if (!walkAwayAllowed) {
+            DialogUtils.showYesNoButton(this, walkAwayMessage, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    if (i == Dialog.BUTTON_POSITIVE) {
+                        BaseActivity.super.startActivity(intent);
+                    }
+                }
+            });
+        } else {
+            super.startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!walkAwayAllowed) {
+            DialogUtils.showYesNoButton(this, walkAwayMessage, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    if (i == Dialog.BUTTON_POSITIVE) {
+                        BaseActivity.super.onBackPressed();
+                    }
+                }
+            });
+        } else {
+            super.onBackPressed();
+        }
     }
 
     protected void setupNavigation() {

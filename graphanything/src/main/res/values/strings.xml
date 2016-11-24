@@ -54,4 +54,5 @@
     <string name="graphs">Graphs</string>
     <string name="about">About</string>
     <string name="help_contents"><![CDATA[<h1>Trla<h1>baba lan]]></string>
+    <string name="no_changes_saved_message">No changes saved, leave anyway?</string>
 </resources>

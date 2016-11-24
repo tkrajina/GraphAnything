@@ -9,10 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import junit.framework.Assert;
@@ -23,8 +20,8 @@ import java.util.Map;
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.databinding.ActivityGraphColumnBinding;
 import info.puzz.graphanything.models2.FormatVariant;
-import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.Graph;
+import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.enums.GraphType;
 import info.puzz.graphanything.models2.enums.GraphUnitType;
 import info.puzz.graphanything.models2.format.FormatException;
@@ -58,6 +55,8 @@ public class GraphColumnActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        disallowWalkAway(R.string.no_changes_saved_message);
+
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_graph_column);
 
@@ -81,18 +80,6 @@ public class GraphColumnActivity extends BaseActivity {
 
         setupUnitTypeRadioButtons();
         setupGraphTypeRadioButtons();
-    }
-
-    @Override
-    public void onBackPressed() {
-        DialogUtils.showYesNoButton(this, "No changes saved, leave?", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-                if (which == DialogInterface.BUTTON_POSITIVE) {
-                    GraphColumnActivity.super.onBackPressed();
-                }
-            }
-        });
     }
 
     private GraphColumn getCurrentGraphColumn() {
@@ -158,6 +145,7 @@ public class GraphColumnActivity extends BaseActivity {
         }
 
         Toast.makeText(GraphColumnActivity.this, "Column changed", Toast.LENGTH_SHORT);
+        allowWalkAway();
         GraphEditActivity.start(this, graph, graphColumns);
     }
 

@@ -56,6 +56,7 @@ public class GraphEntryActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        disallowWalkAway(R.string.no_changes_saved_message);
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_graph_entry);
@@ -83,18 +84,6 @@ public class GraphEntryActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-    }
-
-    @Override
-    public void onBackPressed() {
-        DialogUtils.showYesNoButton(this, "No changes saved, leave?", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-                if (which == DialogInterface.BUTTON_POSITIVE) {
-                    GraphEntryActivity.super.onBackPressed();
-                }
-            }
-        });
     }
 
     @Override
@@ -154,6 +143,7 @@ public class GraphEntryActivity extends BaseActivity {
 
         getDAO().save(graphEntry);
 
+        allowWalkAway();
         GraphActivity.start(this, graph._id, 0);
         Toast.makeText(this, "Entry saved", Toast.LENGTH_SHORT).show();
     }
