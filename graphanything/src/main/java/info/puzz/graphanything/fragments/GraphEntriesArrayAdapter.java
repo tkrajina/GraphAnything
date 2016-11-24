@@ -1,6 +1,8 @@
 package info.puzz.graphanything.fragments;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import java.util.Map;
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.activities.BaseActivity;
 import info.puzz.graphanything.activities.GraphEntryActivity;
+import info.puzz.graphanything.databinding.GraphEntryBinding;
 import info.puzz.graphanything.models2.FormatVariant;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
@@ -21,6 +24,9 @@ import info.puzz.graphanything.utils.StringUtils;
 import info.puzz.graphanything.utils.TimeUtils;
 
 public class GraphEntriesArrayAdapter extends ArrayAdapter<GraphEntry> {
+
+    private static final String TAG = GraphEntriesArrayAdapter.class.getSimpleName();
+
     private final Context context;
     private final GraphEntry[] values;
     private final Graph graph;
@@ -36,29 +42,29 @@ public class GraphEntriesArrayAdapter extends ArrayAdapter<GraphEntry> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.graph_entry, parent, false);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        GraphEntryBinding binding;
+        if (convertView == null) {
+            binding = DataBindingUtil.inflate(inflater, R.layout.graph_entry, parent, false);
+        } else {
+            binding = DataBindingUtil.findBinding(convertView);
+        }
 
         final GraphEntry graphEntry = values[position];
 
-        TextView titleView = (TextView) rowView.findViewById(R.id.graph_value_title);
-        titleView.setText(column.formatValueWithUnit(graphEntry.get(0), FormatVariant.LONG));
+        binding.graphValueTitle.setText(column.formatValueWithUnit(graphEntry.get(0), FormatVariant.LONG));
+        binding.graphValueSubtitleCreated.setText(TimeUtils.YYYYMMDDHHMMSS_FORMATTER.format(new Timestamp(graphEntry.created)));
+        binding.entryComment.setText(StringUtils.isEmpty(graphEntry.getComment()) ? "..." : StringUtils.ellipses(graphEntry.getComment().replace("\n", " "), 40));
 
-        TextView valueCreatedTextView = (TextView) rowView.findViewById(R.id.graph_value_subtitle_created);
-        valueCreatedTextView.setText(TimeUtils.YYYYMMDDHHMMSS_FORMATTER.format(new Timestamp(graphEntry.created)));
-
-        TextView commentTextView = (TextView) rowView.findViewById(R.id.entry_comment);
-        commentTextView.setText(StringUtils.firstLine(graphEntry.getComment()));
-
-        rowView.setOnClickListener(new View.OnClickListener() {
+        binding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GraphEntryActivity.start((BaseActivity) context, graph._id, graphEntry);
             }
         });
 
-        return rowView;
+        return binding.getRoot();
     }
 }
 

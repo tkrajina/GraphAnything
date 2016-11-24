@@ -1,42 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/graph_value"
-    android:clickable="true"
-    android:focusable="true" >
-
-    <TextView
-        android:id="@+id/graph_value_title"
-        android:textStyle="bold"
-        android:layout_width="119dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:gravity="center_vertical"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall" />
-
-    <TextView
-        android:id="@+id/graph_value_subtitle_created"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text=""
-        android:gravity="left"
+<layout>
+    <data>
+        <variable name="entry" type="info.puzz.graphanything.models2.GraphEntry" />
+    </data>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_weight="50"
-        android:layout_toRightOf="@+id/graph_value_title"
-        android:layout_toEndOf="@+id/graph_value_title" />
+        android:layout_height="match_parent"
+        android:id="@+id/graph_value"
+        android:clickable="true"
+        android:focusable="true" >
 
-    <TextView
-        android:id="@+id/entry_comment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/graph_value_subtitle_created"
-        android:layout_toRightOf="@+id/graph_value_title"
-        android:layout_alignBottom="@+id/graph_value_title"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:gravity="left|center_vertical" />
+        <TextView
+            android:id="@+id/graph_value_title"
+            android:textStyle="bold"
+            android:layout_width="119dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:gravity="center"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/graph_value_subtitle_created"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_weight="50"
+            android:layout_toRightOf="@+id/graph_value_title"
+            android:layout_toEndOf="@+id/graph_value_title"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/entry_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/graph_value_subtitle_created"
+            android:layout_toRightOf="@+id/graph_value_title"
+            android:layout_alignBottom="@+id/graph_value_title"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:textAlignment="center" />
+
+    </RelativeLayout>
+</layout>

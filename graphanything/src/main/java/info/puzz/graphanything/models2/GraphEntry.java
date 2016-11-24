@@ -58,6 +58,14 @@ public class GraphEntry implements Serializable {
         return this;
     }
 
+    public Double getOr(int i, double dflt) {
+        Double res = get(i);
+        if (res == null) {
+            return dflt;
+        }
+        return res.doubleValue();
+    }
+
     public Double get(int i) {
         switch (i) {
             case 0: return value0;
