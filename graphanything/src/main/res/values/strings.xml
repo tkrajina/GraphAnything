@@ -55,4 +55,6 @@
     <string name="about">About</string>
     <string name="help_contents"><![CDATA[<h1>Trla<h1>baba lan]]></string>
     <string name="no_changes_saved_message">No changes saved, leave anyway?</string>
+    <string name="app_short_desc">Make sense of your numbers</string>
+    <string name="graph_type">Graph type</string>
 </resources>

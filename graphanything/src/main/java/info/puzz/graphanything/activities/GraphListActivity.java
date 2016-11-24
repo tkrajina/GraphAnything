@@ -56,7 +56,7 @@ public class GraphListActivity extends BaseActivity implements GraphListFragment
         }
 
         new AlertDialog.Builder(this)
-                .setTitle("Value type")
+                .setTitle(getString(R.string.graph_type))
                 .setNegativeButton(R.string.cancel, null)
                 .setItems(options, new DialogInterface.OnClickListener() {
                     @Override
