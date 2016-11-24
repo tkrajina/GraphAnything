@@ -1,5 +1,7 @@
 package info.puzz.graphanything.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -9,9 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.SubMenu;
+
+import java.util.List;
 
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.dao.DAO;
+import info.puzz.graphanything.models2.Graph;
 
 public abstract class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -64,6 +70,17 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        if (id == R.id.nav_about) {
+            AboutActivity.start(this);
+        } else if (id == R.id.nav_code) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/tkrajina/GraphAnything")));
+        } else if (id == R.id.nav_help) {
+            HelpActivity.start(this, getString(R.string.help), getString(R.string.help_contents));
+        }
+        /*
+ GraphEntryActivity
+         */
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -85,6 +102,20 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
+        List<Graph> graphs = getDAO().getGraphsByTimerActiveAndUpdatedDesc();
+        if (graphs.size() > 0 && !this.getClass().equals(GraphListActivity.class)) {
+            SubMenu submenu = navigationView.getMenu().addSubMenu(R.string.graphs);
+            for (final Graph graph : graphs) {
+                MenuItem menu = submenu.add(graph.name);
+                menu.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        GraphActivity.start(BaseActivity.this, graph._id, 0);
+                        return true;
+                    }
+                });
+            }
+        }
         navigationView.setNavigationItemSelectedListener(this);
     }
 }

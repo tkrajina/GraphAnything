@@ -26,8 +26,7 @@
     <string name="estimate">Estimate</string>
     <string name="goal">Goal</string>
     <string name="data">Data</string>
-    <string name="about">Source code: <a href="github.com/tkrajina/GraphAnything">https://github.com/tkrajina/GraphAnything</a></string>
-    <string name="title_activity_help">HelpActivity</string>
+    <string name="source_code">Source code: <a href="github.com/tkrajina/GraphAnything">https://github.com/tkrajina/GraphAnything</a></string>
     <string name="column_name_colon">Column name:</string>
     <string name="change">Change</string>
     <string name="enable">Enable</string>
@@ -52,4 +51,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="help">Help</string>
     <string name="code">Code</string>
+    <string name="graphs">Graphs</string>
+    <string name="about">About</string>
+    <string name="help_contents"><![CDATA[<h1>Trla<h1>baba lan]]></string>
 </resources>
