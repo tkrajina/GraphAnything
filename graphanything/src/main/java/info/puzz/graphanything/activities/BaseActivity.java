@@ -81,9 +81,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         } else if (id == R.id.nav_help) {
             HelpActivity.start(this, getString(R.string.help), getString(R.string.help_contents));
         }
-        /*
- GraphEntryActivity
-         */
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

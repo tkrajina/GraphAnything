@@ -6,15 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import junit.framework.Assert;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.activities.BaseActivity;
@@ -23,7 +20,6 @@ import info.puzz.graphanything.databinding.GraphBinding;
 import info.puzz.graphanything.models2.FormatVariant;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
-import info.puzz.graphanything.models2.enums.GraphUnitType;
 import info.puzz.graphanything.utils.TimeUtils;
 
 public class GraphArrayAdapter extends ArrayAdapter<Graph> {

@@ -5,7 +5,9 @@
         <menu>
             <item
                 android:id="@+id/nav_graphs"
-                android:title="@string/graphs" />
+                android:title="@string/graphs"
+                android:icon="@drawable/ic_home"
+                />
             <item
                 android:id="@+id/nav_about"
                 android:title="@string/about" />
