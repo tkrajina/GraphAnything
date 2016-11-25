@@ -6,7 +6,6 @@
     <string name="action_new">New</string>
     <string name="action_edit">Edit</string>
     <string name="action_values">Values</string>
-    <string name="title_graphanything">Graphanything</string>
     <string name="title_activity_graph_properties">GraphPropertiesActivity</string>
     <string name="title_activity_graph_values">GraphValuesActivity</string>
     <string name="action_settings">Settings</string>

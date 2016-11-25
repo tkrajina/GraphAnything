@@ -15,6 +15,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [appName: "GraphAnything"]
+        }
+        debug {
+            applicationIdSuffix '.debug'
+            manifestPlaceholders = [appName: "DEBUG:GraphAnything"]
         }
     }
     dataBinding {
