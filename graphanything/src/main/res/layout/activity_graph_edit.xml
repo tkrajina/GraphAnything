@@ -88,6 +88,7 @@
                             android:id="@+id/reminder_sound"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="number"
                             android:text='@{graph.reminderTimerSound > 0 ? String.valueOf(graph.reminderTimerSound) : ""}' />
 
                         <TextView
@@ -100,6 +101,7 @@
                             android:id="@+id/final_sound"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="number"
                             android:text='@{graph.finalTimerSound > 0 ? String.valueOf(graph.finalTimerSound) : ""}' />
 
                     </LinearLayout>
