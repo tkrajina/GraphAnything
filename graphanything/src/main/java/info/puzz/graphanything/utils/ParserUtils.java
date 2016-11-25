@@ -1,6 +1,6 @@
 package info.puzz.graphanything.utils;
 
-import info.puzz.graphanything.models.format.FormatException;
+import info.puzz.graphanything.models2.format.FormatException;
 
 /**
  * Created by puzz on 14/11/2016.

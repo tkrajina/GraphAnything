@@ -1,14 +1,11 @@
 package info.puzz.graphanything.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import junit.framework.Assert;
@@ -21,10 +18,10 @@ import java.util.Map;
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.databinding.ActivityGraphEditBinding;
 import info.puzz.graphanything.databinding.FragmentGraphColumnInfoBinding;
-import info.puzz.graphanything.models.format.FormatException;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.enums.GraphUnitType;
+import info.puzz.graphanything.models2.format.FormatException;
 import info.puzz.graphanything.utils.DialogUtils;
 import info.puzz.graphanything.utils.ParserUtils;
 

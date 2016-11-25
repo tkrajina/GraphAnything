@@ -6,11 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.text.ParseException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import info.puzz.graphanything.models.GraphValue;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.GraphEntry;
@@ -50,14 +47,6 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
-
-        try {
-            OldDatabaseOpenHelper oldDbHelper = new OldDatabaseOpenHelper(this.context);
-            SQLiteDatabase oldDb = oldDbHelper.getReadableDatabase();
-            importFromOldDb(oldDb, db);
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-        }
     }
 
     @Override
@@ -70,49 +59,6 @@ class DatabaseOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         cupboard().withDatabase(db).upgradeTables();
-    }
-
-    /**
-     * Note, old models are stored with {@link info.puzz.graphanything.models.Graph} but the values
-     * are still stored in the database (TODO: Remove later).
-     */
-    private void importFromOldDb(SQLiteDatabase oldDb, SQLiteDatabase newDb) {
-        Map<Long, Long> newDbIdsByOldDbIds = new HashMap<>();
-        for (info.puzz.graphanything.models.Graph oldGraph : cupboard().withDatabase(oldDb).query(info.puzz.graphanything.models.Graph.class).list()) {
-            Graph newGraph = new Graph()
-                    .setName(oldGraph.getName())
-                    .setLastValue(oldGraph.getLastValue())
-                    .setLastValueCreated(oldGraph.getLastValueCreated())
-                    .setTimerStarted(oldGraph.getTimerStarted())
-                    .setStatsPeriod(oldGraph.getStatsPeriod());
-            cupboard().withDatabase(newDb).put(newGraph);
-            GraphColumn firstColumn = new GraphColumn()
-                    .setGraphId(newGraph._id)
-                    .setColumnNo(0)
-                    .setGoal(oldGraph.goal)
-                    .setGoalEstimateDays(oldGraph.goalEstimateDays)
-                    .setName(oldGraph.name)
-                    .setUnit(oldGraph.unit)
-                    .setType(oldGraph.getType())
-                    .setUnitType(oldGraph.unitType);
-
-            newDbIdsByOldDbIds.put(oldGraph._id, newGraph._id);
-
-            cupboard().withDatabase(newDb).put(firstColumn);
-        }
-
-        for (GraphValue graphValue : cupboard().withDatabase(oldDb).query(GraphValue.class).list()) {
-            Long graphid = newDbIdsByOldDbIds.get(graphValue.graphId);
-            if (graphid == null) {
-                Log.e(TAG, "No new graphId for " + graphValue.graphId);
-            } else {
-                GraphEntry entry = new GraphEntry()
-                        .setGraphId(graphid)
-                        .setCreated(graphValue.created)
-                        .set(0, graphValue.value);
-                cupboard().withDatabase(newDb).put(entry);
-            }
-        }
     }
 
     private void importSampleGraphs(SQLiteDatabase db) throws ParseException {
