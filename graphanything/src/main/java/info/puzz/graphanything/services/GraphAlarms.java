@@ -11,6 +11,7 @@ import android.util.Log;
 
 import junit.framework.Assert;
 
+import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
 
 import info.puzz.graphanything.broadcast.TimerSoundPlayer;
@@ -18,6 +19,7 @@ import info.puzz.graphanything.dao.DAO;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
 import info.puzz.graphanything.models2.enums.GraphUnitType;
+import info.puzz.graphanything.utils.TimeUtils;
 
 
 public final class GraphAlarms {
@@ -47,7 +49,7 @@ public final class GraphAlarms {
             return;
         }
 
-        Log.i(TAG, TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - graph.timerStarted) + " from timer start");
+        Log.i(TAG, "Started " + TimeUtils.YYYYMMDDHHMMSS_FORMATTER.format(new Timestamp(graph.timerStarted)));
         long elapsedTimeOnTimerStart = SystemClock.elapsedRealtime() - (System.currentTimeMillis() - graph.timerStarted);
 
         AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -55,9 +57,9 @@ public final class GraphAlarms {
         if (graph.finalTimerSound > 0) {
             long time = elapsedTimeOnTimerStart + TimeUnit.MINUTES.toMillis(graph.finalTimerSound);
             if (time > SystemClock.elapsedRealtime()) {
-                Intent finalAlarmIntent = new Intent(context, TimerSoundPlayer.class);
-                finalAlarmIntent.putExtra(GRAPH_ID, graph._id);
-                finalAlarmIntent.putExtra(FINAL, true);
+                Intent finalAlarmIntent = new Intent(context, TimerSoundPlayer.class)
+                        .putExtra(GRAPH_ID, graph._id)
+                        .putExtra(FINAL, true);
                 PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, finalAlarmIntent, 0);
                 alarmMgr.cancel(alarmIntent);
                 alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, time, alarmIntent);
@@ -65,13 +67,13 @@ public final class GraphAlarms {
         }
 
         if (graph.reminderTimerSound > 0) {
-            for (int minutes = 1; minutes < Math.min(60, graph.finalTimerSound - 1); minutes += graph.reminderTimerSound) {
+            for (int minutes = 0; minutes < Math.min(60, graph.finalTimerSound - 1); minutes += graph.reminderTimerSound) {
                 long time = elapsedTimeOnTimerStart + TimeUnit.MINUTES.toMillis(minutes);
                 if (time > SystemClock.elapsedRealtime()) {
                     Log.i(TAG, String.format("Alarm in %d minutes", TimeUnit.MILLISECONDS.toMinutes(time - SystemClock.elapsedRealtime())));
-                    Intent intent = new Intent(context, TimerSoundPlayer.class);
-                    intent.putExtra(GRAPH_ID, graph._id);
-                    intent.putExtra(FINAL, false);
+                    Intent intent = new Intent(context, TimerSoundPlayer.class)
+                            .putExtra(GRAPH_ID, graph._id)
+                            .putExtra(FINAL, false);
                     PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
                     alarmMgr.cancel(alarmIntent);
                     alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, time, alarmIntent);
@@ -101,12 +103,22 @@ public final class GraphAlarms {
             return;
         }
 
+        Log.i(TAG, (isFinal ? "final" : "nonfinal") + " alarm " + TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - graph.timerStarted) + "s after start");
+
         if (isFinal) {
-            new ToneGenerator(AudioManager.STREAM_ALARM, 150).startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 2000);
+            finalAlarm();
         } else {
-            new ToneGenerator(AudioManager.STREAM_ALARM, 50).startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
+            intermediateAlarm();
         }
         
         resetNextTimerAlarm(context, graph);
+    }
+
+    public static void intermediateAlarm() {
+        new ToneGenerator(AudioManager.STREAM_ALARM, 50).startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 50);
+    }
+
+    public static void finalAlarm() {
+        new ToneGenerator(AudioManager.STREAM_ALARM, 80).startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 400);
     }
 }
