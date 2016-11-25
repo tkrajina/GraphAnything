@@ -43,7 +43,8 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:gravity="center"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textStyle="normal|italic" />
 
     </RelativeLayout>
 </layout>
