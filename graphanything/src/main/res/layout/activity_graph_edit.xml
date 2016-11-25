@@ -60,6 +60,18 @@
                         android:layout_alignParentStart="true"
                         android:text="@{graph.name}" />
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/graph_values"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <LinearLayout
+                        android:id="@+id/fields"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
                     <LinearLayout
                         android:id="@+id/timer_sounds_group"
                         android:layout_width="match_parent"
@@ -91,18 +103,6 @@
                             android:text='@{graph.finalTimerSound > 0 ? String.valueOf(graph.finalTimerSound) : ""}' />
 
                     </LinearLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/fields_colon"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                    <LinearLayout
-                        android:id="@+id/fields"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical" />
 
                 </LinearLayout>
 

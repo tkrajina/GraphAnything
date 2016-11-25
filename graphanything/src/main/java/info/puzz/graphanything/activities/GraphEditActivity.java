@@ -20,6 +20,7 @@ import java.util.Map;
 
 import info.puzz.graphanything.R;
 import info.puzz.graphanything.databinding.ActivityGraphEditBinding;
+import info.puzz.graphanything.databinding.FragmentGraphColumnInfoBinding;
 import info.puzz.graphanything.models.format.FormatException;
 import info.puzz.graphanything.models2.Graph;
 import info.puzz.graphanything.models2.GraphColumn;
@@ -104,14 +105,12 @@ public class GraphEditActivity extends BaseActivity {
         final Integer freeColumnNoFinal = freeColumnNo;
 
         for (final GraphColumn graphColumn : columns) {
-            View graphColumnView = getLayoutInflater().inflate(R.layout.fragment_graph_column_info, null);
-
-            Button editGraphButton = (Button) graphColumnView.findViewById(R.id.edit_column);
+            FragmentGraphColumnInfoBinding viewBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.fragment_graph_column_info, null, false);
 
             if (graphColumn == null) {
                 Assert.assertNotNull(freeColumnNoFinal);
-                editGraphButton.setText(R.string.add_new_column);
-                editGraphButton.setOnClickListener(new View.OnClickListener() {
+                viewBinding.editColumn.setText(R.string.add_new_column);
+                viewBinding.editColumn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         columnsByColumnNumbers.put(freeColumnNoFinal, new GraphColumn().setColumnNo(freeColumnNoFinal));
@@ -123,7 +122,7 @@ public class GraphEditActivity extends BaseActivity {
                     }
                 });
             } else {
-                editGraphButton.setOnClickListener(new View.OnClickListener() {
+                viewBinding.editColumn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         try {
@@ -134,13 +133,12 @@ public class GraphEditActivity extends BaseActivity {
                     }
                 });
 
-                TextView graphColumnTextView = (TextView) graphColumnView.findViewById(R.id.graph_column_description);
-                graphColumnTextView.setText(graphColumn.formatName());
-                editGraphButton.setText(R.string.change);
+                viewBinding.graphColumnDescription.setText(graphColumn.formatName());
+                viewBinding.editColumn.setText(R.string.change);
                 //editGraphButton.setText(R.string.enable);
             }
 
-            binding.fields.addView(graphColumnView);
+            binding.fields.addView(viewBinding.getRoot());
         }
     }
 
