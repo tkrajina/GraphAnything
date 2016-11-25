@@ -54,7 +54,6 @@ public class GraphEditActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        disallowWalkAway(R.string.no_changes_saved_message);
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_graph_edit);
@@ -82,6 +81,12 @@ public class GraphEditActivity extends BaseActivity {
         binding.timerSoundsGroup.setVisibility(firstColumn.getGraphUnitType() == GraphUnitType.TIMER ? View.VISIBLE : View.GONE);
 
         reloadFields();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        disallowWalkAway(R.string.no_changes_saved_message);
     }
 
     private void reloadFields() {
@@ -112,6 +117,7 @@ public class GraphEditActivity extends BaseActivity {
                     public void onClick(View view) {
                         columnsByColumnNumbers.put(freeColumnNoFinal, new GraphColumn().setColumnNo(freeColumnNoFinal));
                         try {
+                            allowWalkAway();
                             GraphColumnActivity.start(GraphEditActivity.this, getFormGraph(), columnsByColumnNumbers, freeColumnNoFinal);
                         } catch (FormatException e) {
                             DialogUtils.showWarningDialog(GraphEditActivity.this, "Error", e.getMessage());
@@ -123,6 +129,7 @@ public class GraphEditActivity extends BaseActivity {
                     @Override
                     public void onClick(View view) {
                         try {
+                            allowWalkAway();
                             GraphColumnActivity.start(GraphEditActivity.this, getFormGraph(), columnsByColumnNumbers, graphColumn.getColumnNo());
                         } catch (FormatException e) {
                             DialogUtils.showWarningDialog(GraphEditActivity.this, "Error", e.getMessage());
