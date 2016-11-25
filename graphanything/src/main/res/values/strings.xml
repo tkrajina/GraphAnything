@@ -36,8 +36,8 @@
     <string name="no">No</string>
     <string name="comment_colon">Comment:</string>
     <string name="created_colon">Created:</string>
-    <string name="graph_values">Graph values/fields:</string>
-    <string name="add_new_column">Add new field</string>
+    <string name="graph_values">Measuring values:</string>
+    <string name="add_new_column">Add new value</string>
     <string name="select_field_colon">Select field:</string>
     <string name="action_edit_latest_entry">Edit latest entry</string>
     <string name="now">Now</string>
@@ -52,7 +52,35 @@
     <string name="source_code">Source code</string>
     <string name="graphs">Graphs</string>
     <string name="about">About</string>
-    <string name="help_contents"><![CDATA[<h1>Trla<h1>baba lan]]></string>
+    <string name="help_contents"><![CDATA[
+<p>
+GraphAnything is a simple application for visualising of any time series of numbers.
+In a way that is visualizing numbers describing something you care and, optionally, showing how close you are to your preset goal.
+</p>
+<h2>What can you track with GraphAnything?</h2>
+<ul>
+    <li>your weight</li>
+    <li>the time you spend on a project</li>
+    <li>daily run/walk time or distance</li>
+    <li>petrol price or mileage per full tank</li>
+    <li>etc.</li>
+</ul>
+<h2>How to set your graph and goals</h2>
+<ol>
+    <li>Choose in the menu the option Graphs. Then select the <strong>+</strong> button on the right bottom corner.</li>
+    <li>After that you have to choose <strong>numeric</strong> value graph type (ex. for measuring your weight, distance...) or <strong>timer</strong> value (for time measuring).</li>
+    <li>Name the graph (ie. "weight"), click on the value option and select the thing that you are measuring. Later you can add more columns in the same graph with different names.</li>
+    <li>Additionally, every value can have:</li>
+    <ul>
+        <li>A specified unit (for example, <i>kg</i> if measuring weight, or <i>km</i> or <i>miles</i> if measuring running distance)</li>
+        <li>At the end set your goal value (for example, you preferred weight).</li>
+    </ul>
+</ol>
+<p>
+Additionally, timer graphs can have short reminder sounds (every few minutes) and one longer beep when you expect your work sessions to end. That way the app can be used as a pomodoro timer.
+</p>
+<p>Graph values can have "goals". If the goal is set, the app will try to calculate if your latest entries are "moving" in the right direction and when (approximately) can you expect to reach that goal.</p>
+]]></string>
     <string name="no_changes_saved_message">No changes saved, leave anyway?</string>
     <string name="app_short_desc">Make sense of your numbers</string>
     <string name="graph_type">Graph type</string>
