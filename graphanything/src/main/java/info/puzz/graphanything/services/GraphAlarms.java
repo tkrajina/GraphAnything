@@ -60,7 +60,7 @@ public final class GraphAlarms {
                 Intent finalAlarmIntent = new Intent(context, TimerSoundPlayer.class)
                         .putExtra(GRAPH_ID, graph._id)
                         .putExtra(FINAL, true);
-                PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, finalAlarmIntent, 0);
+                PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, finalAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 alarmMgr.cancel(alarmIntent);
                 alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, time, alarmIntent);
             }
@@ -74,7 +74,7 @@ public final class GraphAlarms {
                     Intent intent = new Intent(context, TimerSoundPlayer.class)
                             .putExtra(GRAPH_ID, graph._id)
                             .putExtra(FINAL, false);
-                    PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+                    PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmMgr.cancel(alarmIntent);
                     alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, time, alarmIntent);
                     return;
