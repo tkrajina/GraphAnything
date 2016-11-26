@@ -100,7 +100,4 @@ public class GraphListActivity extends BaseActivity implements GraphListFragment
         startActivity(detailIntent);
     }
 
-    public void showInfo(MenuItem item) {
-        AboutActivity.start(this);
-    }
 }

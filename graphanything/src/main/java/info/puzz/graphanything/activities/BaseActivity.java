@@ -3,6 +3,8 @@ package info.puzz.graphanything.activities;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -88,7 +90,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         int id = item.getItemId();
 
         if (id == R.id.nav_about) {
-            AboutActivity.start(this);
+            PackageInfo info = null;
+            try {
+                info = getPackageManager().getPackageInfo(this.getPackageName(), 0);
+
+                HelpActivity.start(this, getString(R.string.about), getString(R.string.info_contents, info.versionName, info.versionCode));
+            } catch (PackageManager.NameNotFoundException e) {
+                throw new Error(e.getMessage(), e);
+            }
         } else if (id == R.id.nav_graphs) {
             GraphListActivity.start(this);
         } else if (id == R.id.nav_code) {

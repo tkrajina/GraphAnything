@@ -36,9 +36,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/title_activity_graph_values" />
         <activity
-            android:name=".activities.AboutActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".activities.HelpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

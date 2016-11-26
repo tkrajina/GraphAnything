@@ -53,10 +53,6 @@
     <string name="graphs">Graphs</string>
     <string name="about">About</string>
     <string name="help_contents"><![CDATA[
-<p>
-GraphAnything is a simple application for visualising of any time series of numbers.
-In a way that is visualizing numbers describing something you care and, optionally, showing how close you are to your preset goal.
-</p>
 <h2>What can you track with GraphAnything?</h2>
 <ul>
     <li>your weight</li>
@@ -84,4 +80,14 @@ Additionally, timer graphs can have short reminder sounds (every few minutes) an
     <string name="no_changes_saved_message">No changes saved, leave anyway?</string>
     <string name="app_short_desc">Make sense of your numbers</string>
     <string name="graph_type">Graph type</string>
+    <string name="info_contents" formatted="false"><![CDATA[
+<p>GraphAnything is a simple application for visualising of any time series of numbers. In a way that is visualizing numbers describing something you care and, optionally, showing how close you are to your preset goal. </p>
+<hr/>
+<ul>
+    <li>Version: %s</li>
+    <li>Version code: %d</li>
+</ul>
+<hr/>
+Source code: <a href="https://github.com/tkrajina/GraphAnything">github.com/tkrajina/GraphAnything</a>
+]]></string>
 </resources>
