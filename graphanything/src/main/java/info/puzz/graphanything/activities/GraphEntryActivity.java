@@ -150,7 +150,7 @@ public class GraphEntryActivity extends BaseActivity {
 
     public void onDelete(MenuItem item) {
         getDAO().delete(graphEntry);
-        Toast.makeText(this, "Deleted", Toast.LENGTH_SHORT);
+        Toast.makeText(this, "Deleted", Toast.LENGTH_SHORT).show();
         GraphActivity.start(this, graph._id, 0);
     }
 

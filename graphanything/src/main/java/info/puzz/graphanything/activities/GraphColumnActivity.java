@@ -144,7 +144,7 @@ public class GraphColumnActivity extends BaseActivity {
             }
         }
 
-        Toast.makeText(GraphColumnActivity.this, "Column changed", Toast.LENGTH_SHORT);
+        Toast.makeText(GraphColumnActivity.this, "Column changed", Toast.LENGTH_SHORT).show();
         allowWalkAway();
         GraphEditActivity.start(this, graph, graphColumns);
     }
@@ -192,7 +192,7 @@ public class GraphColumnActivity extends BaseActivity {
 
                     graphColumns.remove(graphColumnNo);
                     GraphEditActivity.start(GraphColumnActivity.this, graph, graphColumns);
-                    Toast.makeText(GraphColumnActivity.this, "Column deleted", Toast.LENGTH_SHORT);
+                    Toast.makeText(GraphColumnActivity.this, "Column deleted", Toast.LENGTH_SHORT).show();
                 }
             }
         };

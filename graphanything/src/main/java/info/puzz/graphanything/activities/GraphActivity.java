@@ -413,7 +413,7 @@ public class GraphActivity extends BaseActivity {
         getDAO().delete(graph);
 
         GraphListActivity.start(this);
-        Toast.makeText(this, "Graph deleted", Toast.LENGTH_SHORT);
+        Toast.makeText(this, "Graph deleted", Toast.LENGTH_SHORT).show();
     }
 
     public void onStartStop(View view) {
