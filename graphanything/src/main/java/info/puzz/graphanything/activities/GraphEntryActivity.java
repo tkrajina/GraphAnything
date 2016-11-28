@@ -149,6 +149,7 @@ public class GraphEntryActivity extends BaseActivity {
     }
 
     public void onDelete(MenuItem item) {
+        allowWalkAway();
         getDAO().delete(graphEntry);
         Toast.makeText(this, "Deleted", Toast.LENGTH_SHORT).show();
         GraphActivity.start(this, graph._id, 0);
@@ -159,6 +160,7 @@ public class GraphEntryActivity extends BaseActivity {
     }
 
     public void onClone(MenuItem item) {
+        allowWalkAway();
         GraphEntry newEntry = new GraphEntry();
         newEntry.setCreated(System.currentTimeMillis());
         newEntry.setGraphId(graph._id);
