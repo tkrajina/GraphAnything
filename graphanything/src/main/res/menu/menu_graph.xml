@@ -12,8 +12,8 @@
         android:onClick="onEditGraph" />
 
     <item
-        android:id="@+id/action_values"
-        android:title="@string/action_values"
+        android:id="@+id/action_entries"
+        android:title="@string/action_entries"
         app:showAsAction="ifRoom"
         android:orderInCategory="110"
         android:onClick="onShowValues" />
