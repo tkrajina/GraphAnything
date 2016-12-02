@@ -14,7 +14,6 @@ public class HelpActivity extends BaseActivity {
 
     private static final String ARG_HTML = "html";
     private static final String ARG_TITLE = "title";
-    private WebView webView;
 
     public static void start(BaseActivity activity, String title, String html) {
         Intent intent = new Intent(activity, HelpActivity.class);
